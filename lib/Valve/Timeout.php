@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Framework\Step;
+namespace PhpBench\Framework\Valve;
 
 use PhpBench\Framework\Step;
 use Generator;
 use SplQueue;
 
-class Timer implements Step
+class Timeout implements Step
 {
     /**
      * @var int

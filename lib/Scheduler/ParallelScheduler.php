@@ -3,25 +3,29 @@
 namespace PhpBench\Framework\Scheduler;
 
 use PhpBench\Framework\Logger;
+use PhpBench\Framework\Step;
+use Generator;
+use SplQueue;
 
-class ParallelScheduler
+class ParallelScheduler implements Step
 {
     /**
      * @var array
      */
-    private $pipelines;
+    private $steps;
 
-    public function __construct(array $pipelines)
+    public function __construct(array $steps)
     {
-        $this->pipelines = $pipelines;
+        $this->steps = $steps;
     }
 
-    public function run(Logger $logger)
+    public function generate(SplQueue $queue): Generator
     {
         $generators = [];
 
-        foreach ($this->pipelines as $pipeline) {
-            $generators[] = $pipeline->generator();
+        /** @var Step $step */
+        foreach ($this->steps as $step) {
+            $generators[] = $step->generate($queue);
         }
 
         while ($generators) {
@@ -30,7 +34,13 @@ class ParallelScheduler
                     unset($generators[$index]);
                     continue;
                 }
-                $logger->log($generator->current());
+
+
+                if (false === $generator->valid()) {
+                    unset($generators[$index]);
+                    continue;
+                }
+                yield $generator->current();
                 $generator->next();
             }
         }

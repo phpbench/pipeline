@@ -2,13 +2,20 @@
 
 namespace PhpBench\Framework\Logger;
 
-use PhpBench\Framework\Logger;
 use PhpBench\Framework\Result;
+use PhpBench\Framework\Step;
+use SplQueue;
+use Generator;
 
-class StdOutLogger implements Logger
+class StdOutLogger implements Step
 {
-    public function log(array $results)
+    public function generate(SplQueue $queue): Generator
     {
-        echo json_encode($results) . PHP_EOL;
+        $nextGenerator = $queue->dequeue()->generate($queue);
+
+        foreach ($nextGenerator as $result) {
+            echo json_encode($result) . PHP_EOL;
+            yield $result;
+        }
     }
 }

@@ -3,8 +3,10 @@
 namespace PhpBench\Framework;
 
 use SplQueue;
+use PhpBench\Framework\Step;
+use Generator;
 
-class Pipeline
+class Pipeline implements Step
 {
     /**
      * @var SplQueue
@@ -19,10 +21,18 @@ class Pipeline
         }
     }
 
-    public function generator()
+    public function generate(SplQueue $queue): Generator
     {
         $step = $this->steps->dequeue();
+
         return $step->generate($this->steps);
+    }
+
+    public function run()
+    {
+        foreach ($this->generate($this->steps) as $result) {
+            // \o/
+        }
     }
 
     private function add(Step $step)

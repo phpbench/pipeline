@@ -9,7 +9,7 @@ use PhpBench\Framework\Iterator;
 use PhpBench\Framework\CallbackExecutor;
 use IteratorIterator;
 use PhpBench\Framework\TakeOneScheduler;
-use PhpBench\Framework\Step\Take;
+use PhpBench\Framework\Valve\Take;
 use PhpBench\Framework\HttpSampler;
 use PhpBench\Framework\Sampler\CallbackSampler;
 
