@@ -13,9 +13,25 @@ class StdOutLogger implements Step
     {
         $nextGenerator = $queue->dequeue()->generate($queue);
 
+        $lastResult = null;
         foreach ($nextGenerator as $result) {
-            echo json_encode($result) . PHP_EOL;
+            echo $this->getOutput($result);
+
             yield $result;
         }
+    }
+
+    private function getOutput($result)
+    {
+        if (is_string($result)) { 
+            return $result;
+        } 
+
+        ob_start();
+        var_dump($result);
+        $result = ob_get_contents();
+        ob_clean();
+
+        return $result;
     }
 }

@@ -23,9 +23,15 @@ class Pipeline implements Step
 
     public function generate(SplQueue $queue): Generator
     {
-        $step = $this->steps->dequeue();
+        if ($this->steps !== $queue) {
+            foreach ($this->steps as $step) {
+                $queue->unshift($step);
+            }
+        }
 
-        return $step->generate($this->steps);
+        $nextStep = $queue->dequeue();
+
+        return $nextStep->generate($queue);
     }
 
     public function run()
