@@ -21,13 +21,17 @@ class AnsiResetLine implements Step
             if ($lastResult) {
                 $result = self::CLEAR_LINE . $result;
                 $result = self::CURSOR_COL_ZERO . $result;
-                $lastHeight = substr_count($result, PHP_EOL);
-
-                $result = "\x1B[" . ($lastHeight - 1) . 'A' . $result; // reset cursor Y pos
+                $result = $this->resetYPosition($lastResult, $result);
             }
 
             yield $result;
             $lastResult = $result;
         }
+    }
+
+    private function resetYPosition($lastResult, $result)
+    {
+        $lastHeight = substr_count($result, PHP_EOL);
+        return "\x1B[" . ($lastHeight - 1) . 'A' . $result; // reset cursor Y pos
     }
 }

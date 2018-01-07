@@ -23,7 +23,7 @@ $pipeline = new Pipeline([
 
     new Splitter([
         new Pipeline([
-            new ResultAggregator('microseconds', [ 'label' ]),
+            new ResultAggregator('microseconds'),
         ]),
     ]),
 
@@ -31,17 +31,16 @@ $pipeline = new Pipeline([
     //new Timeout(1E6),
     new ParallelScheduler([
         new CallbackSampler('MD5 hash', function () {
-            usleep(100000);
             md5('Hello World');
-        }),
+        }, 100000),
         new CallbackSampler('SHA1 hash', function () {
             sha1('Hello World');
-        }),
+        }, 100000),
         new Pipeline([
             new Take(2),
             new CallbackSampler('FOO hash', function () {
                 sha1('Hello World');
-            }),
+            }, 100000),
         ])
     ])
 ]);

@@ -6,6 +6,8 @@ use PhpBench\Framework\Step;
 use Generator;
 use SplQueue;
 use RuntimeException;
+use MathPHP\Statistics\Descriptive;
+use MathPHP\Statistics\Average;
 
 class ResultAggregator implements Step
 {
@@ -28,7 +30,7 @@ class ResultAggregator implements Step
         while ($nextGenerator->valid()) {
             $results[] = $nextGenerator->current();
 
-            yield $this->aggregateResults($results);
+            yield $this->describeResults($results);
 
             if (false === $first) {
                 $nextGenerator->next();
@@ -38,7 +40,7 @@ class ResultAggregator implements Step
         }
     }
 
-    private function aggregateResults(array $results)
+    private function describeResults(array $results)
     {
         $values = [];
         foreach ($results as $result) {
@@ -53,12 +55,17 @@ class ResultAggregator implements Step
         }
 
         $sum = array_sum($values);
+
         return [
             'count' => count($values),
             'sum' => $sum,
-            'mean' => $sum / count($values),
             'min' => min($values),
             'max' => max($values),
+            'stdev' => Descriptive::standardDeviation($values, false),
+            'mean' => Average::mean($values),
+            '50%' => Descriptive::percentile($values, 90),
+            '90%' => Descriptive::percentile($values, 95),
+            '99%' => Descriptive::percentile($values, 99),
         ];
     }
 }

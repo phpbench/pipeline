@@ -17,6 +17,16 @@ class TableEncoder implements Step
 
         foreach ($nextGenerator as $result) {
 
+            foreach ($result as &$row) {
+                foreach ($row as &$value) {
+                    if (is_scalar($value)) {
+                        continue;
+                    }
+
+                    $value = json_encode($value);
+                }
+            }
+
             $headers = $this->headers($result);
             $separator = $this->separatorRow($headers);
 
