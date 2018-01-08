@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Framework\Valve;
+namespace PhpBench\Framework\Gate;
 
 use Generator;
 use SplQueue;

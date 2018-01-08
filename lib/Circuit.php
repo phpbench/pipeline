@@ -6,7 +6,7 @@ use SplQueue;
 use PhpBench\Framework\Step;
 use Generator;
 
-class Pipeline implements Step
+class Circuit implements Step
 {
     /**
      * @var SplQueue
