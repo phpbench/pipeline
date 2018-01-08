@@ -16,8 +16,10 @@ class Pipeline
         $this->steps = $steps;
     }
 
-    public function next()
+    public function pop()
     {
-        return array_shift($this->steps);
+        $next = array_pop($this->steps);
+
+        return $next->generator($this);
     }
 }

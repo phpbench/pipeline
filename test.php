@@ -14,37 +14,32 @@ use PhpBench\Framework\Encoder\TableEncoder;
 
 require 'vendor/autoload.php';
 
-$pipeline = new Circuit([
-    new StdOutLogger(),
-    //new AnsiResetLine(),
-    new JsonEncoder(),
-    //new TableEncoder(),
-    //new Collector(),
-
+$pipeline = new Pipeline([
+    new Generator('∞'),
+    new Parameters([
+        'url' => 'http://www.dantleech.com',
+    ]),
     new Splitter([
-        new Circuit([
-            new ResultAggregator('microseconds'),
+        new Group([
+            new Take(10),
+            new HttpSampler([
+                'url' => '%url%',
+            ]),
+        ]),
+        new CallbackSampler([
+            'callback' => function (array $params) {
+                md5($params['url']);
+            },
         ]),
     ]),
-
-    new Take(400),
-    //new Timeout(1E6),
-    new ParallelScheduler([
-        new CallbackSampler('MD5 hash', function () {
-            md5('Hello World');
-        }, 100000),
-        new CallbackSampler('SHA1 hash', function () {
-            sha1('Hello World');
-        }, 100000),
-        new Circuit([
-            new Take(2),
-            new CallbackSampler('FOO hash', function () {
-                sha1('Hello World');
-            }, 100000),
-        ])
-    ])
+    new TableEncoder(),
+    new AnsiCursorReset(),
+    new StdOut()
 ]);
 
-$pipeline->run();
+$step = $pipeline->pop(); // "StdOut"
+$generator = $step->generator($pipeline);
 
-
+foreach ($generator as $result) {
+    // ∞
+}
