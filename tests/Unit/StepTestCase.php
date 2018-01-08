@@ -21,7 +21,7 @@ class StepTestCase extends TestCase
         return $result;
     }
 
-    private function preparePipeline(array $data)
+    protected function preparePipeline(array $data)
     {
         $pipeline = $this->prophesize(Pipeline::class);
         $pipeline->pop()->willReturn($this->generator($data));
