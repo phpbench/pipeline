@@ -9,6 +9,8 @@ use PhpBench\Framework\Exception\EmptyPipeline;
 
 class PipelineTest extends TestCase
 {
+    const TEST_STRING = 'Hello World';
+
     /**
      * @var Step|ObjectProphecy
      */
@@ -25,9 +27,11 @@ class PipelineTest extends TestCase
             $this->step->reveal()
         ]);
 
-        $step = $pipeline->pop();
+        $this->step->generator($pipeline)->willReturn($this->generator());
 
-        $this->assertSame($this->step->reveal(), $step);
+        $generator = $pipeline->pop();
+
+        $this->assertEquals(self::TEST_STRING, $generator->current());
     }
 
     public function testPopOnEmpty()
@@ -35,5 +39,10 @@ class PipelineTest extends TestCase
         $this->expectException(EmptyPipeline::class);
         $pipeline = new Pipeline([]);
         $pipeline->pop();
+    }
+
+    private function generator()
+    {
+        yield self::TEST_STRING;
     }
 }
