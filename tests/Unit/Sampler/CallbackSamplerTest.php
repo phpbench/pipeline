@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PhpBench\Framework\Sampler\CallbackSampler;
 use PhpBench\Framework\Tests\Unit\StepTestCase;
 use PhpBench\Framework\Exception\InvalidStepConfiguration;
+use PhpBench\Framework\Exception\AssertionFailure;
 
 class CallbackSamplerTest extends StepTestCase
 {
@@ -29,12 +30,36 @@ class CallbackSamplerTest extends StepTestCase
         $this->assertEquals(['one' => 'two'], $results['parameters']);
     }
 
+    public function testRevolutions()
+    {
+        $count = 0;
+        $sampler = new CallbackSampler([
+            'revs' => 10000,
+            'label' => 'Hello',
+            'callback' => function () use (&$count) {
+                $count++;
+            },
+        ]);
+
+        $this->runStep($sampler, [ null ]);
+        $this->assertEquals(10000, $count);
+    }
+
     public function testInvalidConfig()
     {
         $this->expectException(InvalidStepConfiguration::class);
         $this->expectExceptionMessage('Keys "invalid" for ');
         $sampler = new CallbackSampler([
             'invalid' => 'yeah',
+        ]);
+    }
+
+    public function testNegativeRevs()
+    {
+        $this->expectException(AssertionFailure::class);
+        $this->expectExceptionMessage('`revs` must be a positive integer');
+        $sampler = new CallbackSampler([
+            'revs' => -1,
         ]);
     }
 }

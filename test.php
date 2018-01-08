@@ -1,44 +1,31 @@
 <?php
-use PhpBench\Framework\Gate\Take;
+use PhpBench\Framework\Output\StdOut;
+use PhpBench\Framework\Pipeline;
 use PhpBench\Framework\Sampler\CallbackSampler;
-use PhpBench\Framework\Circuit;
-use PhpBench\Framework\Scheduler\ParallelScheduler;
-use PhpBench\Framework\Logger\StdOutLogger;
-use PhpBench\Framework\Gate\Timeout;
-use PhpBench\Framework\Splitter\Splitter;
-use PhpBench\Framework\ResultAggregator;
-use PhpBench\Framework\Gate\Collector;
-use PhpBench\Framework\Encoder\JsonEncoder;
-use PhpBench\Framework\Logger\AnsiResetLine;
-use PhpBench\Framework\Encoder\TableEncoder;
+use PhpBench\Framework\Battery;
+use PhpBench\Framework\Parameters\FixedParameters;
+use PhpBench\Framework\Gate\QuantityGate;
+use PhpBench\Framework\Transformer\JsonTransformer;
 
 require 'vendor/autoload.php';
 
 $pipeline = new Pipeline([
-    new Generator('∞'),
-    new Parameters([
-        'url' => 'http://www.dantleech.com',
+    new Battery('∞'),
+    new FixedParameters([
+        'url' => 'http://www.google.com',
     ]),
-    new Splitter([
-        new Group([
-            new Take(10),
-            new HttpSampler([
-                'url' => '%url%',
-            ]),
-        ]),
-        new CallbackSampler([
-            'callback' => function (array $params) {
-                md5($params['url']);
-            },
-        ]),
+    new CallbackSampler([
+        'callback' => function (array $params) {
+            usleep(100000);
+        },
+        'label' => 'PHPBench dot org',
     ]),
-    new TableEncoder(),
-    new AnsiCursorReset(),
+    new QuantityGate(10),
+    new JsonTransformer(),
     new StdOut()
 ]);
 
-$step = $pipeline->pop(); // "StdOut"
-$generator = $step->generator($pipeline);
+$generator = $pipeline->pop(); // "StdOut"
 
 foreach ($generator as $result) {
     // ∞

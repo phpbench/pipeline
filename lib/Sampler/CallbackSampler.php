@@ -7,6 +7,7 @@ use Generator;
 use PhpBench\Framework\Pipeline;
 use Closure;
 use PhpBench\Framework\Util\StepConfig;
+use PhpBench\Framework\Exception\AssertionFailure;
 
 class CallbackSampler implements Step
 {
@@ -15,31 +16,75 @@ class CallbackSampler implements Step
      */
     private $callback;
 
+    /**
+     * @var array
+     */
+    private $config;
+
+    /**
+     * @var string
+     */
+    private $label;
+
     public function __construct(array $config)
     {
         $config = StepConfig::resolve([
+            'revs' => 1,
             'label' => 'Callback',
             'callback' => function () {}
         ], $config, get_class($this));
 
+        if ($config['revs'] < 1) {
+            throw new AssertionFailure(sprintf(
+                '`revs` must be a positive integer, got "%s"',
+                $config['revs']
+            ));
+        }
+
         $this->label = $config['label'];
         $this->callback = $config['callback'];
+        $this->revs = $config['revs'];
     }
 
     public function generator(Pipeline $pipeline): Generator
     {
-        $callback = $this->callback;
-
         foreach ($pipeline->pop() as $data) {
-            $start = microtime(true);
-            $callback($data);
-            $end = microtime(true);
-
             yield [
                 'label' => $this->label,
                 'parameters' => $data,
-                'microseconds' => ($end * 1E6) - ($start * 1E6)
+                'microseconds' => $this->time($data)
             ];
         }
+    }
+
+    private function time($data)
+    {
+        $callback = $this->callback;
+
+        if (1 === $this->revs) {
+            return $this->executeSingleMeasurement($callback, $data);
+        }
+
+        return $this->executeCompositeMeasurement($callback, $data);
+    }
+
+    private function executeCompositeMeasurement(Closure $callback, $data)
+    {
+        $start = microtime(true);
+        for ($i = 0; $i < $this->revs; $i++) {
+            $callback($data);
+        }
+        $end = microtime(true);
+
+        return (($end * 1E6) - ($start * 1E6)) / $this->revs;
+    }
+
+    private function executeSingleMeasurement(Closure $callback, $data)
+    {
+        $start = microtime(true);
+        $callback($data);
+        $end = microtime(true);
+
+        return ($end * 1E6) - ($start * 1E6);
     }
 }
