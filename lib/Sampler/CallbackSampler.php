@@ -8,49 +8,32 @@ use PhpBench\Framework\Pipeline;
 use Closure;
 use PhpBench\Framework\Util\StepConfig;
 use PhpBench\Framework\Exception\AssertionFailure;
+use PhpBench\Framework\Config\ConfigBuilder;
 
 class CallbackSampler implements Step
 {
     /**
-     * @var Closure
-     */
-    private $callback;
-
-    /**
-     * @var array
+     * @var Config
      */
     private $config;
 
-    /**
-     * @var string
-     */
-    private $label;
-
     public function __construct(array $config)
     {
-        $config = StepConfig::resolve([
-            'revs' => 1,
-            'label' => 'Callback',
-            'callback' => function () {}
-        ], $config, get_class($this));
-
-        if ($config['revs'] < 1) {
-            throw new AssertionFailure(sprintf(
-                '`revs` must be a positive integer, got "%s"',
-                $config['revs']
-            ));
-        }
-
-        $this->label = $config['label'];
-        $this->callback = $config['callback'];
-        $this->revs = $config['revs'];
+        $this->config = ConfigBuilder::create(__CLASS__)
+            ->defaults([
+                'revs' => 1,
+                'label' => 'Callback',
+                'callback' => function () {}
+            ])
+            ->assertPositiveInteger('revs')
+            ->build($config);
     }
 
     public function generator(Pipeline $pipeline): Generator
     {
         foreach ($pipeline->pop() as $data) {
             yield [
-                'label' => $this->label,
+                'label' => $this->config->resolve('label', $data),
                 'parameters' => $data,
                 'microseconds' => $this->time($data)
             ];
@@ -59,24 +42,26 @@ class CallbackSampler implements Step
 
     private function time($data)
     {
-        $callback = $this->callback;
+        $callback = $this->config['callback'];
+        $revs = $this->config->resolve('revs', $data);
 
-        if (1 === $this->revs) {
+        if (1 === $revs) {
             return $this->executeSingleMeasurement($callback, $data);
         }
 
-        return $this->executeCompositeMeasurement($callback, $data);
+        return $this->executeCompositeMeasurement($revs, $callback, $data);
     }
 
-    private function executeCompositeMeasurement(Closure $callback, $data)
+    private function executeCompositeMeasurement(int $revs, Closure $callback, $data)
     {
         $start = microtime(true);
-        for ($i = 0; $i < $this->revs; $i++) {
+        $revs = $revs;
+        for ($i = 0; $i < $revs; $i++) {
             $callback($data);
         }
         $end = microtime(true);
 
-        return (($end * 1E6) - ($start * 1E6)) / $this->revs;
+        return (($end * 1E6) - ($start * 1E6)) / $revs;
     }
 
     private function executeSingleMeasurement(Closure $callback, $data)

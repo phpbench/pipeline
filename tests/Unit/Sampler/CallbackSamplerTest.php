@@ -5,7 +5,7 @@ namespace PhpBench\Framework\Tests\Unit\Sampler;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Framework\Sampler\CallbackSampler;
 use PhpBench\Framework\Tests\Unit\StepTestCase;
-use PhpBench\Framework\Exception\InvalidStepConfiguration;
+use PhpBench\Framework\Exception\InvalidConfiguration;
 use PhpBench\Framework\Exception\AssertionFailure;
 
 class CallbackSamplerTest extends StepTestCase
@@ -47,7 +47,7 @@ class CallbackSamplerTest extends StepTestCase
 
     public function testInvalidConfig()
     {
-        $this->expectException(InvalidStepConfiguration::class);
+        $this->expectException(InvalidConfiguration::class);
         $this->expectExceptionMessage('Keys "invalid" for ');
         $sampler = new CallbackSampler([
             'invalid' => 'yeah',
@@ -57,7 +57,7 @@ class CallbackSamplerTest extends StepTestCase
     public function testNegativeRevs()
     {
         $this->expectException(AssertionFailure::class);
-        $this->expectExceptionMessage('`revs` must be a positive integer');
+        $this->expectExceptionMessage('Failed asserting that "-1" is a positive');
         $sampler = new CallbackSampler([
             'revs' => -1,
         ]);
