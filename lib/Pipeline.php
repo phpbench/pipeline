@@ -2,7 +2,8 @@
 
 namespace PhpBench\Framework;
 
-use Iterator;
+use PhpBench\Framework\Exception\EmptyPipeline;
+use Generator;
 
 class Pipeline
 {
@@ -11,15 +12,21 @@ class Pipeline
      */
     private $steps;
 
-    public function __construct(array $steps = [])
+    public function __construct(array $steps)
     {
         $this->steps = $steps;
     }
 
-    public function pop()
+    public function pop(): Generator
     {
-        $next = array_pop($this->steps);
+        $step = array_pop($this->steps);
 
-        return $next->generator($this);
+        if (null === $step) {
+            throw new EmptyPipeline(
+                'Pipeline is empty, cannot pop anything from it'
+            );
+        }
+
+        return $step->generator($this);
     }
 }
