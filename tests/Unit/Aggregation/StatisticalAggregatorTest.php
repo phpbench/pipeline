@@ -52,6 +52,5 @@ class StatisticalAggregatorTest extends StepTestCase
             [ 'label' => 'goodbye', 'seconds' => 6 ],
         ]);
         $finalResult = array_pop($results);
-        var_dump($finalResult);
     }
 }

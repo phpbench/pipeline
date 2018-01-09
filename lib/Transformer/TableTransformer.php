@@ -10,7 +10,7 @@ use PhpBench\Framework\Pipeline;
 
 class TableTransformer implements Step
 {
-    const PADDING = 2;
+    const PADDING = 1;
 
     public function generator(Pipeline $pipeline): Generator
     {
