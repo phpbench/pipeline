@@ -69,7 +69,7 @@ class Config implements ArrayAccess
             return $value;
         }
 
-        if (0 === preg_match_all('{%(.*)%}', $value, $matches)) {
+        if (0 === preg_match_all('{%(.*?)%}', $value, $matches)) {
             return $value;
         }
 

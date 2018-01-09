@@ -45,4 +45,12 @@ class ConfigTest extends TestCase
 
         $this->assertEquals('dsa.asd', $value);
     }
+
+    public function testResolveMultipleTokenReplace()
+    {
+        $config = new Config([ 'foo' => '%hello% %goodbye%' ]);
+        $value = $config->resolve('foo', [ 'hello' => 'asd', 'goodbye' => 'dsa' ]);
+
+        $this->assertEquals('asd dsa', $value);
+    }
 }
