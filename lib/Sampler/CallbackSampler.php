@@ -34,7 +34,7 @@ class CallbackSampler implements Step
             yield [
                 'label' => $this->config->resolve('label', $data),
                 'parameters' => $data,
-                'microseconds' => $this->time($data)
+                'wall' => $this->time($data)
             ];
         }
     }

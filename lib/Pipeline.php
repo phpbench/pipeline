@@ -3,9 +3,10 @@
 namespace PhpBench\Framework;
 
 use PhpBench\Framework\Exception\EmptyPipeline;
+use Countable;
 use Generator;
 
-class Pipeline
+class Pipeline implements Countable
 {
     /**
      * @var array
@@ -28,5 +29,10 @@ class Pipeline
         }
 
         return $step->generator($this);
+    }
+
+    public function count()
+    {
+        return count($this->steps);
     }
 }

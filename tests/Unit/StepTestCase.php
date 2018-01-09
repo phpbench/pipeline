@@ -5,6 +5,8 @@ namespace PhpBench\Framework\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Framework\Step;
 use PhpBench\Framework\Pipeline;
+use Generator;
+use Closure;
 
 class StepTestCase extends TestCase
 {
@@ -23,16 +25,33 @@ class StepTestCase extends TestCase
 
     protected function preparePipeline(array $data)
     {
-        $pipeline = $this->prophesize(Pipeline::class);
-        $pipeline->pop()->willReturn($this->generator($data));
+        $pipeline = new Pipeline([
 
-        return $pipeline->reveal();
+            $this->createCallbackStep(function () use ($data) {
+                foreach ($data as $result) {
+                    yield $result;
+                }
+            })
+        ]);
+
+        return $pipeline;
     }
 
-    private function generator(array $data)
+    protected function createCallbackStep(Closure $closure)
     {
-        foreach ($data as $item) {
-            yield $item;
-        }
+        return new class($closure) implements Step {
+
+            private $closure;
+
+            public function __construct($closure) 
+            {
+                $this->closure = $closure;
+            }
+
+            public function generator(Pipeline $pipeline): Generator {
+                $closure = $this->closure;
+                return $closure($pipeline);
+            }
+        };
     }
 }
