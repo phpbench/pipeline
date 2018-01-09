@@ -9,6 +9,7 @@ class DelayTest extends StepTestCase
 {
     public function testDelay()
     {
-        $this->runStep(new Delay(100), []);
+        $results = $this->runStep(new Delay(100), [ 'foo' ]);
+        $this->assertEquals(['foo'], $results);
     }
 }

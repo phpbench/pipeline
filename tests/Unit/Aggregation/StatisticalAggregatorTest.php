@@ -52,5 +52,8 @@ class StatisticalAggregatorTest extends StepTestCase
             [ 'label' => 'goodbye', 'seconds' => 6 ],
         ]);
         $finalResult = array_pop($results);
+        $this->assertArrayHasKey('hello', $finalResult);
+        $this->assertArrayHasKey('seconds-mean', $finalResult['hello']);
+        $this->assertEquals(3, $finalResult['hello']['seconds-mean']);
     }
 }
