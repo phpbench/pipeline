@@ -18,7 +18,7 @@ class StepTestCase extends TestCase
             $results[] = $result;
         }
 
-        return $result;
+        return $results;
     }
 
     protected function preparePipeline(array $data)

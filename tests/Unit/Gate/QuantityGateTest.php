@@ -12,7 +12,7 @@ class QuantityGateTest extends StepTestCase
     public function testGate()
     {
         $result = $this->runStep(new QuantityGate(4), [ 1, 2, 3, 4, 5, 6 ]);
-        $this->assertEquals(4, $result);
+        $this->assertEquals([ 1, 2, 3, 4 ], $result);
     }
 
     public function testNegative()

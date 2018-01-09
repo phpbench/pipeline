@@ -21,6 +21,7 @@ class CallbackSamplerTest extends StepTestCase
         ]);
 
         $results = $this->runStep($sampler, [ [ 'one' => 'two' ] ]);
+        $results = array_shift($results);
 
         $this->assertTrue($called);
         $this->assertArrayHasKey('label', $results);
@@ -51,15 +52,6 @@ class CallbackSamplerTest extends StepTestCase
         $this->expectExceptionMessage('Keys "invalid" for ');
         $sampler = new CallbackSampler([
             'invalid' => 'yeah',
-        ]);
-    }
-
-    public function testNegativeRevs()
-    {
-        $this->expectException(AssertionFailure::class);
-        $this->expectExceptionMessage('Failed asserting that "-1" is a positive');
-        $sampler = new CallbackSampler([
-            'revs' => -1,
         ]);
     }
 }

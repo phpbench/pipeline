@@ -6,18 +6,24 @@ use PhpBench\Framework\Result;
 use PhpBench\Framework\Step;
 use SplQueue;
 use Generator;
+use PhpBench\Framework\Pipeline;
 
-class TableEncoder implements Step
+class TableTransformer implements Step
 {
     const PADDING = 1;
 
-    public function generate(SplQueue $queue): Generator
+    public function generator(Pipeline $pipeline): Generator
     {
-        $nextGenerator = $queue->dequeue()->generate($queue);
+        foreach ($pipeline->pop() as $result) {
+            $result = (array) $result;
 
-        foreach ($nextGenerator as $result) {
+            if (empty($result)) {
+                yield '';
+                return;
+            }
 
             foreach ($result as &$row) {
+                $row = (array) $row;
                 foreach ($row as &$value) {
                     if (is_scalar($value)) {
                         continue;

@@ -11,6 +11,6 @@ class JsonTransformerTest extends StepTestCase
     public function testTransform()
     {
         $result = $this->runStep(new JsonTransformer(), [ [ 1, 2 ] ]);
-        $this->assertEquals('[1,2]', $result);
+        $this->assertEquals(['[1,2]'], $result);
     }
 }

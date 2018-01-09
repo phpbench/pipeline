@@ -25,7 +25,6 @@ class CallbackSampler implements Step
                 'label' => 'Callback',
                 'callback' => function () {}
             ])
-            ->assertPositiveInteger('revs')
             ->build($config);
     }
 
@@ -43,7 +42,7 @@ class CallbackSampler implements Step
     private function time($data)
     {
         $callback = $this->config['callback'];
-        $revs = $this->config->resolve('revs', $data);
+        $revs = (int) $this->config->resolve('revs', $data);
 
         if (1 === $revs) {
             return $this->executeSingleMeasurement($callback, $data);

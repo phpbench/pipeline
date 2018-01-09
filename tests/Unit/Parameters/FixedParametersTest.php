@@ -18,8 +18,10 @@ class FixedParametersTest extends StepTestCase
         ]);
 
         $this->assertEquals([
-            'hello' => 'goodbye',
-            'one' => 'two',
+            [
+                'hello' => 'goodbye',
+                'one' => 'two',
+            ],
         ], $results);
     }
 
@@ -30,8 +32,10 @@ class FixedParametersTest extends StepTestCase
         ]), [ 'scalar' ]);
 
         $this->assertEquals([
-            'hello' => 'goodbye',
-            0 => 'scalar',
+            [
+                'hello' => 'goodbye',
+                0 => 'scalar',
+            ]
         ], $results);
     }
 
@@ -42,7 +46,9 @@ class FixedParametersTest extends StepTestCase
         ]), [ null ]);
 
         $this->assertEquals([
-            'hello' => 'goodbye',
+            [
+                'hello' => 'goodbye',
+            ]
         ], $results);
     }
 }

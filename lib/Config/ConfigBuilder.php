@@ -36,22 +36,6 @@ class ConfigBuilder
         return $this;
     }
 
-    public function assertPositiveInteger(string $key): self
-    {
-        $this->assertions[] = function (Config $config) use ($key) {
-            if ($config[$key] > 0) {
-                return;
-            }
-
-            throw new AssertionFailure(sprintf(
-                'Failed asserting that "%s" is a positive number in "%s"'
-            , $config[$key], $this->context));
-        };
-
-        return $this;
-    }
-
-
     public function build(array $config): Config
     {
         $defaultKeys = array_keys($this->defaults);
@@ -64,10 +48,6 @@ class ConfigBuilder
         }
 
         $config = new Config(array_merge($this->defaults, $config));
-
-        foreach ($this->assertions as $assertion) {
-            $assertion($config);
-        }
 
         return $config;
     }
