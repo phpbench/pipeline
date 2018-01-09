@@ -25,7 +25,7 @@ class CallbackSamplerTest extends StepTestCase
 
         $this->assertTrue($called);
         $this->assertArrayHasKey('label', $results);
-        $this->assertArrayHasKey('wall', $results);
+        $this->assertArrayHasKey('time', $results);
         $this->assertArrayHasKey('parameters', $results);
         $this->assertEquals('Hello', $results['label']);
         $this->assertEquals(['one' => 'two'], $results['parameters']);

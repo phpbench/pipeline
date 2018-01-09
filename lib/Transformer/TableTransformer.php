@@ -10,7 +10,7 @@ use PhpBench\Framework\Pipeline;
 
 class TableTransformer implements Step
 {
-    const PADDING = 1;
+    const PADDING = 2;
 
     public function generator(Pipeline $pipeline): Generator
     {
@@ -66,7 +66,7 @@ class TableTransformer implements Step
 
         foreach ($result as $row) {
             foreach (array_values($row) as $colNumber => $value) {
-                $width = strlen($value) + self::PADDING;
+                $width = iconv_strlen($value) + self::PADDING;
                 if (false === isset($widths[$colNumber]) || $widths[$colNumber] < $width) {
                     $widths[$colNumber] = $width;
                 }
@@ -79,7 +79,7 @@ class TableTransformer implements Step
     private function separatorRow(array $headers): array
     {
         return array_map(function ($header) {
-            return str_repeat('-', strlen($header));
+            return str_repeat('-', iconv_strlen($header));
         }, $headers);
     }
 
