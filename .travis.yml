@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 7.1
+  - 7.2
+
+sudo: false
+
+cache:
+  directories:
+    - "$HOME/.composer/cache"
+
+before_install:
+  - composer validate
+
+script:
+  - ./vendor/bin/phpstan analyze --level=7 -c phpstan.neon lib/
+  - ./vendor/bin/phpunit
