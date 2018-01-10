@@ -5,6 +5,7 @@ namespace PhpBench\Framework\Tests\Unit\Config;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Framework\Config\Config;
 use InvalidArgumentException;
+use PhpBench\Framework\Exception\AssertionFailure;
 
 class ConfigTest extends TestCase
 {
@@ -24,7 +25,7 @@ class ConfigTest extends TestCase
 
     public function testResolveTokenizedNotArrayData()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(AssertionFailure::class);
         $this->expectExceptionMessage('Expected data to be an array');
         $config = new Config([ 'foo' => '%hello%' ]);
         $config->resolve('foo', 'asd');
@@ -32,8 +33,8 @@ class ConfigTest extends TestCase
 
     public function testResolveTokenizedDataKeyNotFound()
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Parameter "hello" not found');
+        $this->expectException(AssertionFailure::class);
+        $this->expectExceptionMessage('array does not have key "hello"');
         $config = new Config([ 'foo' => '%hello%' ]);
         $config->resolve('foo', [ 'barbar' => 'asd' ]);
     }

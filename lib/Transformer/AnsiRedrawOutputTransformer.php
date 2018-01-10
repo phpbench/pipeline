@@ -20,6 +20,7 @@ class AnsiRedrawOutputTransformer implements Step
         $lastResult = null;
         $isFirst = true;
         $lineLength = 0;
+
         foreach ($pipeline->pop() as $data) {
             $data = (array) $data;
 

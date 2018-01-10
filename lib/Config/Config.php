@@ -5,6 +5,8 @@ namespace PhpBench\Framework\Config;
 use ArrayAccess;
 use BadMethodCallException;
 use InvalidArgumentException;
+use PhpBench\Framework\Exception\AssertionFailure;
+use PhpBench\Framework\Util\Assert;
 
 class Config implements ArrayAccess
 {
@@ -74,7 +76,7 @@ class Config implements ArrayAccess
         }
 
         if (!is_array($data)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new AssertionFailure(sprintf(
                 'Expected data to be an array when resolving parameter "%s", got "%s"',
                 $value, gettype($data)
             ));
@@ -84,12 +86,8 @@ class Config implements ArrayAccess
 
         return strtr($value, array_combine($keys, array_map(function ($key) use ($data) {
             $key = trim($key, '%');
-            if (!isset($data[$key])) {
-                throw new InvalidArgumentException(sprintf(
-                    'Parameter "%s" not found in data with keys "%s"',
-                    $key, implode('", "', array_keys($data))
-                ));
-            }
+
+            Assert::hasKey($data, $key);
 
             return $data[$key];
         }, $keys)));

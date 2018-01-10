@@ -8,6 +8,7 @@ use PhpBench\Framework\Pipeline;
 use MathPHP\Statistics\Descriptive;
 use MathPHP\Statistics\Average;
 use InvalidArgumentException;
+use PhpBench\Framework\Util\Assert;
 
 class SummaryAggregator implements Step
 {
@@ -51,12 +52,7 @@ class SummaryAggregator implements Step
             $hash = [];
 
             foreach ($this->groupBy as $groupBy) {
-                if (false === isset($row[$groupBy])) {
-                    throw new InvalidArgumentException(sprintf(
-                        'Unknown column "%s", known columns: "%s"',
-                        $groupBy, implode('", "', array_keys($row))
-                    ));
-                }
+                Assert::hasKey($row, $groupBy);
 
                 $hash[] = $row[$groupBy];
             }
@@ -83,12 +79,7 @@ class SummaryAggregator implements Step
             $fieldValues = [];
             foreach ($this->summarizeFields as $summaryField) {
                 foreach ($table as $row) {
-                    if (false === isset($row[$summaryField])) {
-                        throw new InvalidArgumentException(sprintf(
-                            'Unknown summary field "%s", available fields "%s"',
-                            $summaryField, implode('", "', array_keys($row))
-                        ));
-                    }
+                    Assert::hasKey($row, $summaryField);
 
                     if (false === isset($fieldValues[$summaryField])) {
                         $fieldValues[$summaryField] = [];
