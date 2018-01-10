@@ -78,7 +78,8 @@ class Config implements ArrayAccess
         if (!is_array($data)) {
             throw new AssertionFailure(sprintf(
                 'Expected data to be an array when resolving parameter "%s", got "%s"',
-                $value, gettype($data)
+                $value,
+                gettype($data)
             ));
         }
 

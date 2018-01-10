@@ -28,11 +28,11 @@ class SerialSplitter implements Step
             $generators[] = $output->generator(clone $pipeline);
         }
 
-            foreach ($generators as $index => $generator) {
-                foreach ($generator as $data) {
-                    yield $data;
-                }
+        foreach ($generators as $index => $generator) {
+            foreach ($generator as $data) {
+                yield $data;
             }
+        }
     }
 
     private function add(Step $output)

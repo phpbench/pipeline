@@ -2,9 +2,7 @@
 
 namespace PhpBench\Pipeline\Transformer;
 
-use PhpBench\Pipeline\Result;
 use PhpBench\Pipeline\Step;
-use SplQueue;
 use Generator;
 use PhpBench\Pipeline\Pipeline;
 

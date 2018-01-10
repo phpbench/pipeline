@@ -5,7 +5,6 @@ namespace PhpBench\Pipeline\Transformer;
 use PhpBench\Pipeline\Step;
 use Generator;
 use PhpBench\Pipeline\Pipeline;
-use InvalidArgumentException;
 use PhpBench\Pipeline\Util\Assert;
 use PhpBench\Pipeline\Util\StringUtil;
 use IntlChar;

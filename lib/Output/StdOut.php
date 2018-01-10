@@ -11,7 +11,6 @@ class StdOut implements Step
     public function generator(Pipeline $pipeline): Generator
     {
         foreach ($pipeline->pop() as $data) {
-
             if (false === is_scalar($data)) {
                 $data = $this->dump($data);
             }

@@ -2,12 +2,9 @@
 
 namespace PhpBench\Pipeline\Transformer;
 
-use PhpBench\Pipeline\Result;
 use PhpBench\Pipeline\Step;
-use SplQueue;
 use Generator;
 use PhpBench\Pipeline\Pipeline;
-use RuntimeException;
 use PhpBench\Pipeline\Util\StringUtil;
 
 class AnsiRedrawOutputTransformer implements Step
@@ -25,7 +22,6 @@ class AnsiRedrawOutputTransformer implements Step
             $data = (array) $data;
 
             foreach ($data as $result) {
-
                 if ($lastResult) {
                     $lineLength = $this->maxLineLength($result, $lineLength);
                     $result = $this->maximizeLines($result, $lineLength);

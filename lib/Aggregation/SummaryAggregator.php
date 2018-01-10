@@ -7,7 +7,6 @@ use Generator;
 use PhpBench\Pipeline\Pipeline;
 use MathPHP\Statistics\Descriptive;
 use MathPHP\Statistics\Average;
-use InvalidArgumentException;
 use PhpBench\Pipeline\Util\Assert;
 
 class SummaryAggregator implements Step
@@ -77,6 +76,7 @@ class SummaryAggregator implements Step
 
         return array_map(function ($table) {
             $fieldValues = [];
+            $row = [];
             foreach ($this->summarizeFields as $summaryField) {
                 foreach ($table as $row) {
                     Assert::hasKey($row, $summaryField);

@@ -6,9 +6,8 @@ use PhpBench\Pipeline\Step;
 use Generator;
 use PhpBench\Pipeline\Pipeline;
 use Closure;
-use PhpBench\Pipeline\Util\StepConfig;
-use PhpBench\Pipeline\Exception\AssertionFailure;
 use PhpBench\Pipeline\Config\ConfigBuilder;
+use PhpBench\Pipeline\Config\Config;
 
 class CallbackSampler implements Step
 {
@@ -23,7 +22,8 @@ class CallbackSampler implements Step
             ->defaults([
                 'revs' => 1,
                 'label' => 'Callback',
-                'callback' => function () {}
+                'callback' => function () {
+                }
             ])
             ->build($config);
     }

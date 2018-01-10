@@ -5,7 +5,6 @@ namespace PhpBench\Pipeline\Gate;
 use PhpBench\Pipeline\Step;
 use Generator;
 use PhpBench\Pipeline\Pipeline;
-use PhpBench\Pipeline\Util\Assert;
 use PhpBench\Pipeline\Exception\AssertionFailure;
 
 class QuantityGate implements Step
@@ -19,8 +18,9 @@ class QuantityGate implements Step
     {
         if ($quantity < 0) {
             throw new AssertionFailure(sprintf(
-                'Quantity must be a positive integer, got %s'
-            , $quantity));
+                'Quantity must be a positive integer, got %s',
+                $quantity
+            ));
         }
 
         $this->quantity = $quantity;

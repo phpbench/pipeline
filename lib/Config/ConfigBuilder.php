@@ -3,9 +3,6 @@
 namespace PhpBench\Pipeline\Config;
 
 use PhpBench\Pipeline\Exception\InvalidConfiguration;
-use PhpBench\Pipeline\Util\Assert;
-use PhpBench\Pipeline\Exception\AssertionFailure;
-use PhpBench\Pipeline\Config\Config;
 
 class ConfigBuilder
 {
@@ -43,7 +40,9 @@ class ConfigBuilder
         if ($diff = array_diff(array_keys($config), $defaultKeys)) {
             throw new InvalidConfiguration(sprintf(
                 'Keys "%s" for step "%s" are not valid, valid keys: "%s"',
-                implode('", "', $diff), $this->context, implode('", "', $defaultKeys)
+                implode('", "', $diff),
+                $this->context,
+                implode('", "', $defaultKeys)
             ));
         }
 
