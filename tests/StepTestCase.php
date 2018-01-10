@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit;
+namespace PhpBench\Framework\Tests;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Framework\Step;

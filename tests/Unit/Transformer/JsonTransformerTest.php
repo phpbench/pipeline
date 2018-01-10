@@ -3,7 +3,7 @@
 namespace PhpBench\Framework\Tests\Unit\Transformer;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 use PhpBench\Framework\Transformer\JsonTransformer;
 
 class JsonTransformerTest extends StepTestCase

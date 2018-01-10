@@ -4,7 +4,7 @@ namespace PhpBench\Framework\Tests\Unit\Splitter;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Framework\Splitter\SerialSplitter;
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 
 class SerialSplitterTest extends StepTestCase
 {

@@ -4,7 +4,7 @@ namespace PhpBench\Framework\Tests\Unit\Sampler;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Framework\Sampler\CallbackSampler;
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 use PhpBench\Framework\Exception\InvalidConfiguration;
 use PhpBench\Framework\Exception\AssertionFailure;
 

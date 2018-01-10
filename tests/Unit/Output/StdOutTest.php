@@ -7,7 +7,7 @@ use PhpBench\Framework\Step;
 use Prophecy\Argument;
 use PhpBench\Framework\Pipeline;
 use PhpBench\Framework\Output\StdOut;
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 
 class StdOutTest extends StepTestCase
 {

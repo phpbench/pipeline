@@ -2,7 +2,7 @@
 
 namespace PhpBench\Framework\Tests\Unit\Splitter;
 
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 use PhpBench\Framework\Step;
 use PhpBench\Framework\Splitter\RotarySplitter;
 use PhpBench\Framework\Pipeline;

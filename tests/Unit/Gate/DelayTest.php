@@ -2,7 +2,7 @@
 
 namespace PhpBench\Framework\Tests\Unit\Gate;
 
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 use PhpBench\Framework\Gate\Delay;
 
 class DelayTest extends StepTestCase

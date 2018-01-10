@@ -2,7 +2,7 @@
 
 namespace PhpBench\Framework\Tests\Unit\Parameters;
 
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 use PhpBench\Framework\Parameters\FixedParameters;
 
 class FixedParametersTest extends StepTestCase

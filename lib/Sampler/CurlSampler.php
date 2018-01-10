@@ -35,10 +35,12 @@ class CurlSampler implements Step
             $handle = curl_init($url);
             curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
             curl_exec($handle);
+            $info = curl_getinfo($handle);
+            curl_close($handle);
 
             yield array_merge([
                 'url' => $url,
-            ], array_filter(curl_getinfo($handle), function ($infoKey) {
+            ], array_filter($info, function ($infoKey) {
                 return in_array($infoKey, $this->config['capture']);
             }, ARRAY_FILTER_USE_KEY));
         }

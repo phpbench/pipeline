@@ -7,8 +7,11 @@
     >
 
     <testsuites>
-        <testsuite name="PhpBench">
-            <directory>./tests</directory>
+        <testsuite name="Pipeline Unit">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Pipeline Integration">
+            <directory>./tests/Integration</directory>
         </testsuite>
     </testsuites>
 

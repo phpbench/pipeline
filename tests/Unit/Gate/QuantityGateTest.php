@@ -3,7 +3,7 @@
 namespace PhpBench\Framework\Tests\Unit\Gate;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Tests\Unit\StepTestCase;
+use PhpBench\Framework\Tests\StepTestCase;
 use PhpBench\Framework\Gate\QuantityGate;
 use PhpBench\Framework\Exception\AssertionFailure;
 
