@@ -105,7 +105,7 @@ class SummaryAggregator implements Step
                 $summary = array_merge($row, $summary, [
                     $field . '-mean' => Average::mean($values),
                     $field . '-min' => min($values),
-                    $field . '-max' => min($values),
+                    $field . '-max' => max($values),
                     $field . '-stdev' => Descriptive::standardDeviation($values, false),
                 ]);
             }

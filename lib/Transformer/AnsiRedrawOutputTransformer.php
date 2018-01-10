@@ -8,7 +8,7 @@ use SplQueue;
 use Generator;
 use PhpBench\Framework\Pipeline;
 
-class AnsiReplaceOutputTransformer implements Step
+class AnsiRedrawOutputTransformer implements Step
 {
     const CLEAR_LINE = "\x1B[2K";
     const CURSOR_COL_ZERO = "\x1B[0G";
@@ -17,8 +17,11 @@ class AnsiReplaceOutputTransformer implements Step
     {
         $lastResult = null;
         $isFirst = true;
+        $lineLength = 0;
         foreach ($pipeline->pop() as $result) {
             if ($lastResult) {
+                $lineLength = $this->maxLineLength($result, $lineLength);
+                $result = $this->maximizeLines($result, $lineLength);
                 $result = self::CLEAR_LINE . $result;
                 $result = self::CURSOR_COL_ZERO . $result;
                 $result = $this->resetYPosition($lastResult, $result, $isFirst);
@@ -32,8 +35,31 @@ class AnsiReplaceOutputTransformer implements Step
 
     private function resetYPosition($lastResult, $result, bool $isFirst)
     {
-        $lastHeight = substr_count($result, PHP_EOL);
-        $isFirst ? $lastHeight-- : $lastHeight;
+        $lastHeight = substr_count($lastResult, PHP_EOL);
+
         return "\x1B[" . ($lastHeight) . 'A' . $result; // reset cursor Y pos
+    }
+
+    private function maxLineLength(string $result, int $maxLineLength)
+    {
+        foreach (explode(PHP_EOL, $result) as $line) {
+            $length = mb_strlen($line);
+
+            if ($length > $maxLineLength) {
+                $maxLineLength = $length;
+            }
+        }
+
+        return $maxLineLength;
+    }
+
+    private function maximizeLines(string $result, int $maxLineLength)
+    {
+        $lines = explode(PHP_EOL, $result);
+        foreach ($lines as &$line) {
+            $line = sprintf('%-' . $maxLineLength . 's', $line);
+        }
+
+        return implode(PHP_EOL, $lines);
     }
 }
