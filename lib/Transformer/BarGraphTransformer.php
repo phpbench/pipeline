@@ -7,6 +7,7 @@ use Generator;
 use PhpBench\Framework\Pipeline;
 use InvalidArgumentException;
 use PhpBench\Framework\Util\Assert;
+use PhpBench\Framework\Util\StringUtil;
 
 class BarGraphTransformer implements Step
 {
@@ -26,6 +27,11 @@ class BarGraphTransformer implements Step
      * @var int
      */
     private $maxWidth;
+
+    /**
+     * @var string
+     */
+    private $barChar = '█';
 
     public function __construct(string $labelField, string $valueField, int $maxWidth = 50)
     {
@@ -52,9 +58,9 @@ class BarGraphTransformer implements Step
 
         foreach ($data as $row) {
             $graph[] = sprintf(
-                '%-' . $labelWidth . 's |%-' . $barWidth . 's %s',
+                '%-' . $labelWidth . 's |%s %s',
                 $row[$this->labelField],
-                $this->bar($row, $maxValue),
+                StringUtil::pad($this->bar($row, $maxValue), $barWidth),
                 $row[$this->valueField]
             );
         }
@@ -83,7 +89,7 @@ class BarGraphTransformer implements Step
         if ($max == 0) {
             return $max;
         }
-        return $current / $max * $this->maxWidth;
+        return ($current / $max * $this->maxWidth);
     }
 
     private function maxValue(array $data)
@@ -103,10 +109,10 @@ class BarGraphTransformer implements Step
 
     private function bar($row, $maxValue)
     {
-        $bar = str_repeat('=', $this->barWidth($maxValue, $row[$this->valueField]));
+        $bar = str_repeat($this->barChar, $this->barWidth($maxValue, $row[$this->valueField]));
 
         if (mb_strlen($bar) > 0) {
-            $bar = substr($bar, 0, -1) . '|';
+            $bar = mb_substr($bar, 0, -1) . '|';
         }
 
         return $bar;

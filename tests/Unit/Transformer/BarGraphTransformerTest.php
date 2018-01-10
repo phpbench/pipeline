@@ -25,8 +25,8 @@ class BarGraphTransformerTest extends StepTestCase
         $result = array_pop($results);
 
         $this->assertEquals(<<<'EOT'
-One  |=========| 10
-Two  |====|      5
+One  |██████████| 10
+Two  |████|      5
 
 EOT
         , $result);

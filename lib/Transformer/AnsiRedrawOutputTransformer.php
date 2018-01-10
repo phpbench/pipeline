@@ -8,6 +8,7 @@ use SplQueue;
 use Generator;
 use PhpBench\Framework\Pipeline;
 use RuntimeException;
+use PhpBench\Framework\Util\StringUtil;
 
 class AnsiRedrawOutputTransformer implements Step
 {
@@ -19,24 +20,23 @@ class AnsiRedrawOutputTransformer implements Step
         $lastResult = null;
         $isFirst = true;
         $lineLength = 0;
-        foreach ($pipeline->pop() as $result) {
-            if (!is_string($result)) {
-                throw new RuntimeException(sprintf(
-                    'AnsiRedrawOutputTransformer must receive a string, got "%s"',
-                    gettype($result)
-                ));
-            }
-            if ($lastResult) {
-                $lineLength = $this->maxLineLength($result, $lineLength);
-                $result = $this->maximizeLines($result, $lineLength);
-                $result = self::CLEAR_LINE . $result;
-                $result = self::CURSOR_COL_ZERO . $result;
-                $result = $this->resetYPosition($lastResult, $result, $isFirst);
-                $isFirst = false;
-            }
+        foreach ($pipeline->pop() as $data) {
+            $data = (array) $data;
 
-            yield $result;
-            $lastResult = $result;
+            foreach ($data as $result) {
+
+                if ($lastResult) {
+                    $lineLength = $this->maxLineLength($result, $lineLength);
+                    $result = $this->maximizeLines($result, $lineLength);
+                    $result = self::CLEAR_LINE . $result;
+                    $result = self::CURSOR_COL_ZERO . $result;
+                    $result = $this->resetYPosition($lastResult, $result, $isFirst);
+                    $isFirst = false;
+                }
+
+                yield $result;
+                $lastResult = $result;
+            }
         }
     }
 
@@ -64,7 +64,7 @@ class AnsiRedrawOutputTransformer implements Step
     {
         $lines = explode(PHP_EOL, $result);
         foreach ($lines as &$line) {
-            $line = sprintf('%-' . $maxLineLength . 's', $line);
+            $line = StringUtil::pad($line, $maxLineLength);
         }
 
         return implode(PHP_EOL, $lines);
