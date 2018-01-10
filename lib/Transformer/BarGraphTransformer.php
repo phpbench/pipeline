@@ -8,6 +8,7 @@ use PhpBench\Framework\Pipeline;
 use InvalidArgumentException;
 use PhpBench\Framework\Util\Assert;
 use PhpBench\Framework\Util\StringUtil;
+use IntlChar;
 
 class BarGraphTransformer implements Step
 {
@@ -27,11 +28,6 @@ class BarGraphTransformer implements Step
      * @var int
      */
     private $maxWidth;
-
-    /**
-     * @var string
-     */
-    private $barChar = '█';
 
     public function __construct(string $labelField, string $valueField, int $maxWidth = 50)
     {
@@ -84,12 +80,13 @@ class BarGraphTransformer implements Step
         return $max + self::PADDING;
     }
 
-    private function barWidth(int $max, int $current)
+    private function barWidth(float $max, float $current)
     {
         if ($max == 0) {
             return $max;
         }
-        return ($current / $max * $this->maxWidth);
+
+        return ceil(($current / $max) * $this->maxWidth);
     }
 
     private function maxValue(array $data)
@@ -109,11 +106,23 @@ class BarGraphTransformer implements Step
 
     private function bar($row, $maxValue)
     {
-        $bar = str_repeat($this->barChar, $this->barWidth($maxValue, $row[$this->valueField]));
-
-        if (mb_strlen($bar) > 0) {
-            $bar = mb_substr($bar, 0, -1) . '|';
+        if ($maxValue == 0) {
+            return '';
         }
+
+        $char = IntlChar::chr(0x2588);
+        $value = $row[$this->valueField];
+        $bar = str_repeat($char, $this->barWidth($maxValue, $value) - 1);
+
+        // determine final bar
+        $stepValue = $maxValue / $this->maxWidth;
+        $remainderValue = $value - ($stepValue * floor($value / $stepValue)) ;
+
+        $fraction = $remainderValue / $stepValue;
+        $offset = (8 - ((int) floor(8 * $fraction))) % 8;
+        $char = hexdec(2588) + $offset;
+
+        $bar .= IntlChar::chr($char);
 
         return $bar;
     }
