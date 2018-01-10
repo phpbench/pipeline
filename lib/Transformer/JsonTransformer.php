@@ -10,10 +10,26 @@ use PhpBench\Framework\Pipeline;
 
 class JsonTransformer implements Step
 {
+    /**
+     * @var bool
+     */
+    private $pretty;
+
+    public function __construct(bool $pretty = false)
+    {
+        $this->pretty = $pretty;
+    }
+
     public function generator(Pipeline $pipeline): Generator
     {
         foreach ($pipeline->pop() as $data) {
-            yield json_encode($data, JSON_PRETTY_PRINT) . PHP_EOL;
+            $flags = null;
+
+            if ($this->pretty) {
+                $flags = JSON_PRETTY_PRINT;
+            }
+
+            yield json_encode($data, $flags) . PHP_EOL;
         }
     }
 }
