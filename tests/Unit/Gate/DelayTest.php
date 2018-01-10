@@ -1,9 +1,9 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Gate;
+namespace PhpBench\Pipeline\Tests\Unit\Gate;
 
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Gate\Delay;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Gate\Delay;
 
 class DelayTest extends StepTestCase
 {

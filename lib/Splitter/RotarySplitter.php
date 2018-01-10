@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Splitter;
+namespace PhpBench\Pipeline\Splitter;
 
 use Generator;
-use PhpBench\Framework\Step;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Step;
+use PhpBench\Pipeline\Pipeline;
 
 class RotarySplitter implements Step
 {

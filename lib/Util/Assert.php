@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Framework\Util;
+namespace PhpBench\Pipeline\Util;
 
-use PhpBench\Framework\Exception\AssertionFailure;
+use PhpBench\Pipeline\Exception\AssertionFailure;
 
 class Assert
 {

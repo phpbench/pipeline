@@ -1,14 +1,14 @@
 <?php
 
-namespace PhpBench\Framework\Sampler;
+namespace PhpBench\Pipeline\Sampler;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 use Closure;
-use PhpBench\Framework\Util\StepConfig;
-use PhpBench\Framework\Exception\AssertionFailure;
-use PhpBench\Framework\Config\ConfigBuilder;
+use PhpBench\Pipeline\Util\StepConfig;
+use PhpBench\Pipeline\Exception\AssertionFailure;
+use PhpBench\Pipeline\Config\ConfigBuilder;
 
 class CallbackSampler implements Step
 {

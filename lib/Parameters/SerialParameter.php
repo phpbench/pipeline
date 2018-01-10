@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Parameters;
+namespace PhpBench\Pipeline\Parameters;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class SerialParameter implements Step
 {

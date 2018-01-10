@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Sampler;
+namespace PhpBench\Pipeline\Tests\Unit\Sampler;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Sampler\CallbackSampler;
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Exception\InvalidConfiguration;
-use PhpBench\Framework\Exception\AssertionFailure;
+use PhpBench\Pipeline\Sampler\CallbackSampler;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Exception\InvalidConfiguration;
+use PhpBench\Pipeline\Exception\AssertionFailure;
 
 class CallbackSamplerTest extends StepTestCase
 {

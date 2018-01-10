@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Integration\Sampler;
+namespace PhpBench\Pipeline\Tests\Integration\Sampler;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Tests\Integration\Sampler\CurlSamplerTest;
-use PhpBench\Framework\Sampler\CurlSampler;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Tests\Integration\Sampler\CurlSamplerTest;
+use PhpBench\Pipeline\Sampler\CurlSampler;
 
 class CurlSamplerTest extends StepTestCase
 {

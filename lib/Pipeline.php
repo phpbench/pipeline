@@ -1,8 +1,8 @@
 <?php
 
-namespace PhpBench\Framework;
+namespace PhpBench\Pipeline;
 
-use PhpBench\Framework\Exception\EmptyPipeline;
+use PhpBench\Pipeline\Exception\EmptyPipeline;
 use Countable;
 use Generator;
 

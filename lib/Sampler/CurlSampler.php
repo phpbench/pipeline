@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Framework\Sampler;
+namespace PhpBench\Pipeline\Sampler;
 
-use PhpBench\Framework\Config\ConfigBuilder;
-use PhpBench\Framework\Step;
-use PhpBench\Framework\Config\Config;
+use PhpBench\Pipeline\Config\ConfigBuilder;
+use PhpBench\Pipeline\Step;
+use PhpBench\Pipeline\Config\Config;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class CurlSampler implements Step
 {

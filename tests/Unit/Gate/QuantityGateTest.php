@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Gate;
+namespace PhpBench\Pipeline\Tests\Unit\Gate;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Gate\QuantityGate;
-use PhpBench\Framework\Exception\AssertionFailure;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Gate\QuantityGate;
+use PhpBench\Pipeline\Exception\AssertionFailure;
 
 class QuantityGateTest extends StepTestCase
 {

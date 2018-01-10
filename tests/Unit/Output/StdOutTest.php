@@ -1,13 +1,13 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Output;
+namespace PhpBench\Pipeline\Tests\Unit\Output;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Prophecy\Argument;
-use PhpBench\Framework\Pipeline;
-use PhpBench\Framework\Output\StdOut;
-use PhpBench\Framework\Tests\StepTestCase;
+use PhpBench\Pipeline\Pipeline;
+use PhpBench\Pipeline\Output\StdOut;
+use PhpBench\Pipeline\Tests\StepTestCase;
 
 class StdOutTest extends StepTestCase
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Splitter;
+namespace PhpBench\Pipeline\Tests\Unit\Splitter;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Splitter\SerialSplitter;
-use PhpBench\Framework\Tests\StepTestCase;
+use PhpBench\Pipeline\Splitter\SerialSplitter;
+use PhpBench\Pipeline\Tests\StepTestCase;
 
 class SerialSplitterTest extends StepTestCase
 {

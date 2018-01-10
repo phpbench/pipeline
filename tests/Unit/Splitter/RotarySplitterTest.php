@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Splitter;
+namespace PhpBench\Pipeline\Tests\Unit\Splitter;
 
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Step;
-use PhpBench\Framework\Splitter\RotarySplitter;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Step;
+use PhpBench\Pipeline\Splitter\RotarySplitter;
+use PhpBench\Pipeline\Pipeline;
 use Prophecy\Argument;
 
 class RotarySplitterTest extends StepTestCase

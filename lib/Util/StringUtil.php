@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Framework\Util;
+namespace PhpBench\Pipeline\Util;
 
 class StringUtil
 {

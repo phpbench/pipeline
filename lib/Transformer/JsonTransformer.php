@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Framework\Transformer;
+namespace PhpBench\Pipeline\Transformer;
 
-use PhpBench\Framework\Result;
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Result;
+use PhpBench\Pipeline\Step;
 use SplQueue;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class JsonTransformer implements Step
 {

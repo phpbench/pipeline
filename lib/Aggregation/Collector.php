@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Aggregation;
+namespace PhpBench\Pipeline\Aggregation;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class Collector implements Step
 {

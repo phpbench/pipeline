@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Config;
+namespace PhpBench\Pipeline\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Config\Config;
+use PhpBench\Pipeline\Config\Config;
 use InvalidArgumentException;
-use PhpBench\Framework\Exception\AssertionFailure;
+use PhpBench\Pipeline\Exception\AssertionFailure;
 
 class ConfigTest extends TestCase
 {

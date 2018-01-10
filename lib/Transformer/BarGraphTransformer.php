@@ -1,13 +1,13 @@
 <?php
 
-namespace PhpBench\Framework\Transformer;
+namespace PhpBench\Pipeline\Transformer;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 use InvalidArgumentException;
-use PhpBench\Framework\Util\Assert;
-use PhpBench\Framework\Util\StringUtil;
+use PhpBench\Pipeline\Util\Assert;
+use PhpBench\Pipeline\Util\StringUtil;
 use IntlChar;
 
 class BarGraphTransformer implements Step

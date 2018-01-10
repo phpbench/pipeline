@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit;
+namespace PhpBench\Pipeline\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Step;
-use PhpBench\Framework\Pipeline;
-use PhpBench\Framework\Exception\EmptyPipeline;
+use PhpBench\Pipeline\Step;
+use PhpBench\Pipeline\Pipeline;
+use PhpBench\Pipeline\Exception\EmptyPipeline;
 
 class PipelineTest extends TestCase
 {

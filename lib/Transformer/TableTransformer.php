@@ -1,13 +1,13 @@
 <?php
 
-namespace PhpBench\Framework\Transformer;
+namespace PhpBench\Pipeline\Transformer;
 
-use PhpBench\Framework\Result;
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Result;
+use PhpBench\Pipeline\Step;
 use SplQueue;
 use Generator;
-use PhpBench\Framework\Pipeline;
-use PhpBench\Framework\Util\StringUtil;
+use PhpBench\Pipeline\Pipeline;
+use PhpBench\Pipeline\Util\StringUtil;
 
 class TableTransformer implements Step
 {

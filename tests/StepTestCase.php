@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Tests;
+namespace PhpBench\Pipeline\Tests;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Step;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Step;
+use PhpBench\Pipeline\Pipeline;
 use Generator;
 use Closure;
 

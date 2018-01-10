@@ -1,9 +1,9 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Aggregation;
+namespace PhpBench\Pipeline\Tests\Unit\Aggregation;
 
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Aggregation\SummaryAggregator;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Aggregation\SummaryAggregator;
 
 class StatisticalAggregatorTest extends StepTestCase
 {

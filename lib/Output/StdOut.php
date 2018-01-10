@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Output;
+namespace PhpBench\Pipeline\Output;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class StdOut implements Step
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Transformer;
+namespace PhpBench\Pipeline\Tests\Unit\Transformer;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Transformer\BarGraphTransformer;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Transformer\BarGraphTransformer;
 
 class BarGraphTransformerTest extends StepTestCase
 {

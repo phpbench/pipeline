@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Framework\Exception;
+namespace PhpBench\Pipeline\Exception;
 
 use Exception;
 

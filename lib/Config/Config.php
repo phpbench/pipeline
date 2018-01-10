@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Framework\Config;
+namespace PhpBench\Pipeline\Config;
 
 use ArrayAccess;
 use BadMethodCallException;
 use InvalidArgumentException;
-use PhpBench\Framework\Exception\AssertionFailure;
-use PhpBench\Framework\Util\Assert;
+use PhpBench\Pipeline\Exception\AssertionFailure;
+use PhpBench\Pipeline\Util\Assert;
 
 class Config implements ArrayAccess
 {

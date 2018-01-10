@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Gate;
+namespace PhpBench\Pipeline\Gate;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class Delay implements Step
 {

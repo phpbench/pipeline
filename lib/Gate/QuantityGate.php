@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Framework\Gate;
+namespace PhpBench\Pipeline\Gate;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
-use PhpBench\Framework\Util\Assert;
-use PhpBench\Framework\Exception\AssertionFailure;
+use PhpBench\Pipeline\Pipeline;
+use PhpBench\Pipeline\Util\Assert;
+use PhpBench\Pipeline\Exception\AssertionFailure;
 
 class QuantityGate implements Step
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit;
+namespace PhpBench\Pipeline\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Framework\Battery;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Battery;
+use PhpBench\Pipeline\Pipeline;
 
 class BatteryTest extends TestCase
 {

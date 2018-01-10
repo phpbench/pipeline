@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Transformer;
+namespace PhpBench\Pipeline\Transformer;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class ConcatTransformer implements Step
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace PhpBench\Framework\Config;
+namespace PhpBench\Pipeline\Config;
 
-use PhpBench\Framework\Exception\InvalidConfiguration;
-use PhpBench\Framework\Util\Assert;
-use PhpBench\Framework\Exception\AssertionFailure;
-use PhpBench\Framework\Config\Config;
+use PhpBench\Pipeline\Exception\InvalidConfiguration;
+use PhpBench\Pipeline\Util\Assert;
+use PhpBench\Pipeline\Exception\AssertionFailure;
+use PhpBench\Pipeline\Config\Config;
 
 class ConfigBuilder
 {

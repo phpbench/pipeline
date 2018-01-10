@@ -1,9 +1,9 @@
 <?php
 
-namespace PhpBench\Framework\Tests\Unit\Parameters;
+namespace PhpBench\Pipeline\Tests\Unit\Parameters;
 
-use PhpBench\Framework\Tests\StepTestCase;
-use PhpBench\Framework\Parameters\FixedParameters;
+use PhpBench\Pipeline\Tests\StepTestCase;
+use PhpBench\Pipeline\Parameters\FixedParameters;
 
 class FixedParametersTest extends StepTestCase
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework\Splitter;
+namespace PhpBench\Pipeline\Splitter;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class SerialSplitter implements Step
 {

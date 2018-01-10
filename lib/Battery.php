@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Framework;
+namespace PhpBench\Pipeline;
 
-use PhpBench\Framework\Step;
+use PhpBench\Pipeline\Step;
 use Generator;
-use PhpBench\Framework\Pipeline;
+use PhpBench\Pipeline\Pipeline;
 
 class Battery implements Step
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Framework;
+namespace PhpBench\Pipeline;
 
 use Generator;
 
