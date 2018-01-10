@@ -35,4 +35,15 @@ class Pipeline implements Countable
     {
         return count($this->steps);
     }
+
+    public function run()
+    {
+        $results = [];
+
+        foreach ($this->pop() as $data) {
+            $results[] = $data;
+        }
+
+        return $results;
+    }
 }

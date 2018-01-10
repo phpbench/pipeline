@@ -41,6 +41,17 @@ class PipelineTest extends TestCase
         $pipeline->pop();
     }
 
+    public function testRun()
+    {
+        $pipeline = new Pipeline([
+            $this->step->reveal()
+        ]);
+        $this->step->generator($pipeline)->willReturn($this->generator());
+
+        $results = $pipeline->run();
+        $this->assertEquals([ self::TEST_STRING ], $results);
+    }
+
     private function generator()
     {
         yield self::TEST_STRING;

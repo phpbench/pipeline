@@ -1,6 +1,6 @@
 {
-    "name": "phpbench/framework",
-    "description": "PHP Benchmarking Framework",
+    "name": "phpbench/pipeline",
+    "description": "Composable micro benchhmarking framework",
     "license": "MIT",
     "authors": [
         {
@@ -13,8 +13,7 @@
     },
     "require": {
         "php": "^7.1",
-        "markrogoyski/math-php": "^0.38.0",
-        "myclabs/deep-copy": "^1.7"
+        "markrogoyski/math-php": "^0.38.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.8.5",
@@ -22,12 +21,12 @@
     },
     "autoload": {
         "psr-4": {
-            "PhpBench\\Framework\\": "lib/"
+            "PhpBench\\Pipeline\\": "lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PhpBench\\Framework\\Tests\\": "tests/"
+            "PhpBench\\Pipeline\\Tests\\": "tests/"
         }
     },
     "extra": {
