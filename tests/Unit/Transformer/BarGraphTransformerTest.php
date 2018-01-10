@@ -25,8 +25,32 @@ class BarGraphTransformerTest extends StepTestCase
         $result = array_pop($results);
 
         $this->assertEquals(<<<'EOT'
-One  |██████████| 10
+One  |█████████| 10
 Two  |████|      5
+
+EOT
+        , $result);
+    }
+
+    public function testBarFraction()
+    {
+        $results = $this->runStep(new BarGraphTransformer('label', 'time', 5), [
+            [
+                'One' => [
+                    'label' => 'One',
+                    'time' => 10,
+                ],
+                'Two' => [
+                    'label' => 'Two',
+                    'time' => 9,
+                ],
+            ]
+        ]);
+        $result = array_pop($results);
+
+        $this->assertEquals(<<<'EOT'
+One  |████| 10
+Two  |███▌| 9
 
 EOT
         , $result);
