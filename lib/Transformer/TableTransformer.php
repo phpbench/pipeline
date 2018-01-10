@@ -7,6 +7,7 @@ use PhpBench\Framework\Step;
 use SplQueue;
 use Generator;
 use PhpBench\Framework\Pipeline;
+use PhpBench\Framework\Util\StringUtil;
 
 class TableTransformer implements Step
 {
@@ -66,7 +67,7 @@ class TableTransformer implements Step
 
         foreach ($result as $row) {
             foreach (array_values($row) as $colNumber => $value) {
-                $width = iconv_strlen($value) + self::PADDING;
+                $width = mb_strlen($value) + self::PADDING;
                 if (false === isset($widths[$colNumber]) || $widths[$colNumber] < $width) {
                     $widths[$colNumber] = $width;
                 }
@@ -91,7 +92,7 @@ class TableTransformer implements Step
 
             foreach (array_values($row) as $colNumber => $value) {
                 $width = $widths[$colNumber];
-                $tableRow[] = sprintf('%-' . $width . 's', $value);
+                $tableRow[] = StringUtil::pad($value, $width);
             }
 
             $table[] = implode('', $tableRow);

@@ -27,6 +27,7 @@ class SerialParameter implements Step
     public function generator(Pipeline $pipeline): Generator
     {
         foreach ($pipeline->pop() as $data) {
+            $data = (array) $data;
             foreach ($this->values as $value) {
                 yield array_merge(
                     $data,
