@@ -13,7 +13,7 @@ class JsonTransformer implements Step
     public function generator(Pipeline $pipeline): Generator
     {
         foreach ($pipeline->pop() as $data) {
-            yield json_encode($data);
+            yield json_encode($data, JSON_PRETTY_PRINT) . PHP_EOL;
         }
     }
 }

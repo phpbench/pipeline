@@ -7,6 +7,7 @@ use PhpBench\Framework\Step;
 use SplQueue;
 use Generator;
 use PhpBench\Framework\Pipeline;
+use RuntimeException;
 
 class AnsiRedrawOutputTransformer implements Step
 {
@@ -19,6 +20,12 @@ class AnsiRedrawOutputTransformer implements Step
         $isFirst = true;
         $lineLength = 0;
         foreach ($pipeline->pop() as $result) {
+            if (!is_string($result)) {
+                throw new RuntimeException(sprintf(
+                    'AnsiRedrawOutputTransformer must receive a string, got "%s"',
+                    gettype($result)
+                ));
+            }
             if ($lastResult) {
                 $lineLength = $this->maxLineLength($result, $lineLength);
                 $result = $this->maximizeLines($result, $lineLength);
