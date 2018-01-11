@@ -9,7 +9,7 @@ use PhpBench\Pipeline\Util\Assert;
 use PhpBench\Pipeline\Util\StringUtil;
 use IntlChar;
 
-class BarGraphTransformer implements Step
+class BarMeterTransformer implements Step
 {
     const PADDING = 1;
 
@@ -109,18 +109,39 @@ class BarGraphTransformer implements Step
             return '';
         }
 
+        // fill solid section
         $char = IntlChar::chr(0x2588);
         $value = $row[$this->valueField];
-        $bar = str_repeat($char, $this->barWidth($maxValue, $value) - 1);
+        $barWidth = $this->barWidth($maxValue, $value);
+        $bar = '';
 
-        // determine final bar
+        if ($barWidth == 0) {
+            return $bar;
+        }
+
+        // draw solid segments excepting the last one
+        if ($barWidth > 1) {
+            $bar .= str_repeat($char,  $barWidth - 1);
+        }
+
+        // determine final segments char
         $stepValue = $maxValue / $this->maxWidth;
         $remainderValue = $value - ($stepValue * floor($value / $stepValue)) ;
 
+        // perfect fit, full segment
+        if (0 == $remainderValue) {
+            return $bar . $char;
+        }
+
         $fraction = $remainderValue / $stepValue;
         $offset = (8 - ((int) floor(8 * $fraction))) % 8;
-        $char = hexdec(2588) + $offset;
 
+        // 0th offset is blank
+        if ($offset === 0) {
+            return $bar;
+        }
+
+        $char = hexdec(2588) + $offset;
         $bar .= IntlChar::chr($char);
 
         return $bar;

@@ -11,28 +11,18 @@ use PhpBench\Pipeline\Transformer\BarMeterTransformer;
 use PhpBench\Pipeline\Gate\Batch;
 use PhpBench\Pipeline\Transformer\ConcatTransformer;
 use PhpBench\Pipeline\Sampler\CurlSampler;
+use PhpBench\Pipeline\Parameters\RangeParameter;
+use PhpBench\Pipeline\Aggregation\Collector;
 
 require 'vendor/autoload.php';
 
 $pipeline = new Pipeline([
     new Battery('∞'),
-    new SerialParameter('url', [
-        'https://inviqa.com',
-        'https://www.bbc.co.uk',
-        'https://www.google.de',
-    ]),
-    new CurlSampler([
-        'url' => '%url%',
-    ]),
-    new SummaryAggregator([ 'url' ], [ 'total_time' ]),
-    new RotarySplitter([
-        new TableTransformer(),
-        new BarMeterTransformer('url', 'total_time-mean'),
-    ]),
-    new Batch(2),
-    new ConcatTransformer(),
-    new AnsiRedrawOutputTransformer(),
+    new RangeParameter('count', 0, 1, 0.01),
+    new Batch(100),
+    new BarMeterTransformer('count', 'count', 5),
     new StdOut(),
 ]);
 
 $pipeline->run();
+
