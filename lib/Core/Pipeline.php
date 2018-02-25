@@ -1,41 +1,35 @@
 <?php
 
-namespace PhpBench\Pipeline;
+namespace PhpBench\Pipeline\Core;
 
 use Generator;
 use PhpBench\Pipeline\Exception\StageMustBeCallable;
 use PhpBench\Pipeline\Exception\StageMustCreateGenerator;
+use PhpBench\Pipeline\Core\Stage;
+use PhpBench\Pipeline\Core\Schema;
+use Countable;
+use PhpBench\Pipeline\Core\Exception\GeneratorMustYieldAnArray;
 
-class Pipeline
+class Pipeline implements Stage, Countable
 {
     /**
      * @var Generator[]
      */
     private $generators;
 
-    /**
-     * The pipeline accepts an array of stages.
-     * Stages MUST be callable and each stage MUST return a generator.
-     */
-    public function __construct(array $stages = [])
+    public function __construct(array $generators)
     {
-        foreach ($stages as $stage) {
-            if (false === is_callable($stage)) {
-                throw new StageMustBeCallable($stage);
-            }
-
-            $generator = $stage([]);
-
-            if (false === $generator instanceof Generator) {
-                throw new StageMustCreateGenerator($generator);
-            }
-
-            $this->generators[] = $generator;
+        foreach ($generators as $generator) {
+            $this->add($generator);
         }
     }
 
-    public function __invoke(): Generator
+    public function __invoke(array $config = []): Generator
     {
+        if (empty($this->generators)) {
+            return;
+        }
+
         // get the input
         $data = yield;
 
@@ -50,6 +44,10 @@ class Pipeline
                 if (false === $generator->valid()) {
                     return $data;
                 }
+
+                if (false === is_array($data)) {
+                    throw new GeneratorMustYieldAnArray($data);
+                }
             }
 
             // yield the last result
@@ -63,7 +61,7 @@ class Pipeline
      * Run all of the stages in the pipeline sequentially.
      * An initial value can be passed.
      */
-    public function run($data = null)
+    public function run(array $data = [])
     {
         $generator = $this->__invoke();
 
@@ -77,5 +75,22 @@ class Pipeline
         }
 
         return $data;
+    }
+
+    private function add(Generator $generator)
+    {
+        $this->generators[] = $generator;
+    }
+
+    public function configure(Schema $schema)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count()
+    {
+        return count($this->generators);
     }
 }

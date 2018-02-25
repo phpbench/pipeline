@@ -1,10 +1,10 @@
 <?php
 
-namespace PhpBench\Pipeline\Tests\Unit\Config;
+namespace PhpBench\Pipeline\Tests\Unit\Core\Config;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Pipeline\ConfigSchema;
-use PhpBench\Pipeline\Exception\InvalidConfig;
+use PhpBench\Pipeline\Core\Schema;
+use PhpBench\Pipeline\Core\Exception\InvalidConfig;
 
 class ConfigSchemaTest extends TestCase
 {
@@ -15,7 +15,7 @@ class ConfigSchemaTest extends TestCase
 
     public function setUp()
     {
-        $this->schema = new ConfigSchema();
+        $this->schema = new Schema();
     }
 
     public function testResolvesDefaults()
@@ -51,7 +51,7 @@ class ConfigSchemaTest extends TestCase
         $this->schema->resolve([]);
     }
 
-    public function testExceptionForUnknownDefaultOptions1()
+    public function testExceptionOnUnknownDefaults()
     {
         $this->expectException(InvalidConfig::class);
         $this->expectExceptionMessage('Keys "hello", "goodbye" are not known, known keys: "barbar"');
@@ -65,7 +65,7 @@ class ConfigSchemaTest extends TestCase
         ]);
     }
 
-    public function testExceptionForUnknownDefaultOptions2()
+    public function testExceptionOnUnknownRequired()
     {
         $this->expectException(InvalidConfig::class);
         $this->expectExceptionMessage('Keys "hello", "goodbye" are not known, known keys: "barbar"');

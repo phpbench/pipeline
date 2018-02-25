@@ -1,13 +1,19 @@
 <?php
 
-namespace PhpBench\Pipeline;
+namespace PhpBench\Pipeline\Core;
 
-use PhpBench\Pipeline\Exception\InvalidConfig;
+use PhpBench\Pipeline\Core\Exception\InvalidConfig;
 
-class ConfigSchema
+class Schema
 {
+    /**
+     * @var array
+     */
     private $required = [];
 
+    /**
+     * @var array
+     */
     private $defaults = [];
 
     public function setRequired(array $fields)
