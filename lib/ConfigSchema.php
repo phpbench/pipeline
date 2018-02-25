@@ -1,6 +1,8 @@
 <?php
 
-namespace PhpBench\Pipeline\Config;
+namespace PhpBench\Pipeline;
+
+use PhpBench\Pipeline\Exception\InvalidConfig;
 
 class ConfigSchema
 {

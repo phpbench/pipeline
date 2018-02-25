@@ -3,8 +3,8 @@
 namespace PhpBench\Pipeline\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
-use PhpBench\Pipeline\Config\ConfigSchema;
-use PhpBench\Pipeline\Config\InvalidConfig;
+use PhpBench\Pipeline\ConfigSchema;
+use PhpBench\Pipeline\Exception\InvalidConfig;
 
 class ConfigSchemaTest extends TestCase
 {
