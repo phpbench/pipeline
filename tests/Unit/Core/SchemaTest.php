@@ -5,11 +5,12 @@ namespace PhpBench\Pipeline\Tests\Unit\Core;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Pipeline\Core\Schema;
 use PhpBench\Pipeline\Core\Exception\InvalidConfig;
+use stdClass;
 
 class SchemaTest extends TestCase
 {
     /**
-     * @var ConfigSchema
+     * @var Schema
      */
     private $schema;
 
@@ -76,6 +77,42 @@ class SchemaTest extends TestCase
         $this->schema->resolve([
             'hello' => 'foobar',
             'goodbye' => 'barbar',
+        ]);
+    }
+
+    public function testExceptionInvalidScalarType()
+    {
+        $this->expectException(InvalidConfig::class);
+        $this->expectExceptionMessage('Type for "asd" expected to be "Foobar", got "string"');
+
+        $this->schema->setRequired([
+            'asd',
+        ]);
+
+        $this->schema->setTypes([
+            'asd' => 'Foobar',
+        ]);
+
+        $this->schema->resolve([
+            'asd' => 'foobar',
+        ]);
+    }
+
+    public function testExceptionInvalidObjectType()
+    {
+        $this->expectException(InvalidConfig::class);
+        $this->expectExceptionMessage('Type for "asd" expected to be "Foobar", got "stdClass"');
+
+        $this->schema->setRequired([
+            'asd',
+        ]);
+
+        $this->schema->setTypes([
+            'asd' => 'Foobar',
+        ]);
+
+        $this->schema->resolve([
+            'asd' => new stdClass(),
         ]);
     }
 }

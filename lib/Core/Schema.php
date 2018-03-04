@@ -16,6 +16,11 @@ class Schema
      */
     private $defaults = [];
 
+    /**
+     * @var array
+     */
+    private $types = [];
+
     public function setRequired(array $fields)
     {
         $this->required = $fields;
@@ -24,6 +29,11 @@ class Schema
     public function setDefaults(array $defaults)
     {
         $this->defaults = $defaults;
+    }
+
+    public function setTypes(array $typeMap)
+    {
+        $this->types = $typeMap;
     }
 
     public function resolve(array $config)
@@ -45,6 +55,21 @@ class Schema
                 'Key(s) "%s" are required',
                 implode('", "', $diff)
             ));
+        }
+
+        foreach ($config as $key => $value) {
+            if (isset($this->types[$key])) {
+                $type = is_object($value) ? get_class($value) : gettype($value);
+
+                if ($this->types[$key] !== $type) {
+                    throw new InvalidConfig(sprintf(
+                        'Type for "%s" expected to be "%s", got "%s"',
+                        $key,
+                        $this->types[$key],
+                        $type
+                    ));
+                }
+            }
         }
 
         return $config;
