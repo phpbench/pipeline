@@ -40,6 +40,34 @@ class PipelineTest extends TestCase
         $this->assertEquals(['Hello', 'Goodbye'], $data);
     }
 
+    public function testPipesToAConfiguredStageWithNoConfig()
+    {
+        $this->factory->generatorFor('test/foobar', [])->will(function () {
+            $data = yield;
+            $data[] = 'Goodbye';
+            yield $data;
+        });
+        $data = $this->runPipeline([
+            [ 'test/foobar' ],
+        ], ['Hello']);
+        $this->assertEquals(['Hello', 'Goodbye'], $data);
+    }
+
+    public function testPipesToAConfiguredStageWithConfig()
+    {
+        $this->factory->generatorFor('test/foobar', [
+            'key' => 'value',
+        ])->will(function () {
+            $data = yield;
+            $data[] = 'Goodbye';
+            yield $data;
+        });
+        $data = $this->runPipeline([
+            [ 'test/foobar', [ 'key' => 'value' ] ],
+        ], ['Hello']);
+        $this->assertEquals(['Hello', 'Goodbye'], $data);
+    }
+
     public function testThrowsExceptionIfStageNotStageOrCallable()
     {
         $this->expectException(InvalidStage::class);

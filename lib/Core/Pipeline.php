@@ -23,14 +23,16 @@ class Pipeline implements Stage, PipelineExtension
             }
 
             if (is_array($stage)) {
-                if (count($stage) != 2) {
+                if (count($stage) > 2) {
                     throw new InvalidArgumentException(sprintf(
                         'Stage must be at least a 1 and at most a 2 element array ([ (string) stage-name, (array) stage-config ], got %s elements',
                         count($stage)
                     ));
                 }
 
-                list($stageName, $stageConfig) = $stage;
+                $stageName = $stage[0];
+                $stageConfig = isset($stage[1]) ? $stage[1] : [];
+
                 $generators[] = $config['generator_factory']->generatorFor($stageName, $stageConfig);
                 continue;
             }
