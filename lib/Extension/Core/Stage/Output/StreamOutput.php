@@ -19,7 +19,7 @@ class StreamOutput implements Stage
                     $line = serialize($line);
                 }
 
-                fwrite($stream, $line);
+                fwrite($stream, $line . PHP_EOL);
             }
 
             $data = yield $data;

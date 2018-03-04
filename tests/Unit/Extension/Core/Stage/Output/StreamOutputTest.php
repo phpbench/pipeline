@@ -2,7 +2,7 @@
 
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Output;
 
-use PhpBench\Pipeline\Tests\Unit\Core\StageTestCase;
+use PhpBench\Pipeline\Tests\Unit\StageTestCase;
 use PhpBench\Pipeline\Extension\Core\Stage\Output\StreamOutput;
 use Closure;
 use PhpBench\Pipeline\Core\Stage;

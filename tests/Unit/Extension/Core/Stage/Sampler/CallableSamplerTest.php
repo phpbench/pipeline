@@ -2,7 +2,7 @@
 
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Sampler;
 
-use PhpBench\Pipeline\Tests\Unit\Core\StageTestCase;
+use PhpBench\Pipeline\Tests\Unit\StageTestCase;
 use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CallableSampler;
 
 class CallableSamplerTest extends StageTestCase
@@ -15,7 +15,6 @@ class CallableSamplerTest extends StageTestCase
         ], []);
 
         $this->assertArrayHasKey('time', $result);
-        $this->assertEquals('Callable', $result['name']);
     }
 
     public function testProfilesClassMethod()

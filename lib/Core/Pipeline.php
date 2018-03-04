@@ -13,8 +13,6 @@ class Pipeline implements Stage, PipelineExtension
 {
     public function __invoke(array $config): Generator
     {
-        $data = yield;
-
         $generators = [];
         foreach ($config['stages'] as $stage) {
             if (is_callable($stage)) {
@@ -43,6 +41,7 @@ class Pipeline implements Stage, PipelineExtension
             ));
         }
 
+        yield;
         $data = $config['initial_value'];
 
         if (empty($generators)) {
@@ -51,6 +50,10 @@ class Pipeline implements Stage, PipelineExtension
         }
 
         while (true) {
+            if (false === $config['feedback']) {
+                $data = $config['initial_value'];
+            }
+
             foreach ($generators as $generator) {
                 $data = $generator->send($data);
 
@@ -82,11 +85,13 @@ class Pipeline implements Stage, PipelineExtension
             'generator_factory' => GeneratorFactory::class,
             'initial_value' => 'array',
             'stages' => 'array',
+            'feedback' => 'boolean',
         ]);
 
         $schema->setDefaults([
             'stages' => [],
             'initial_value' => [],
+            'feedback' => false,
         ]);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Pipeline\Tests\Unit\Core;
+namespace PhpBench\Pipeline\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Pipeline\Core\Stage;

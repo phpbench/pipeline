@@ -99,14 +99,34 @@ class PipelineTest extends TestCase
         ]);
     }
 
-    private function runPipeline(array $stages, array $initial = [])
+    public function testCanEnableFeedback()
     {
-        $pipeline = new Pipeline();
+        $stage = function () {
+            $data = yield;
 
-        $generator = $pipeline([
+            for ($i = 0; $i < 2; $i++) {
+                $data[] = 'Hello';
+                $data = yield $data;
+            }
+        };
+
+        $result = $this->runPipeline([
+            $stage,
+            $stage,
+        ], [], true);
+
+        $this->assertEquals([
+            'Hello', 'Hello', 'Hello', 'Hello'
+        ], $result);
+    }
+
+    private function runPipeline(array $stages, array $initial = [], bool $feedback = false)
+    {
+        $generator = (new Pipeline())([
             'stages' => $stages,
             'initial_value' => $initial,
-            'generator_factory' => $this->factory->reveal()
+            'generator_factory' => $this->factory->reveal(),
+            'feedback' => $feedback,
         ]);
 
         foreach ($generator as $data) {

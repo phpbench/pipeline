@@ -24,7 +24,6 @@ class CallableSampler implements Stage
             $end = microtime(true);
             $time = (($end * 1E6) - ($start * 1E6)) / $nbIterations;
             $data['time'] = $time;
-            $data['name'] = $config['name'];
             $data = yield $data;
         }
     }
@@ -33,7 +32,6 @@ class CallableSampler implements Stage
     {
         $schema->setDefaults([
             'iterations' => 1,
-            'name' => 'Callable',
         ]);
         $schema->setRequired([
             'callable'

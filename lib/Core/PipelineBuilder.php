@@ -6,6 +6,7 @@ use PhpBench\Pipeline\Core\PipelineExtension;
 use PhpBench\Pipeline\Core\StageRegistry;
 use PhpBench\Pipeline\Core\GeneratorFactory;
 use PhpBench\Pipeline\Core\Pipeline;
+use PhpBench\Pipeline\Extension\Core\CoreExtension;
 
 final class PipelineBuilder
 {
@@ -24,9 +25,17 @@ final class PipelineBuilder
         $this->extensions[] = new Pipeline();
     }
 
-    public static function create(): PipelineBuilder
+    public static function create(): self
     {
         return new self();
+    }
+
+    public static function createWithDefaults(): self
+    {
+        $builder = self::create();
+        $builder->addExtension(new CoreExtension());
+
+        return $builder;
     }
 
     public function build(): BuiltPipeline
