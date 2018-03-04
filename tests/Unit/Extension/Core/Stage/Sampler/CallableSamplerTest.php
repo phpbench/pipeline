@@ -1,9 +1,9 @@
 <?php
 
-namespace PhpBench\Pipeline\Tests\Unit\Core\Stage\Sampler;
+namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Sampler;
 
 use PhpBench\Pipeline\Tests\Unit\Core\StageTestCase;
-use PhpBench\Pipeline\Core\Stage\Sampler\CallableSampler;
+use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CallableSampler;
 
 class CallableSamplerTest extends StageTestCase
 {

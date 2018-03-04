@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBench\Pipeline\Core\Stage\Sampler;
+namespace PhpBench\Pipeline\Extension\Core\Stage\Sampler;
 
 use PhpBench\Pipeline\Core\Stage;
 use Generator;

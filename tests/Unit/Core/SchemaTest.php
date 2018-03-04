@@ -1,12 +1,12 @@
 <?php
 
-namespace PhpBench\Pipeline\Tests\Unit\Core\Config;
+namespace PhpBench\Pipeline\Tests\Unit\Core;
 
 use PHPUnit\Framework\TestCase;
 use PhpBench\Pipeline\Core\Schema;
 use PhpBench\Pipeline\Core\Exception\InvalidConfig;
 
-class ConfigSchemaTest extends TestCase
+class SchemaTest extends TestCase
 {
     /**
      * @var ConfigSchema

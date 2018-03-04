@@ -1,9 +1,9 @@
 <?php
 
-namespace PhpBench\Pipeline\Tests\Unit\Core\Stage\Output;
+namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Output;
 
 use PhpBench\Pipeline\Tests\Unit\Core\StageTestCase;
-use PhpBench\Pipeline\Core\Stage\Output\StreamOutput;
+use PhpBench\Pipeline\Extension\Core\Stage\Output\StreamOutput;
 use Closure;
 use PhpBench\Pipeline\Core\Stage;
 
