@@ -7,6 +7,7 @@ use PhpBench\Pipeline\Core\Stage;
 use PhpBench\Pipeline\Extension\Core\Stage\Encoder\JsonEncoder;
 use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CallableSampler;
 use PhpBench\Pipeline\Extension\Core\Stage\Output\StreamOutput;
+use PhpBench\Pipeline\Extension\Core\Stage\Parameter\SerialParameter;
 
 class CoreExtension implements PipelineExtension
 {
@@ -21,6 +22,7 @@ class CoreExtension implements PipelineExtension
             'encoder/json' => new JsonEncoder(),
             'output/stream' => new StreamOutput(),
             'sampler/callable' => new CallableSampler(),
+            'parameter/serial' => new SerialParameter(),
         ];
     }
 
