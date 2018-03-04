@@ -9,32 +9,19 @@ class JsonEncoderTest extends StageTestCase
 {
     public function testEncodesToJson()
     {
-        $result = $this->builder()
-            ->stage(function () {
-                yield;
-                yield [ 'two' => 'three' ];
-            })
-            ->stage(JsonEncoder::class)
-            ->build()()->send([]);
-
-        $this->assertEquals(['{"two":"three"}'], $result);
+        $result = $this->runStage(new JsonEncoder(), [], [ 'one' => 'two' ]);
+        $this->assertEquals(['{"one":"two"}'], $result);
     }
 
     public function testPrettyPrintsJson()
     {
-        $result = $this->builder()
-            ->stage(function () {
-                yield;
-                yield [ 'two' => 'three' ];
-            })
-            ->stage(JsonEncoder::class, [
-                'pretty' => true,
-            ])
-            ->build()()->send([]);
+        $result = $this->runStage(new JsonEncoder(), [
+            'pretty' => true,
+        ], [ 'one' => 'two' ]);
 
         $this->assertEquals([<<<'EOT'
 {
-    "two": "three"
+    "one": "two"
 }
 EOT
         ], $result);

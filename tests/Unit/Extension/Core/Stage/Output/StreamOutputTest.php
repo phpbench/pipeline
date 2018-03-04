@@ -11,15 +11,7 @@ class StreamOutputTest extends StageTestCase
 {
     public function testWritesToStream()
     {
-        $result = ($this->builder()
-            ->stage(function () {
-                yield;
-                yield [ 'hello' ];
-            })
-            ->stage(StreamOutput::class, [
-                'stream' => 'php://temp'
-            ])
-            ->build())()->send([]);
+        $result = $this->runStage(new StreamOutput(), [ 'stream' => 'php://temp' ], [ 'hello' ]);
 
         $this->assertEquals(['hello'], $result);
     }

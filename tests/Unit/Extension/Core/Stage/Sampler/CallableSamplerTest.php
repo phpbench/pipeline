@@ -9,12 +9,10 @@ class CallableSamplerTest extends StageTestCase
 {
     public function testProfilesClosure()
     {
-        $result = $this->builder()
-            ->stage(CallableSampler::class, [
-                'callable' => function (array $data) {
-                }
-            ])
-            ->build()()->send([]);
+        $result = $this->runStage(new CallableSampler(), [
+            'callable' => function (array $data) {
+            }
+        ], []);
 
         $this->assertArrayHasKey('time', $result);
         $this->assertEquals('Callable', $result['name']);
@@ -22,11 +20,9 @@ class CallableSamplerTest extends StageTestCase
 
     public function testProfilesClassMethod()
     {
-        $result = $this->builder()
-            ->stage(CallableSampler::class, [
-                'callable' => [ $this, 'stubCallable' ],
-            ])
-            ->build()()->send([]);
+        $result = $this->runStage(new CallableSampler(), [
+            'callable' => [ $this, 'stubCallable' ],
+        ], []);
 
         $this->assertArrayHasKey('time', $result);
     }
@@ -34,14 +30,12 @@ class CallableSamplerTest extends StageTestCase
     public function testIteratesCallable()
     {
         $count = 0;
-        $result = $this->builder()
-            ->stage(CallableSampler::class, [
-                'callable' => function (array $data) use (&$count) {
-                    $count++;
-                },
-                'iterations' => 100,
-            ])
-            ->build()()->send([]);
+        $result = $this->runStage(new CallableSampler(), [
+            'callable' => function (array $data) use (&$count) {
+                $count++;
+            },
+            'iterations' => 100,
+        ], []);
 
         $this->assertEquals(100, $count);
     }

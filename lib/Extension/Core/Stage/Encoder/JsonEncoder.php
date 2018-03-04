@@ -9,7 +9,7 @@ use PhpBench\Pipeline\Core\StageRegistry;
 
 class JsonEncoder implements Stage
 {
-    public function __invoke(StageRegistry $registry, array $config = []): Generator
+    public function __invoke(array $config = []): Generator
     {
         $data = yield;
         $flags = null;
