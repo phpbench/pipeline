@@ -4,6 +4,7 @@ namespace PhpBench\Pipeline\Core;
 
 use Countable;
 use PhpBench\Pipeline\Core\GeneratorFactory;
+use Generator;
 
 final class BuiltPipeline
 {
@@ -23,17 +24,31 @@ final class BuiltPipeline
         $this->factory = $factory;
     }
 
-    public function run(array $initialValue = []): array
+    public function run(array $data = []): array
+    {
+        $generator = $this->generator();
+        $return = $data;
+        while ($generator->valid()) {
+            $data = $generator->send($data);
+
+            if (null === $data) {
+                break;
+            }
+
+            $return = $data;
+        }
+
+        return $return;
+    }
+
+    public function generator(): Generator
     {
         $generator = $this->factory->generatorFor('pipeline', [
             'stages' => $this->stages,
-            'initial_value' => $initialValue,
             'generator_factory' => $this->factory
         ]);
 
-        foreach ($generator as $data) {
-        }
-
-        return $data;
+        return $generator;
     }
+    
 }

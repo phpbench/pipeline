@@ -4,20 +4,26 @@ namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Encoder;
 
 use PhpBench\Pipeline\Tests\Unit\StageTestCase;
 use PhpBench\Pipeline\Extension\Core\Stage\Encoder\JsonEncoder;
+use PhpBench\Pipeline\Tests\Unit\Extension\Core\CoreTestCase;
 
-class JsonEncoderTest extends StageTestCase
+class JsonEncoderTest extends CoreTestCase
 {
     public function testEncodesToJson()
     {
-        $result = $this->runStage(new JsonEncoder(), [], [ 'one' => 'two' ]);
-        $this->assertEquals(['{"one":"two"}'], $result);
+        $result = $this->pipeline()
+            ->stage('encoder/json', [])
+            ->generator();
+
+        $this->assertEquals(['{"one":"two"}'], $result->send(['one' => 'two']));
     }
 
     public function testPrettyPrintsJson()
     {
-        $result = $this->runStage(new JsonEncoder(), [
+        $result = $this->pipeline()
+            ->stage('encoder/json', [
             'pretty' => true,
-        ], [ 'one' => 'two' ]);
+            ])
+            ->generator()->send(['one' => 'two']);
 
         $this->assertEquals([<<<'EOT'
 {

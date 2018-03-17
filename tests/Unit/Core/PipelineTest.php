@@ -9,6 +9,7 @@ use stdClass;
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
 use PhpBench\Pipeline\Core\Exception\InvalidArgumentException;
 use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
+use PhpBench\Pipeline\Core\BuiltPipeline;
 
 class PipelineTest extends TestCase
 {
@@ -120,18 +121,25 @@ class PipelineTest extends TestCase
         ], $result);
     }
 
-    private function runPipeline(array $stages, array $initial = [], bool $feedback = false)
+    private function runPipeline(array $stages, array $data = [], bool $feedback = false)
     {
         $generator = (new Pipeline())([
             'stages' => $stages,
-            'initial_value' => $initial,
             'generator_factory' => $this->factory->reveal(),
             'feedback' => $feedback,
         ]);
 
-        foreach ($generator as $data) {
+        $return = $data;
+        while ($generator->valid()) {
+            $data = $generator->send($data);
+
+            if (null === $data) {
+                break;
+            }
+
+            $return = $data;
         }
 
-        return $data;
+        return $return;
     }
 }

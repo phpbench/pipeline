@@ -7,6 +7,7 @@ use PhpBench\Pipeline\Core\StageRegistry;
 use PhpBench\Pipeline\Core\GeneratorFactory;
 use PhpBench\Pipeline\Core\Pipeline;
 use PhpBench\Pipeline\Extension\Core\CoreExtension;
+use Generator;
 
 final class PipelineBuilder
 {
@@ -65,5 +66,17 @@ final class PipelineBuilder
     {
         $this->extensions[] = $extension;
         return $this;
+    }
+
+    public function run(array $initialValue = []): array
+    {
+        return $this->build()->run($initialValue);
+    }
+
+    public function generator(): Generator
+    {
+        $generator = $this->build()->generator();
+
+        return $generator;
     }
 }

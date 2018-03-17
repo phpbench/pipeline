@@ -89,4 +89,16 @@ class PipelineBuilderTest extends TestCase
         $result = $pipeline->run();
         $this->assertEquals(['Hello', 'Goodbye'], $result);
     }
+
+    public function testBuildsAndRunsThePipeline()
+    {
+        $builder = PipelineBuilder::create();
+        $builder->stage(function () {
+            yield;
+            yield [ 'Hello' ];
+        });
+        $result = $builder->run();
+
+        $this->assertEquals(['Hello'], $result);
+    }
 }

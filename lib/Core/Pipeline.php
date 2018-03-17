@@ -15,17 +15,16 @@ class Pipeline implements Stage, PipelineExtension
     {
         $generators = $this->buildGenerators($config);
 
-        yield;
-        $data = $config['initial_value'];
+        $initialData = (array) $data = yield;
 
         if (empty($generators)) {
-            yield $data;
-            return $data;
+            yield $initialData;
+            return $initialData;
         }
 
         while (true) {
             if (false === $config['feedback']) {
-                $data = $config['initial_value'];
+                $data = $initialData;
             }
 
             foreach ($generators as $generator) {
@@ -98,14 +97,12 @@ class Pipeline implements Stage, PipelineExtension
 
         $schema->setTypes([
             'generator_factory' => GeneratorFactory::class,
-            'initial_value' => 'array',
             'stages' => 'array',
             'feedback' => 'boolean',
         ]);
 
         $schema->setDefaults([
             'stages' => [],
-            'initial_value' => [],
             'feedback' => false,
         ]);
     }

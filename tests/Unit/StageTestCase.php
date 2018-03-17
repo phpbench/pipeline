@@ -5,6 +5,7 @@ namespace PhpBench\Pipeline\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Pipeline\Core\Stage;
 use PhpBench\Pipeline\Core\Schema;
+use PhpBench\Pipeline\Core\PipelineBuilder;
 
 class StageTestCase extends TestCase
 {
