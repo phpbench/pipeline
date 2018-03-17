@@ -5,6 +5,7 @@ namespace PhpBench\Pipeline\Extension\Core\Stage\Sampler;
 use PhpBench\Pipeline\Core\Stage;
 use Generator;
 use PhpBench\Pipeline\Core\Schema;
+use PhpBench\Pipeline\Core\Signal;
 
 class CurlSampler implements Stage
 {
@@ -31,7 +32,7 @@ class CurlSampler implements Stage
                 list($config, $data) = yield $info;
             }
 
-            usleep(10000);
+            yield Signal::continue();
         }
 
         curl_multi_close($this->multiHandle);
