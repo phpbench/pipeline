@@ -23,13 +23,10 @@ class CurlSampler implements Stage
                 $this->activeRequests++;
             }
 
-            $status = curl_multi_exec($this->multiHandle, $active);
             $multiInfo = curl_multi_info_read($this->multiHandle);
 
             if (false !== $multiInfo) {
-                $info = curl_getinfo($multiInfo['handle']);
-                curl_multi_remove_handle($this->multiHandle, $multiInfo['handle']);
-                curl_close($multiInfo['handle']);
+                $info = $this->closeHandle($multiInfo);
                 $this->activeRequests--;
                 list($config, $data) = yield $info;
             }
@@ -63,5 +60,14 @@ class CurlSampler implements Stage
         }
 
         curl_multi_add_handle($this->multiHandle, $handle);
+        curl_multi_exec($this->multiHandle, $active);
+    }
+
+    private function closeHandle($multiInfo)
+    {
+        $info = curl_getinfo($multiInfo['handle']);
+        curl_multi_remove_handle($this->multiHandle, $multiInfo['handle']);
+        curl_close($multiInfo['handle']);
+        return $info;
     }
 }

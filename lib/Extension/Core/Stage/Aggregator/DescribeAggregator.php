@@ -21,7 +21,7 @@ class DescribeAggregator implements Stage
                 $samples[$hash] = [];
             }
 
-            foreach ($config['describe'] as $field) {
+            foreach ((array) $config['describe'] as $field) {
                 if (false === isset($samples[$hash][$field])) {
                     $samples[$hash][$field] = [];
                 }
@@ -44,7 +44,7 @@ class DescribeAggregator implements Stage
     private function buildHash(array $row, array $config): string
     {
         $hash = [];
-        foreach ($config['group_by'] as $groupBy) {
+        foreach ((array) $config['group_by'] as $groupBy) {
             if (!isset($row[$groupBy])) {
                 throw new InvalidArgumentException(sprintf(
                     'Group by field "%s" does not exist in input with fields "%s"',
