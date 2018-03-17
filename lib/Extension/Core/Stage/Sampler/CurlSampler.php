@@ -10,18 +10,17 @@ use PhpBench\Pipeline\Core\Signal;
 class CurlSampler implements Stage
 {
     private $multiHandle;
-    private $activeRequests = 0;
 
     public function __invoke(): Generator
     {
         list($config, $data) = yield;
 
         $this->multiHandle = curl_multi_init();
+        $active = 0;
 
         while (true) {
-            if ($this->activeRequests < $config['concurrency']) {
+            if ($active < $config['concurrency']) {
                 $this->sampleUrl($config);
-                ++$this->activeRequests;
             }
 
             $multiInfo = curl_multi_info_read($this->multiHandle);
@@ -29,7 +28,7 @@ class CurlSampler implements Stage
 
             if (false !== $multiInfo) {
                 $info = $this->closeHandle($multiInfo);
-                --$this->activeRequests;
+                $info['concurrency'] = $active;
                 list($config, $data) = yield $info;
             }
 

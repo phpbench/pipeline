@@ -15,6 +15,7 @@ use PhpBench\Pipeline\Extension\Core\Stage\Aggregator\DescribeAggregator;
 use PhpBench\Pipeline\Extension\Core\Stage\Parameter\CounterParameter;
 use PhpBench\Pipeline\Extension\Core\Stage\Valve\DelayValve;
 use PhpBench\Pipeline\Extension\Core\Stage\Valve\TimeoutValve;
+use PhpBench\Pipeline\Extension\Core\Stage\Aggregator\CollectorAggregator;
 
 class CoreExtension implements PipelineExtension
 {
@@ -26,6 +27,7 @@ class CoreExtension implements PipelineExtension
     public function __construct()
     {
         $this->stages = [
+            'aggregator/collector' => new CollectorAggregator(),
             'aggregator/describe' => new DescribeAggregator(),
             'encoder/json' => new JsonEncoder(),
             'filter/keys' => new KeysFilter(),

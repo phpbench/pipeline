@@ -14,8 +14,14 @@ class CollectorAggregator implements Stage
         list($config, $data) = yield;
 
         $rows = [];
+        $count = 0;
         while (true) {
+            if ($count++ > $config['limit']) {
+                $count = 0;
+                $rows = [];
+            }
             $rows[] = $data;
+
             list($config, $data) = yield $rows;
         }
     }
@@ -23,8 +29,7 @@ class CollectorAggregator implements Stage
     public function configure(Schema $schema)
     {
         $schema->setDefaults([
-            'group_by' => [],
-            'describe' => [],
+            'limit' => INF,
         ]);
     }
 
