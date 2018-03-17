@@ -2,8 +2,9 @@
 
 namespace PhpBench\Pipeline\Core;
 
-use PhpBench\Pipeline\Extension\Core\CoreExtension;
+use PhpBench\Pipeline\Extension\Console\ConsoleExtension;
 use Generator;
+use PhpBench\Pipeline\Extension\Core\CoreExtension;
 
 final class PipelineBuilder
 {
@@ -31,6 +32,7 @@ final class PipelineBuilder
     {
         $builder = self::create();
         $builder->addExtension(new CoreExtension());
+        $builder->addExtension(new ConsoleExtension());
 
         return $builder;
     }

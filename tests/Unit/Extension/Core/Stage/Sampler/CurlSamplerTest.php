@@ -94,8 +94,6 @@ class CurlSamplerTest extends CoreTestCase
             ->run();
 
         $requests = $this->requests();
-
-        // although we specified a concurrency of 4, 6 requests were made?
         $this->assertCount(4, $requests);
     }
 
