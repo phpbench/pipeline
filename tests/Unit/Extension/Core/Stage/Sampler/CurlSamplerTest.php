@@ -17,14 +17,14 @@ class CurlSamplerTest extends CoreTestCase
 
     public function setUp()
     {
-        $this->accessLogPath = __DIR__ . '/../../../../../Serve/access.log';
+        $this->accessLogPath = __DIR__.'/../../../../../Serve/access.log';
 
         if (file_exists($this->accessLogPath)) {
             unlink($this->accessLogPath);
         }
 
-        $this->process = new Process('php -S ' . self::SAMPLE_URL);
-        $this->process->setWorkingDirectory(__DIR__ . '/../../../../../Serve');
+        $this->process = new Process('php -S '.self::SAMPLE_URL);
+        $this->process->setWorkingDirectory(__DIR__.'/../../../../../Serve');
         $this->process->start();
         usleep(1000);
     }
@@ -48,7 +48,6 @@ class CurlSamplerTest extends CoreTestCase
         $request = $this->requests();
         $request = reset($request);
         $this->assertEquals('GET', $request['REQUEST_METHOD']);
-
     }
 
     public function testItSamplesAPost()
@@ -67,11 +66,11 @@ class CurlSamplerTest extends CoreTestCase
     {
         $result = $this->pipeline()
             ->stage('sampler/curl', [
-                'url' => self::SAMPLE_URL, 
+                'url' => self::SAMPLE_URL,
                 'headers' => [
                     'X-Header1' => 'Yes',
                     'X-Header2' => 'No',
-                ]])
+                ], ])
             ->generator()
             ->send([]);
 
@@ -89,6 +88,5 @@ class CurlSamplerTest extends CoreTestCase
         }
 
         return $requests;
-
     }
 }

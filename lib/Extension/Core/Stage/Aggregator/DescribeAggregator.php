@@ -31,7 +31,6 @@ class DescribeAggregator implements Stage
 
             $data = yield $this->describeData($samples);
         }
-
     }
 
     public function configure(Schema $schema)
@@ -54,6 +53,7 @@ class DescribeAggregator implements Stage
             }
             $hash[] = $row[$groupBy];
         }
+
         return implode(', ', $hash);
     }
 

@@ -8,7 +8,7 @@ class KeysFilterTest extends CoreTestCase
 {
     public function testItFiltersByArrayKeys()
     {
-        $result = $this->pipeline()->stage('filter/keys', [ 'keys' => [ 'two', 'three' ] ])
+        $result = $this->pipeline()->stage('filter/keys', ['keys' => ['two', 'three']])
             ->generator()
             ->send([
                 'one' => 1,

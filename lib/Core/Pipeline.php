@@ -17,6 +17,7 @@ class Pipeline implements Stage, PipelineExtension
 
         if (empty($generators)) {
             yield $initialData;
+
             return;
         }
 

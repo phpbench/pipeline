@@ -41,6 +41,7 @@ class CurlSampler implements Stage
         curl_exec($handle);
         $info = curl_getinfo($handle);
         curl_close($handle);
+
         return $info;
     }
 }

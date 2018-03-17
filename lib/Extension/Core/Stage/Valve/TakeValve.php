@@ -12,7 +12,7 @@ class TakeValve implements Stage
     {
         $data = yield;
 
-        for ($i = 0; $i < $config['quantity']; $i++) {
+        for ($i = 0; $i < $config['quantity']; ++$i) {
             $data = yield $data;
         }
     }
@@ -20,7 +20,7 @@ class TakeValve implements Stage
     public function configure(Schema $schema)
     {
         $schema->setDefaults([
-            'quantity' => 1
+            'quantity' => 1,
         ]);
     }
 }
