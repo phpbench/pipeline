@@ -12,6 +12,7 @@ use PhpBench\Pipeline\Extension\Core\Stage\Valve\TakeValve;
 use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CurlSampler;
 use PhpBench\Pipeline\Extension\Core\Stage\Filter\KeysFilter;
 use PhpBench\Pipeline\Extension\Core\Stage\Aggregator\DescribeAggregator;
+use PhpBench\Pipeline\Extension\Core\Stage\Parameter\CounterParameter;
 
 class CoreExtension implements PipelineExtension
 {
@@ -28,6 +29,7 @@ class CoreExtension implements PipelineExtension
             'filter/keys' => new KeysFilter(),
             'output/stream' => new StreamOutput(),
             'parameter/serial' => new SerialParameter(),
+            'parameter/counter' => new CounterParameter(),
             'sampler/callable' => new CallableSampler(),
             'sampler/curl' => new CurlSampler(),
             'valve/take' => new TakeValve(),
