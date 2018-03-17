@@ -11,6 +11,7 @@ use PhpBench\Pipeline\Extension\Core\Stage\Parameter\SerialParameter;
 use PhpBench\Pipeline\Extension\Core\Stage\Valve\TakeValve;
 use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CurlSampler;
 use PhpBench\Pipeline\Extension\Core\Stage\Filter\KeysFilter;
+use PhpBench\Pipeline\Extension\Core\Stage\Aggregator\DescribeAggregator;
 
 class CoreExtension implements PipelineExtension
 {
@@ -22,6 +23,7 @@ class CoreExtension implements PipelineExtension
     public function __construct()
     {
         $this->stages = [
+            'aggregator/describe' => new DescribeAggregator(),
             'encoder/json' => new JsonEncoder(),
             'filter/keys' => new KeysFilter(),
             'output/stream' => new StreamOutput(),
