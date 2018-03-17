@@ -21,7 +21,8 @@ class CurlSampler implements Stage
     {
         $schema->setRequired(['url']);
         $schema->setDefaults([
-            'method' => 'GET'
+            'method' => 'GET',
+            'headers' => [],
         ]);
     }
 
@@ -30,6 +31,13 @@ class CurlSampler implements Stage
         $handle = curl_init($config['url']);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $config['method']);
+
+        if ($config['headers']) {
+            curl_setopt($handle, CURLOPT_HTTPHEADER, array_map(function ($key, $value) {
+                return sprintf('%s: %s', $key, $value);
+            }, array_keys($config['headers']), array_values($config['headers'])));
+        }
+
         curl_exec($handle);
         $info = curl_getinfo($handle);
         curl_close($handle);

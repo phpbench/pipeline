@@ -47,7 +47,7 @@ class CurlSamplerTest extends CoreTestCase
 
         $request = $this->requests();
         $request = reset($request);
-        $this->assertEquals('GET', $request['method']);
+        $this->assertEquals('GET', $request['REQUEST_METHOD']);
 
     }
 
@@ -60,7 +60,25 @@ class CurlSamplerTest extends CoreTestCase
 
         $request = $this->requests();
         $request = reset($request);
-        $this->assertEquals('POST', $request['method']);
+        $this->assertEquals('POST', $request['REQUEST_METHOD']);
+    }
+
+    public function testItSendsHeaders()
+    {
+        $result = $this->pipeline()
+            ->stage('sampler/curl', [
+                'url' => self::SAMPLE_URL, 
+                'headers' => [
+                    'X-Header1' => 'Yes',
+                    'X-Header2' => 'No',
+                ]])
+            ->generator()
+            ->send([]);
+
+        $request = $this->requests();
+        $request = reset($request);
+        $this->assertEquals('Yes', $request['HTTP_X_HEADER1']);
+        $this->assertEquals('No', $request['HTTP_X_HEADER2']);
     }
 
     private function requests(): array
