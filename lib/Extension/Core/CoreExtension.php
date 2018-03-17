@@ -8,6 +8,8 @@ use PhpBench\Pipeline\Extension\Core\Stage\Encoder\JsonEncoder;
 use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CallableSampler;
 use PhpBench\Pipeline\Extension\Core\Stage\Output\StreamOutput;
 use PhpBench\Pipeline\Extension\Core\Stage\Parameter\SerialParameter;
+use PhpBench\Pipeline\Extension\Core\Stage\Valve\TakeValve;
+use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CurlSampler;
 
 class CoreExtension implements PipelineExtension
 {
@@ -22,7 +24,9 @@ class CoreExtension implements PipelineExtension
             'encoder/json' => new JsonEncoder(),
             'output/stream' => new StreamOutput(),
             'sampler/callable' => new CallableSampler(),
+            'sampler/curl' => new CurlSampler(),
             'parameter/serial' => new SerialParameter(),
+            'valve/take' => new TakeValve(),
         ];
     }
 
