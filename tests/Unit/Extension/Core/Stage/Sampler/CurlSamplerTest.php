@@ -26,7 +26,7 @@ class CurlSamplerTest extends CoreTestCase
         $this->process = new Process('php -S '.self::SAMPLE_URL);
         $this->process->setWorkingDirectory(__DIR__.'/../../../../../Serve');
         $this->process->start();
-        usleep(1000);
+        usleep(50000);
     }
 
     public function tearDown()
