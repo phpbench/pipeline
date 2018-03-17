@@ -10,6 +10,7 @@ use PhpBench\Pipeline\Extension\Core\Stage\Output\StreamOutput;
 use PhpBench\Pipeline\Extension\Core\Stage\Parameter\SerialParameter;
 use PhpBench\Pipeline\Extension\Core\Stage\Valve\TakeValve;
 use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CurlSampler;
+use PhpBench\Pipeline\Extension\Core\Stage\Filter\KeysFilter;
 
 class CoreExtension implements PipelineExtension
 {
@@ -22,10 +23,11 @@ class CoreExtension implements PipelineExtension
     {
         $this->stages = [
             'encoder/json' => new JsonEncoder(),
+            'filter/keys' => new KeysFilter(),
             'output/stream' => new StreamOutput(),
+            'parameter/serial' => new SerialParameter(),
             'sampler/callable' => new CallableSampler(),
             'sampler/curl' => new CurlSampler(),
-            'parameter/serial' => new SerialParameter(),
             'valve/take' => new TakeValve(),
         ];
     }
