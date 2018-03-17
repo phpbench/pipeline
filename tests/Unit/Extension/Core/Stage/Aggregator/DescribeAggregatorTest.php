@@ -3,6 +3,7 @@
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Aggregator;
 
 use PhpBench\Pipeline\Tests\Unit\Extension\Core\CoreTestCase;
+use InvalidArgumentException;
 
 class DescribeAggregatorTest extends CoreTestCase
 {
@@ -77,4 +78,22 @@ class DescribeAggregatorTest extends CoreTestCase
         $this->assertArrayHasKey('two, one', $result);
         $this->assertArrayHasKey('three, three', $result);
     }
+
+    public function testThrowsExceptionIfGroupByFieldDoesntExist()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Field "tie" does not exist in data with fields "one", "two", "time"');
+        $this->pipeline()
+            ->stage(function () {
+                yield;
+                yield ['one' => 'one', 'two' => 'two', 'time' => 10];
+            })
+            ->stage('aggregator/describe', [
+                'group_by' => ['one' ],
+                'describe' => ['tie'],
+            ])
+            ->run();
+
+    }
+
 }

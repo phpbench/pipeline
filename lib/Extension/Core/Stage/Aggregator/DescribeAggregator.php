@@ -26,6 +26,13 @@ class DescribeAggregator implements Stage
                     $samples[$hash][$field] = [];
                 }
 
+                if (false === isset($data[$field])) {
+                    throw new InvalidArgumentException(sprintf(
+                        'Field "%s" does not exist in data with fields "%s"',
+                        $field, implode('", "', array_keys($data))
+                    ));
+                }
+
                 $samples[$hash][$field][] = $data[$field];
             }
 
