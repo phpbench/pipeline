@@ -34,7 +34,7 @@ class CurlSamplerTest extends CoreTestCase
         $this->process->stop();
     }
 
-    public function testItSamplesAGet()
+    public function testSamplesAGet()
     {
         $result = $this->pipeline()
             ->stage('sampler/curl', ['url' => self::SAMPLE_URL])
@@ -50,7 +50,7 @@ class CurlSamplerTest extends CoreTestCase
         $this->assertEquals('GET', $request['REQUEST_METHOD']);
     }
 
-    public function testItSamplesAPost()
+    public function testSamplesAPost()
     {
         $result = $this->pipeline()
             ->stage('sampler/curl', ['url' => self::SAMPLE_URL, 'method' => 'POST'])
@@ -62,7 +62,7 @@ class CurlSamplerTest extends CoreTestCase
         $this->assertEquals('POST', $request['REQUEST_METHOD']);
     }
 
-    public function testItSendsHeaders()
+    public function testSendsHeaders()
     {
         $result = $this->pipeline()
             ->stage('sampler/curl', [
@@ -80,6 +80,23 @@ class CurlSamplerTest extends CoreTestCase
         $this->assertEquals('No', $request['HTTP_X_HEADER2']);
     }
 
+    public function testConcurrentRequests()
+    {
+        $result = $this->pipeline()
+            ->stage('valve/take', [ 'quantity' => 4 ])
+            ->stage('sampler/curl', [
+                'url' => self::SAMPLE_URL,
+                'concurrency' => 4,
+                'headers' => [
+                    'X-Header1' => 'Yes',
+                    'X-Header2' => 'No',
+                ], ])
+            ->run();
+
+        $requests = $this->requests();
+        $this->assertCount(4, $requests);
+    }
+
     private function requests(): array
     {
         $requests = [];
@@ -87,6 +104,6 @@ class CurlSamplerTest extends CoreTestCase
             $requests[] = json_decode($request, true);
         }
 
-        return $requests;
+        return array_filter($requests);
     }
 }
