@@ -25,6 +25,7 @@ class CurlSampler implements Stage
             }
 
             $multiInfo = curl_multi_info_read($this->multiHandle);
+            curl_multi_exec($this->multiHandle, $active);
 
             if (false !== $multiInfo) {
                 $info = $this->closeHandle($multiInfo);
@@ -32,7 +33,12 @@ class CurlSampler implements Stage
                 list($config, $data) = yield $info;
             }
 
-            list($config, $data) = yield Signal::continue();
+            if (true === $config['async']) {
+                list($config, $data) = yield Signal::continue();
+                continue;
+            }
+
+            usleep($config['sleep']);
         }
 
         curl_multi_close($this->multiHandle);
@@ -45,6 +51,8 @@ class CurlSampler implements Stage
             'method' => 'GET',
             'headers' => [],
             'concurrency' => 1,
+            'async' => false,
+            'sleep' => 10000,
         ]);
     }
 
@@ -61,7 +69,6 @@ class CurlSampler implements Stage
         }
 
         curl_multi_add_handle($this->multiHandle, $handle);
-        curl_multi_exec($this->multiHandle, $active);
     }
 
     private function closeHandle($multiInfo)
@@ -69,6 +76,7 @@ class CurlSampler implements Stage
         $info = curl_getinfo($multiInfo['handle']);
         curl_multi_remove_handle($this->multiHandle, $multiInfo['handle']);
         curl_close($multiInfo['handle']);
+
         return $info;
     }
 }

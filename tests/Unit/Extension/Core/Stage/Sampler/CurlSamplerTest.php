@@ -87,6 +87,7 @@ class CurlSamplerTest extends CoreTestCase
             ->stage('sampler/curl', [
                 'url' => self::SAMPLE_URL,
                 'concurrency' => 4,
+                'async' => true,
             ])
             ->stage('aggregator/describe', [ 'group_by' => 'url', 'describe' => 'total_time' ])
             ->stage('parameter/counter')
@@ -95,7 +96,7 @@ class CurlSamplerTest extends CoreTestCase
         $requests = $this->requests();
 
         // although we specified a concurrency of 4, 6 requests were made?
-        $this->assertCount(6, $requests);
+        $this->assertCount(4, $requests);
     }
 
     private function requests(): array
