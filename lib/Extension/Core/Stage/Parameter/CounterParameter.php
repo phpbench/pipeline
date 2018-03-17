@@ -14,7 +14,7 @@ class CounterParameter implements Stage
 
         $count = 0;
         while (true) {
-            list($config, $data) = yield [ $config['name'] => $count += $config['step'] ];
+            list($config, $data) = yield [$config['name'] => $count += $config['step']];
         }
     }
 
@@ -22,7 +22,7 @@ class CounterParameter implements Stage
     {
         $schema->setDefaults([
             'name' => 'count',
-            'step' => 1
+            'step' => 1,
         ]);
     }
 }

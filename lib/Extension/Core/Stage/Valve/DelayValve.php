@@ -21,7 +21,7 @@ class DelayValve implements Stage
     public function configure(Schema $schema)
     {
         $schema->setDefaults([
-            'time' => 10000
+            'time' => 10000,
         ]);
     }
 }

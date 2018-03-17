@@ -92,7 +92,7 @@ class PipelineTest extends TestCase
         ])->will(function () use ($configValue) {
             return new ConfiguredGenerator((function () {
                 list($config, $data) = yield;
-                yield [ $config['key'] ];
+                yield [$config['key']];
 
             })(), [
                 'key' => $configValue,
@@ -110,42 +110,42 @@ class PipelineTest extends TestCase
     {
         yield 'token only' => [
             '%my_value%',
-            [ 'my_value' => 'Hai!' ],
-            ['Hai!']
+            ['my_value' => 'Hai!'],
+            ['Hai!'],
         ];
 
         yield 'token with surrounding text' => [
             'hello - %my_value% - bye',
-            [ 'my_value' => 'Hai!' ],
-            ['hello - Hai! - bye']
+            ['my_value' => 'Hai!'],
+            ['hello - Hai! - bye'],
         ];
 
         yield 'multiple same tokens' => [
             '%my_value% - %my_value%',
-            [ 'my_value' => 'Hai!' ],
-            ['Hai! - Hai!']
+            ['my_value' => 'Hai!'],
+            ['Hai! - Hai!'],
         ];
 
         yield 'multiple different tokens' => [
             '%my_value% - %my.foobar%',
-            [ 'my_value' => 'Hai!', 'my.foobar' => 'Ciao!' ],
-            ['Hai! - Ciao!']
+            ['my_value' => 'Hai!', 'my.foobar' => 'Ciao!'],
+            ['Hai! - Ciao!'],
         ];
 
         yield 'token only' => [
             '%my_value%',
-            [ 'my_value' => 'Hai!' ],
-            ['Hai!']
+            ['my_value' => 'Hai!'],
+            ['Hai!'],
         ];
 
         yield 'throws exception if data does not contain the token' => [
             '%my_value% - %my.foobar%',
-            [ 'my_value' => 'Hai!' ],
+            ['my_value' => 'Hai!'],
             [],
             [
                 InvalidArgumentException::class,
-                'Data does not contain key for token "my.foobar", data keys: "my_value"'
-            ]
+                'Data does not contain key for token "my.foobar", data keys: "my_value"',
+            ],
         ];
     }
 

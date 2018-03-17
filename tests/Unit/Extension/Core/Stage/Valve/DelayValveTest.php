@@ -10,7 +10,7 @@ class DelayValveTest extends CoreTestCase
     {
         $start = microtime(true);
         $this->pipeline()
-            ->stage('valve/delay', [ 'time' => 10000 ])
+            ->stage('valve/delay', ['time' => 10000])
             ->generator()
             ->current();
 

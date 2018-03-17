@@ -22,11 +22,11 @@ class Redraw implements Stage
         while (true) {
             foreach ($data as &$line) {
                 if (null === $lastData) {
-                    $line = self::ANSI_SAVE_CURSOR_POS . $line;
+                    $line = self::ANSI_SAVE_CURSOR_POS.$line;
                 }
 
                 if ($lastData) {
-                    $line = self::ANSI_RESTORE_CURSOR_POS . $line;
+                    $line = self::ANSI_RESTORE_CURSOR_POS.$line;
                     $lineLength = $this->maxLineLength($line, $lineLength);
                     $line = $this->maximizeLines($line, $lineLength);
                 }

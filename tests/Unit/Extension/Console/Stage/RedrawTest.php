@@ -2,7 +2,6 @@
 
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Console\Stage;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Pipeline\Tests\Unit\Extension\Console\ConsoleTestCase;
 
 class RedrawTest extends ConsoleTestCase

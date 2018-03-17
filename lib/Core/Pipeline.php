@@ -6,7 +6,6 @@ use Generator;
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
 use PhpBench\Pipeline\Core\Exception\InvalidArgumentException;
 use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
-use PhpBench\Pipeline\Core\ConfiguredGenerator;
 
 class Pipeline implements Stage, PipelineExtension
 {
@@ -155,7 +154,7 @@ class Pipeline implements Stage, PipelineExtension
                     ));
                 }
 
-                $replacements['%' . $key . '%'] = $data[$key];
+                $replacements['%'.$key.'%'] = $data[$key];
             }
 
             $value = strtr($value, $replacements);

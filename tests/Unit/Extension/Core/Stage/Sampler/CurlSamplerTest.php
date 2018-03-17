@@ -83,13 +83,13 @@ class CurlSamplerTest extends CoreTestCase
     public function testConcurrentRequests()
     {
         $result = $this->pipeline()
-            ->stage('valve/take', [ 'quantity' => 4 ])
+            ->stage('valve/take', ['quantity' => 4])
             ->stage('sampler/curl', [
                 'url' => self::SAMPLE_URL,
                 'concurrency' => 4,
                 'async' => true,
             ])
-            ->stage('aggregator/describe', [ 'group_by' => 'url', 'describe' => 'total_time' ])
+            ->stage('aggregator/describe', ['group_by' => 'url', 'describe' => 'total_time'])
             ->stage('parameter/counter')
             ->run();
 

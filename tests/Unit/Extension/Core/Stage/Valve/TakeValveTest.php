@@ -18,7 +18,7 @@ class TakeValveTest extends CoreTestCase
     public function testTakeeThree()
     {
         $result = $this->pipeline()
-            ->stage(function () { 
+            ->stage(function () {
                 list($config, $data) = yield;
                 while (true) {
                     $data[] = 'goodbye';

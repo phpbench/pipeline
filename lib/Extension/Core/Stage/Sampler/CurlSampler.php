@@ -21,7 +21,7 @@ class CurlSampler implements Stage
         while (true) {
             if ($this->activeRequests < $config['concurrency']) {
                 $this->sampleUrl($config);
-                $this->activeRequests++;
+                ++$this->activeRequests;
             }
 
             $multiInfo = curl_multi_info_read($this->multiHandle);
@@ -29,7 +29,7 @@ class CurlSampler implements Stage
 
             if (false !== $multiInfo) {
                 $info = $this->closeHandle($multiInfo);
-                $this->activeRequests--;
+                --$this->activeRequests;
                 list($config, $data) = yield $info;
             }
 
