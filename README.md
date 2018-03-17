@@ -3,6 +3,11 @@ PHPBench Pipeline
 
 Composable benchmarking framework.
 
+Rules:
+
+- All stages are passed initial configuration and data via. `yield`.
+- 
+
 ```php
 use PhpBench\Pipeline\Core\PipelineBuilder;
 

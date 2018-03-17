@@ -65,12 +65,88 @@ class PipelineTest extends TestCase
                 list($config, $data) = yield;
                 $data[] = 'Goodbye';
                 yield $data;
-            })(), []);
+            })(), [
+                'key' => 'value',
+            ]);
         });
+
         $data = $this->runPipeline([
             ['test/foobar', ['key' => 'value']],
         ], ['Hello']);
         $this->assertEquals(['Hello', 'Goodbye'], $data);
+    }
+
+    /**
+     * @dataProvider provideSubstitutesConfigTokensWithDataValues
+     */
+    public function testSubstitutesConfig($configValue, array $data, array $expected, array $exception = [])
+    {
+        if ($exception) {
+            list($expectedClass, $expectedMessage) = $exception;
+            $this->expectException($expectedClass);
+            $this->expectExceptionMessage($expectedMessage);
+        }
+
+        $this->factory->generatorFor('test/foobar', [
+            'key' => $configValue,
+        ])->will(function () use ($configValue) {
+            return new ConfiguredGenerator((function () {
+                list($config, $data) = yield;
+                yield [ $config['key'] ];
+
+            })(), [
+                'key' => $configValue,
+            ]);
+        });
+
+        $data = $this->runPipeline([
+            ['test/foobar', ['key' => $configValue]],
+        ], $data);
+
+        $this->assertEquals($expected, $data);
+    }
+
+    public function provideSubstitutesConfigTokensWithDataValues()
+    {
+        yield 'token only' => [
+            '%my_value%',
+            [ 'my_value' => 'Hai!' ],
+            ['Hai!']
+        ];
+
+        yield 'token with surrounding text' => [
+            'hello - %my_value% - bye',
+            [ 'my_value' => 'Hai!' ],
+            ['hello - Hai! - bye']
+        ];
+
+        yield 'multiple same tokens' => [
+            '%my_value% - %my_value%',
+            [ 'my_value' => 'Hai!' ],
+            ['Hai! - Hai!']
+        ];
+
+        yield 'multiple different tokens' => [
+            '%my_value% - %my.foobar%',
+            [ 'my_value' => 'Hai!', 'my.foobar' => 'Ciao!' ],
+            ['Hai! - Ciao!']
+        ];
+
+        yield 'token only' => [
+            '%my_value%',
+            [ 'my_value' => 'Hai!' ],
+            ['Hai!']
+        ];
+
+        yield 'throws exception if data does not contain the token' => [
+            '%my_value% - %my.foobar%',
+            [ 'my_value' => 'Hai!' ],
+            [],
+            [
+                InvalidArgumentException::class,
+                'Data does not contain key for token "my.foobar", data keys: "my_value"'
+            ]
+        ];
     }
 
     public function testThrowsExceptionIfStageNotStageOrCallable()
