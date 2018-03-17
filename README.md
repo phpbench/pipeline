@@ -1,11 +1,15 @@
 PHPBench Pipeline
 =================
 
+[![Build
+Status](https://travis-ci.org/phpbench/pipeline.svg?branch=master)](https://travis-ci.org/phpbench/pipeline)
+
 Composable benchmarking framework.
 
 Rules:
 
 - All stages are passed initial configuration and data via. `yield`.
+- All stages must yield configuration and data
 - 
 
 ```php
