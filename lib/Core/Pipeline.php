@@ -2,10 +2,8 @@
 
 namespace PhpBench\Pipeline\Core;
 
-use PhpBench\Pipeline\Core\Stage;
 use Generator;
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
-use PhpBench\Pipeline\Core\PipelineExtension;
 use PhpBench\Pipeline\Core\Exception\InvalidArgumentException;
 use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
 
@@ -19,6 +17,7 @@ class Pipeline implements Stage, PipelineExtension
 
         if (empty($generators)) {
             yield $initialData;
+
             return $initialData;
         }
 
@@ -56,12 +55,12 @@ class Pipeline implements Stage, PipelineExtension
                 $generators[] = $stage();
                 continue;
             }
-        
+
             if (is_array($stage)) {
                 $generators[] = $this->buildGeneratorFromArray($stage, $config);
                 continue;
             }
-        
+
             throw new InvalidStage(sprintf(
                 'Stage must either be a callable or a stage alias, got "%s"',
                 is_object($stage) ? get_class($stage) : gettype($stage)
@@ -83,6 +82,7 @@ class Pipeline implements Stage, PipelineExtension
         $stageName = $stage[0];
         $stageConfig = isset($stage[1]) ? $stage[1] : [];
         $generator = $config['generator_factory']->generatorFor($stageName, $stageConfig);
+
         return $generator;
     }
 
@@ -92,7 +92,7 @@ class Pipeline implements Stage, PipelineExtension
     public function configure(Schema $schema)
     {
         $schema->setRequired([
-            'generator_factory'
+            'generator_factory',
         ]);
 
         $schema->setTypes([
@@ -112,7 +112,7 @@ class Pipeline implements Stage, PipelineExtension
      */
     public function stageAliases(): array
     {
-        return [ 'pipeline' ];
+        return ['pipeline'];
     }
 
     /**

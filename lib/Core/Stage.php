@@ -3,7 +3,6 @@
 namespace PhpBench\Pipeline\Core;
 
 use Generator;
-use PhpBench\Pipeline\Core\Schema;
 
 interface Stage
 {

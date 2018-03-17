@@ -5,7 +5,6 @@ namespace PhpBench\Pipeline\Extension\Core\Stage\Encoder;
 use PhpBench\Pipeline\Core\Stage;
 use Generator;
 use PhpBench\Pipeline\Core\Schema;
-use PhpBench\Pipeline\Core\StageRegistry;
 
 class JsonEncoder implements Stage
 {
@@ -19,7 +18,7 @@ class JsonEncoder implements Stage
         }
 
         while (true) {
-            $data = yield [ json_encode($data, $flags) ];
+            $data = yield [json_encode($data, $flags)];
         }
     }
 

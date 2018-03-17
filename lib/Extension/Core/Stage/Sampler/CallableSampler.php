@@ -17,7 +17,7 @@ class CallableSampler implements Stage
         while (true) {
             $start = microtime(true);
 
-            for ($i = 0; $i < $nbIterations; $i++) {
+            for ($i = 0; $i < $nbIterations; ++$i) {
                 call_user_func($callable, $data);
             }
 
@@ -34,7 +34,7 @@ class CallableSampler implements Stage
             'iterations' => 1,
         ]);
         $schema->setRequired([
-            'callable'
+            'callable',
         ]);
     }
 }

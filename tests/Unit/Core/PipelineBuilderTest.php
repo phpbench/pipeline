@@ -22,7 +22,6 @@ class PipelineBuilderTest extends TestCase
      */
     private $stage1;
 
-
     public function setUp()
     {
         $this->extension1 = $this->prophesize(PipelineExtension::class);
@@ -41,7 +40,7 @@ class PipelineBuilderTest extends TestCase
         $builder = PipelineBuilder::create();
         $builder->stage(function () {
             yield;
-            yield [ 'Hello' ];
+            yield ['Hello'];
         });
         $pipeline = $builder->build();
 
@@ -57,7 +56,7 @@ class PipelineBuilderTest extends TestCase
         $this->stage1->configure(Argument::type(Schema::class))->will(function () {});
         $this->stage1->__invoke([])->will(function () {
             yield;
-            yield [ 'Test' ];
+            yield ['Test'];
         });
 
         $builder = PipelineBuilder::create();
@@ -76,7 +75,7 @@ class PipelineBuilderTest extends TestCase
         $builder = PipelineBuilder::create();
         $builder->stage(function () {
             yield;
-            yield [ 'Hello' ];
+            yield ['Hello'];
         });
         $builder->stage(function () {
             $data = yield;
@@ -95,7 +94,7 @@ class PipelineBuilderTest extends TestCase
         $builder = PipelineBuilder::create();
         $builder->stage(function () {
             yield;
-            yield [ 'Hello' ];
+            yield ['Hello'];
         });
         $result = $builder->run();
 

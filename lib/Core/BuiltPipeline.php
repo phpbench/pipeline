@@ -2,8 +2,6 @@
 
 namespace PhpBench\Pipeline\Core;
 
-use Countable;
-use PhpBench\Pipeline\Core\GeneratorFactory;
 use Generator;
 
 final class BuiltPipeline
@@ -45,10 +43,9 @@ final class BuiltPipeline
     {
         $generator = $this->factory->generatorFor('pipeline', [
             'stages' => $this->stages,
-            'generator_factory' => $this->factory
+            'generator_factory' => $this->factory,
         ]);
 
         return $generator;
     }
-    
 }

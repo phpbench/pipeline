@@ -2,8 +2,6 @@
 
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Encoder;
 
-use PhpBench\Pipeline\Tests\Unit\StageTestCase;
-use PhpBench\Pipeline\Extension\Core\Stage\Encoder\JsonEncoder;
 use PhpBench\Pipeline\Tests\Unit\Extension\Core\CoreTestCase;
 
 class JsonEncoderTest extends CoreTestCase

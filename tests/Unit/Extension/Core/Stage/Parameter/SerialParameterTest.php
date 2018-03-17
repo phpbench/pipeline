@@ -2,18 +2,29 @@
 
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Parameter;
 
-use PhpBench\Pipeline\Tests\Unit\StageTestCase;
-use PhpBench\Pipeline\Extension\Core\Stage\Parameter\SerialParameter;
+use PhpBench\Pipeline\Tests\Unit\Extension\Core\CoreTestCase;
 
-class SerialParameterTest extends StageTestCase
+class SerialParameterTest extends CoreTestCase
 {
     public function testYieldsNamedSeriesInfinitely()
     {
-        $result = $this->runStage(new SerialParameter(), [
-            'name' => 'Hello',
-            'values' => [ 1, 2, 3, 4 ]
-        ], [], 7);
+        $generator = $this->pipeline()
+            ->stage('parameter/serial', [
+                'name' => 'Hello',
+                'values' => [1, 2, 3, 4],
+            ])
+            ->generator();
 
-        $this->assertEquals([ 'Hello' => 3 ], $result);
+        $generator->next();
+        $generator->next();
+        $generator->next();
+        $generator->next();
+        $generator->next();
+        $generator->next();
+        $generator->next();
+
+        $result = $generator->current();
+
+        $this->assertEquals(['Hello' => 3], $result);
     }
 }

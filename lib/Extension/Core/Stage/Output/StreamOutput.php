@@ -19,7 +19,7 @@ class StreamOutput implements Stage
                     $line = serialize($line);
                 }
 
-                fwrite($stream, $line . PHP_EOL);
+                fwrite($stream, $line.PHP_EOL);
             }
 
             $data = yield $data;
@@ -27,7 +27,6 @@ class StreamOutput implements Stage
 
         fclose($stream);
     }
-
 
     public function configure(Schema $schema)
     {

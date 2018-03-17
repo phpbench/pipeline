@@ -52,7 +52,7 @@ class StageRegistryTest extends TestCase
 
         $registry = $this->createRegistry([
             $this->extension1->reveal(),
-            $this->extension2->reveal()
+            $this->extension2->reveal(),
         ]);
 
         $registry->get('foobar');
@@ -72,7 +72,7 @@ class StageRegistryTest extends TestCase
 
         $registry = $this->createRegistry([
             $this->extension1->reveal(),
-            $this->extension2->reveal()
+            $this->extension2->reveal(),
         ]);
 
         $registry->get('foobar');

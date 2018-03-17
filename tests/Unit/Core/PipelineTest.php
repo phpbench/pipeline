@@ -9,7 +9,6 @@ use stdClass;
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
 use PhpBench\Pipeline\Core\Exception\InvalidArgumentException;
 use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
-use PhpBench\Pipeline\Core\BuiltPipeline;
 
 class PipelineTest extends TestCase
 {
@@ -49,7 +48,7 @@ class PipelineTest extends TestCase
             yield $data;
         });
         $data = $this->runPipeline([
-            [ 'test/foobar' ],
+            ['test/foobar'],
         ], ['Hello']);
         $this->assertEquals(['Hello', 'Goodbye'], $data);
     }
@@ -64,7 +63,7 @@ class PipelineTest extends TestCase
             yield $data;
         });
         $data = $this->runPipeline([
-            [ 'test/foobar', [ 'key' => 'value' ] ],
+            ['test/foobar', ['key' => 'value']],
         ], ['Hello']);
         $this->assertEquals(['Hello', 'Goodbye'], $data);
     }
@@ -74,7 +73,7 @@ class PipelineTest extends TestCase
         $this->expectException(InvalidStage::class);
         $this->expectExceptionMessage('Stage must either be a callable or a stage alias, got "stdClass"');
         $this->runPipeline([
-            new stdClass()
+            new stdClass(),
         ]);
     }
 
@@ -84,7 +83,7 @@ class PipelineTest extends TestCase
         $this->expectExceptionMessage('Stage must be at least a 1 and at most a 2 element array ([ (string) stage-name, (array) stage-config ], got 3 elements');
 
         $this->runPipeline([
-            [ 'foobar', ['barfoo' => 'asd' ], 'googoo' ],
+            ['foobar', ['barfoo' => 'asd'], 'googoo'],
         ]);
     }
 
@@ -105,7 +104,7 @@ class PipelineTest extends TestCase
         $stage = function () {
             $data = yield;
 
-            for ($i = 0; $i < 2; $i++) {
+            for ($i = 0; $i < 2; ++$i) {
                 $data[] = 'Hello';
                 $data = yield $data;
             }
@@ -117,7 +116,7 @@ class PipelineTest extends TestCase
         ], [], true);
 
         $this->assertEquals([
-            'Hello', 'Hello', 'Hello', 'Hello'
+            'Hello', 'Hello', 'Hello', 'Hello',
         ], $result);
     }
 

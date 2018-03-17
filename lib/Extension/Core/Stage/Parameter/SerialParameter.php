@@ -14,7 +14,7 @@ class SerialParameter implements Stage
         $values = $config['values'];
 
         while (true) {
-            for ($i = 0; $i < count($values); $i++) {
+            for ($i = 0; $i < count($values); ++$i) {
                 $data[$config['name']] = $values[$i];
                 $data = yield $data;
             }

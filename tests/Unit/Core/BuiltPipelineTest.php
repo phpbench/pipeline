@@ -22,7 +22,7 @@ class BuiltPipelineTest extends TestCase
         $pipeline = new BuiltPipeline([], $this->factory->reveal());
         $this->factory->generatorFor('pipeline', [
             'stages' => [],
-            'generator_factory' => $this->factory->reveal()
+            'generator_factory' => $this->factory->reveal(),
         ])->will(function () {
             yield 'hello';
             yield 'goodbye';
@@ -34,6 +34,5 @@ class BuiltPipelineTest extends TestCase
         }
 
         $this->assertEquals(['hello', 'goodbye'], $results);
-
     }
 }

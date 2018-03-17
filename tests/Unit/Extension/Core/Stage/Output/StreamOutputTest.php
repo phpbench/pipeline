@@ -2,16 +2,16 @@
 
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Output;
 
-use PhpBench\Pipeline\Tests\Unit\StageTestCase;
-use PhpBench\Pipeline\Extension\Core\Stage\Output\StreamOutput;
-use Closure;
 use PhpBench\Pipeline\Core\Stage;
+use PhpBench\Pipeline\Tests\Unit\Extension\Core\CoreTestCase;
 
-class StreamOutputTest extends StageTestCase
+class StreamOutputTest extends CoreTestCase
 {
     public function testWritesToStream()
     {
-        $result = $this->runStage(new StreamOutput(), [ 'stream' => 'php://temp' ], [ 'hello' ]);
+        $result = $this->pipeline()
+            ->stage('output/stream', ['stream' => 'php://temp'])
+            ->generator()->send(['hello']);
 
         $this->assertEquals(['hello'], $result);
     }
