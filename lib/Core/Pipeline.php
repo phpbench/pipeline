@@ -30,18 +30,27 @@ class Pipeline implements Stage, PipelineExtension
             foreach ($configuredGenerators as $configuredGenerator) {
                 $generatorConfig = $configuredGenerator->config();
                 $generatorConfig = $this->replaceTokens($generatorConfig, $data);
-                $data = $configuredGenerator->generator()->send([$generatorConfig, $data]);
+                $response = $configuredGenerator->generator()->send([$generatorConfig, $data]);
 
                 if (false === $configuredGenerator->generator()->valid()) {
                     break 2;
                 }
 
-                if (false === is_array($data)) {
+                if (false === $response instanceof Signal && false === is_array($response)) {
                     throw new InvalidYieldedValue(sprintf(
-                        'All yielded values must bne arrays, got "%s"',
+                        'All yielded values must be arrays or Signals, got "%s"',
                         gettype($data)
                     ));
                 }
+
+                if ($response instanceof Signal) {
+                    switch ($response) {
+                        case Signal::continue():
+                            break 2;
+                    }
+                }
+
+                $data = $response;
             }
 
             yield $data;

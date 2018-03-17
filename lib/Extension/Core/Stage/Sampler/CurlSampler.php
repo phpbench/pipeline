@@ -32,7 +32,7 @@ class CurlSampler implements Stage
                 list($config, $data) = yield $info;
             }
 
-            yield Signal::continue();
+            list($config, $data) = yield Signal::continue();
         }
 
         curl_multi_close($this->multiHandle);

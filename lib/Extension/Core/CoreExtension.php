@@ -13,6 +13,7 @@ use PhpBench\Pipeline\Extension\Core\Stage\Sampler\CurlSampler;
 use PhpBench\Pipeline\Extension\Core\Stage\Filter\KeysFilter;
 use PhpBench\Pipeline\Extension\Core\Stage\Aggregator\DescribeAggregator;
 use PhpBench\Pipeline\Extension\Core\Stage\Parameter\CounterParameter;
+use PhpBench\Pipeline\Extension\Core\Stage\Valve\DelayValve;
 
 class CoreExtension implements PipelineExtension
 {
@@ -32,6 +33,7 @@ class CoreExtension implements PipelineExtension
             'parameter/counter' => new CounterParameter(),
             'sampler/callable' => new CallableSampler(),
             'sampler/curl' => new CurlSampler(),
+            'valve/delay' => new DelayValve(),
             'valve/take' => new TakeValve(),
         ];
     }
