@@ -17,8 +17,7 @@ class Pipeline implements Stage, PipelineExtension
 
         if (empty($generators)) {
             yield $initialData;
-
-            return $initialData;
+            return;
         }
 
         while (true) {
@@ -43,8 +42,6 @@ class Pipeline implements Stage, PipelineExtension
 
             yield $data;
         }
-
-        return $data;
     }
 
     private function buildGenerators(array $config)
