@@ -9,13 +9,13 @@ use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
 
 class Pipeline implements Stage, PipelineExtension
 {
-    public function __invoke(array $config): Generator
+    public function __invoke(): Generator
     {
-        $generators = $this->buildGenerators($config);
+        list($config, $data) = yield;
+        $configuredGenerators = $this->buildGenerators($config);
+        $initialData = $data = (array) $data;
 
-        $initialData = (array) $data = yield;
-
-        if (empty($generators)) {
+        if (empty($configuredGenerators)) {
             yield $initialData;
 
             return;
@@ -26,10 +26,10 @@ class Pipeline implements Stage, PipelineExtension
                 $data = $initialData;
             }
 
-            foreach ($generators as $generator) {
-                $data = $generator->send($data);
+            foreach ($configuredGenerators as $configuredGenerator) {
+                $data = $configuredGenerator->generator()->send([$configuredGenerator->config(), $data]);
 
-                if (false === $generator->valid()) {
+                if (false === $configuredGenerator->generator()->valid()) {
                     break 2;
                 }
 
@@ -45,12 +45,12 @@ class Pipeline implements Stage, PipelineExtension
         }
     }
 
-    private function buildGenerators(array $config)
+    private function buildGenerators(array $config): array
     {
         $generators = [];
         foreach ($config['stages'] as $stage) {
             if (is_callable($stage)) {
-                $generators[] = $stage();
+                $generators[] = new ConfiguredGenerator($stage(), $config);
                 continue;
             }
 
@@ -68,7 +68,7 @@ class Pipeline implements Stage, PipelineExtension
         return $generators;
     }
 
-    private function buildGeneratorFromArray(array $stage, array $config)
+    private function buildGeneratorFromArray(array $stage, array $config): ConfiguredGenerator
     {
         if (count($stage) > 2) {
             throw new InvalidArgumentException(sprintf(

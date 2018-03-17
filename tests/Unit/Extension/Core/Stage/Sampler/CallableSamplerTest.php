@@ -13,7 +13,7 @@ class CallableSamplerTest extends CoreTestCase
                 'callable' => function (array $data) {
                 },
             ])
-            ->generator()->send([]);
+            ->generator()->current();
 
         $this->assertArrayHasKey('time', $result);
     }
@@ -24,7 +24,7 @@ class CallableSamplerTest extends CoreTestCase
             ->stage('sampler/callable', [
                 'callable' => [$this, 'stubCallable'],
             ])
-            ->generator()->send([]);
+            ->generator()->current();
 
         $this->assertArrayHasKey('time', $result);
     }
@@ -39,7 +39,7 @@ class CallableSamplerTest extends CoreTestCase
                 },
                 'iterations' => 100,
                 ])
-            ->generator()->send([]);
+            ->generator()->current();
 
         $this->assertEquals(100, $count);
     }

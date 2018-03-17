@@ -8,9 +8,9 @@ use PhpBench\Pipeline\Core\Schema;
 
 class JsonEncoder implements Stage
 {
-    public function __invoke(array $config = []): Generator
+    public function __invoke(): Generator
     {
-        $data = yield;
+        list($config, $data) = yield;
         $flags = null;
 
         if ($config['pretty']) {
@@ -18,7 +18,7 @@ class JsonEncoder implements Stage
         }
 
         while (true) {
-            $data = yield [json_encode($data, $flags)];
+            list($config, $data) = yield [json_encode($data, $flags)];
         }
     }
 

@@ -11,7 +11,7 @@ class StreamOutputTest extends CoreTestCase
     {
         $result = $this->pipeline()
             ->stage('output/stream', ['stream' => 'php://temp'])
-            ->generator()->send(['hello']);
+            ->generator(['hello'])->current();
 
         $this->assertEquals(['hello'], $result);
     }

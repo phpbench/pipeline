@@ -8,12 +8,12 @@ use PhpBench\Pipeline\Core\Schema;
 
 class CurlSampler implements Stage
 {
-    public function __invoke(array $config): Generator
+    public function __invoke(): Generator
     {
-        $data = yield;
+        list($config, $data) = yield;
 
         while (true) {
-            $data = yield $this->sampleUrl($config);
+            list($config, $data) = yield $this->sampleUrl($config);
         }
     }
 

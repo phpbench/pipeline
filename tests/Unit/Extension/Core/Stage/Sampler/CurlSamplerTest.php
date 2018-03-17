@@ -39,7 +39,7 @@ class CurlSamplerTest extends CoreTestCase
         $result = $this->pipeline()
             ->stage('sampler/curl', ['url' => self::SAMPLE_URL])
             ->generator()
-            ->send([]);
+            ->current();
 
         $this->assertArrayHasKey('url', $result);
         $this->assertArrayHasKey('content_type', $result);
@@ -55,7 +55,7 @@ class CurlSamplerTest extends CoreTestCase
         $result = $this->pipeline()
             ->stage('sampler/curl', ['url' => self::SAMPLE_URL, 'method' => 'POST'])
             ->generator()
-            ->send([]);
+            ->current();
 
         $request = $this->requests();
         $request = reset($request);
@@ -72,7 +72,7 @@ class CurlSamplerTest extends CoreTestCase
                     'X-Header2' => 'No',
                 ], ])
             ->generator()
-            ->send([]);
+            ->current();
 
         $request = $this->requests();
         $request = reset($request);

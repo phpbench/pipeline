@@ -10,6 +10,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Argument;
 use PhpBench\Pipeline\Core\Schema;
 use Generator;
+use PhpBench\Pipeline\Core\ConfiguredGenerator;
 
 class GeneratorFactoryTest extends TestCase
 {
@@ -42,11 +43,12 @@ class GeneratorFactoryTest extends TestCase
         $this->registry->get('foobar')->willReturn($this->stage1->reveal());
 
         $this->stage1->configure(Argument::type(Schema::class))->shouldBeCalled();
-        $this->stage1->__invoke([])->will(function () {
+        $this->stage1->__invoke()->will(function () {
             yield;
         });
         $generator = $this->factory->generatorFor('foobar', []);
-        $this->assertInstanceOf(Generator::class, $generator);
+        $this->assertInstanceOf(ConfiguredGenerator::class, $generator);
+        $this->assertInstanceOf(Generator::class, $generator->generator());
     }
 
     public function testResolvesConfig()
@@ -61,15 +63,15 @@ class GeneratorFactoryTest extends TestCase
             ]);
         });
 
-        $this->stage1->__invoke([
-            'foo' => 'bar',
-            'bar' => 'six',
-        ])->will(function () {
+        $config = [];
+        $this->stage1->__invoke()->will(function () use (&$config) {
             yield;
         });
-        $generator = $this->factory->generatorFor('foobar', [
+        $configuredGenerator = $this->factory->generatorFor('foobar', [
             'bar' => 'six',
         ]);
-        $this->assertInstanceOf(Generator::class, $generator);
+        $this->assertInstanceOf(ConfiguredGenerator::class, $configuredGenerator);
+        $this->assertInstanceOf(Generator::class, $configuredGenerator->generator());
+        $this->assertEquals(['foo' => 'bar', 'bar' => 'six'], $configuredGenerator->config());
     }
 }

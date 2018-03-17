@@ -10,9 +10,9 @@ class JsonEncoderTest extends CoreTestCase
     {
         $result = $this->pipeline()
             ->stage('encoder/json', [])
-            ->generator();
+            ->generator(['one' => 'two']);
 
-        $this->assertEquals(['{"one":"two"}'], $result->send(['one' => 'two']));
+        $this->assertEquals(['{"one":"two"}'], $result->current());
     }
 
     public function testPrettyPrintsJson()
@@ -21,7 +21,7 @@ class JsonEncoderTest extends CoreTestCase
             ->stage('encoder/json', [
             'pretty' => true,
             ])
-            ->generator()->send(['one' => 'two']);
+            ->generator(['one' => 'two'])->current();
 
         $this->assertEquals([<<<'EOT'
 {

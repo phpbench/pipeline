@@ -8,12 +8,12 @@ use PhpBench\Pipeline\Core\Schema;
 
 class KeysFilter implements Stage
 {
-    public function __invoke(array $config): Generator
+    public function __invoke(): Generator
     {
-        $data = yield;
+        list($config, $data) = yield;
 
         while (true) {
-            $data = yield array_filter($data, function ($key) use ($config) {
+            list($config, $data) = yield array_filter($data, function ($key) use ($config) {
                 return in_array($key, $config['keys']);
             }, ARRAY_FILTER_USE_KEY);
         }

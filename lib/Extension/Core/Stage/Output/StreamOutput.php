@@ -8,9 +8,10 @@ use PhpBench\Pipeline\Core\Schema;
 
 class StreamOutput implements Stage
 {
-    public function __invoke(array $config = []): Generator
+    public function __invoke(): Generator
     {
-        $data = yield;
+        list($config, $data) = $data = yield;
+
         $stream = fopen($config['stream'], $config['mode']);
 
         while (true) {
@@ -22,7 +23,7 @@ class StreamOutput implements Stage
                 fwrite($stream, $line.PHP_EOL);
             }
 
-            $data = yield $data;
+            list($config, $data) = yield $data;
         }
 
         fclose($stream);

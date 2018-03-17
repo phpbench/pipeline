@@ -73,9 +73,9 @@ final class PipelineBuilder
         return $this->build()->run($initialValue);
     }
 
-    public function generator(): Generator
+    public function generator(array $initialData = []): Generator
     {
-        $generator = $this->build()->generator();
+        $generator = $this->build()->generator($initialData);
 
         return $generator;
     }

@@ -2,8 +2,6 @@
 
 namespace PhpBench\Pipeline\Core;
 
-use Generator;
-
 class GeneratorFactory
 {
     /**
@@ -16,13 +14,13 @@ class GeneratorFactory
         $this->registry = $registry;
     }
 
-    public function generatorFor(string $stageName, array $config): Generator
+    public function generatorFor(string $stageName, array $config): ConfiguredGenerator
     {
         $stage = $this->registry->get($stageName);
         $schema = new Schema();
         $stage->configure($schema);
         $config = $schema->resolve($config);
 
-        return $stage->__invoke($config);
+        return new ConfiguredGenerator($stage->__invoke(), $config);
     }
 }

@@ -9,9 +9,9 @@ use InvalidArgumentException;
 
 class DescribeAggregator implements Stage
 {
-    public function __invoke(array $config): Generator
+    public function __invoke(): Generator
     {
-        $data = yield;
+        list($config, $data) = yield;
 
         $samples = [];
         while (true) {
@@ -29,7 +29,7 @@ class DescribeAggregator implements Stage
                 $samples[$hash][$field][] = $data[$field];
             }
 
-            $data = yield $this->describeData($samples);
+            list($config, $data) = yield $this->describeData($samples);
         }
     }
 

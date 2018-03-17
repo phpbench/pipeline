@@ -8,9 +8,9 @@ use PhpBench\Pipeline\Core\Schema;
 
 class CallableSampler implements Stage
 {
-    public function __invoke(array $config = []): Generator
+    public function __invoke(): Generator
     {
-        $data = yield;
+        list($config, $data) = yield;
         $nbIterations = $config['iterations'];
         $callable = $config['callable'];
 
@@ -24,7 +24,7 @@ class CallableSampler implements Stage
             $end = microtime(true);
             $time = (($end * 1E6) - ($start * 1E6)) / $nbIterations;
             $data['time'] = $time;
-            $data = yield $data;
+            list($config, $data) = yield $data;
         }
     }
 

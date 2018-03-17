@@ -4,7 +4,7 @@ namespace PhpBench\Pipeline\Tests\Unit\Extension\Core\Stage\Valve;
 
 use PhpBench\Pipeline\Tests\Unit\Extension\Core\CoreTestCase;
 
-class TakeTest extends CoreTestCase
+class TakeValveTest extends CoreTestCase
 {
     public function testTakesOne()
     {
@@ -18,10 +18,13 @@ class TakeTest extends CoreTestCase
     public function testTakeeThree()
     {
         $result = $this->pipeline()
-            ->stage(function () { $data = yield; while (true) {
-     $data[] = 'goodbye';
-     yield $data;
- } })
+            ->stage(function () { 
+                list($config, $data) = yield;
+                while (true) {
+                    $data[] = 'goodbye';
+                    yield $data;
+                }
+            })
             ->stage('valve/take', ['quantity' => 3])
             ->run([]);
 

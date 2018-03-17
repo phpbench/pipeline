@@ -24,28 +24,30 @@ final class BuiltPipeline
 
     public function run(array $data = []): array
     {
-        $generator = $this->generator();
+        foreach ($this->generator($data) as $data) {
+        }
+
+        return $data;
+    }
+
+    public function generator(array $data = []): Generator
+    {
+        $configuredGenerator = $this->factory->generatorFor('pipeline', [
+            'stages' => $this->stages,
+            'generator_factory' => $this->factory,
+        ]);
+
         $return = $data;
+        $generator = $configuredGenerator->generator();
+
         while ($generator->valid()) {
-            $data = $generator->send($data);
+            $data = $generator->send([$configuredGenerator->config(), $data]);
 
             if (null === $data) {
                 break;
             }
 
-            $return = $data;
+            yield $data;
         }
-
-        return $return;
-    }
-
-    public function generator(): Generator
-    {
-        $generator = $this->factory->generatorFor('pipeline', [
-            'stages' => $this->stages,
-            'generator_factory' => $this->factory,
-        ]);
-
-        return $generator;
     }
 }

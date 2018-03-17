@@ -9,13 +9,13 @@ class KeysFilterTest extends CoreTestCase
     public function testItFiltersByArrayKeys()
     {
         $result = $this->pipeline()->stage('filter/keys', ['keys' => ['two', 'three']])
-            ->generator()
-            ->send([
+            ->generator([
                 'one' => 1,
                 'two' => 2,
                 'three' => 3,
                 'four' => 4,
-            ]);
+            ])
+            ->current();
 
         $this->assertEquals([
             'two' => 2,

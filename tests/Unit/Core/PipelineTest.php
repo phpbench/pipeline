@@ -9,6 +9,7 @@ use stdClass;
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
 use PhpBench\Pipeline\Core\Exception\InvalidArgumentException;
 use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
+use PhpBench\Pipeline\Core\ConfiguredGenerator;
 
 class PipelineTest extends TestCase
 {
@@ -32,7 +33,7 @@ class PipelineTest extends TestCase
     {
         $data = $this->runPipeline([
             function () {
-                $data = yield;
+                list($config, $data) = yield;
                 $data[] = 'Goodbye';
                 yield $data;
             },
@@ -43,9 +44,11 @@ class PipelineTest extends TestCase
     public function testPipesToAConfiguredStageWithNoConfig()
     {
         $this->factory->generatorFor('test/foobar', [])->will(function () {
-            $data = yield;
-            $data[] = 'Goodbye';
-            yield $data;
+            return new ConfiguredGenerator((function () {
+                list($config, $data) = yield;
+                $data[] = 'Goodbye';
+                yield $data;
+            })(), []);
         });
         $data = $this->runPipeline([
             ['test/foobar'],
@@ -58,9 +61,11 @@ class PipelineTest extends TestCase
         $this->factory->generatorFor('test/foobar', [
             'key' => 'value',
         ])->will(function () {
-            $data = yield;
-            $data[] = 'Goodbye';
-            yield $data;
+            return new ConfiguredGenerator((function () {
+                list($config, $data) = yield;
+                $data[] = 'Goodbye';
+                yield $data;
+            })(), []);
         });
         $data = $this->runPipeline([
             ['test/foobar', ['key' => 'value']],
@@ -102,11 +107,11 @@ class PipelineTest extends TestCase
     public function testCanEnableFeedback()
     {
         $stage = function () {
-            $data = yield;
+            list($config, $data) = yield;
 
             for ($i = 0; $i < 2; ++$i) {
                 $data[] = 'Hello';
-                $data = yield $data;
+                list($config, $data) = yield $data;
             }
         };
 
@@ -122,15 +127,15 @@ class PipelineTest extends TestCase
 
     private function runPipeline(array $stages, array $data = [], bool $feedback = false)
     {
-        $generator = (new Pipeline())([
-            'stages' => $stages,
-            'generator_factory' => $this->factory->reveal(),
-            'feedback' => $feedback,
-        ]);
+        $generator = (new Pipeline())();
 
         $return = $data;
         while ($generator->valid()) {
-            $data = $generator->send($data);
+            $data = $generator->send([[
+                'stages' => $stages,
+                'generator_factory' => $this->factory->reveal(),
+                'feedback' => $feedback,
+            ], $data]);
 
             if (null === $data) {
                 break;

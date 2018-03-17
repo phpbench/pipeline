@@ -54,7 +54,7 @@ class PipelineBuilderTest extends TestCase
         $this->extension1->stageAliases()->willReturn(['test/foobar']);
         $this->extension1->stage('test/foobar')->willReturn($this->stage1->reveal());
         $this->stage1->configure(Argument::type(Schema::class))->will(function () {});
-        $this->stage1->__invoke([])->will(function () {
+        $this->stage1->__invoke()->will(function () {
             yield;
             yield ['Test'];
         });
@@ -78,7 +78,7 @@ class PipelineBuilderTest extends TestCase
             yield ['Hello'];
         });
         $builder->stage(function () {
-            $data = yield;
+            list($config, $data) = yield;
             $data[] = 'Goodbye';
             yield $data;
         });

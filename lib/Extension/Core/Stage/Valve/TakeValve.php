@@ -8,12 +8,12 @@ use PhpBench\Pipeline\Core\Schema;
 
 class TakeValve implements Stage
 {
-    public function __invoke(array $config): Generator
+    public function __invoke(): Generator
     {
-        $data = yield;
+        list($config, $data) = yield;
 
         for ($i = 0; $i < $config['quantity']; ++$i) {
-            $data = yield $data;
+            list($config, $data) = yield $data;
         }
     }
 

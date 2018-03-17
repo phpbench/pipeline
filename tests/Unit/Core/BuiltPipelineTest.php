@@ -5,6 +5,7 @@ namespace PhpBench\Pipeline\Tests\Unit\Core;
 use PHPUnit\Framework\TestCase;
 use PhpBench\Pipeline\Core\GeneratorFactory;
 use PhpBench\Pipeline\Core\BuiltPipeline;
+use PhpBench\Pipeline\Core\ConfiguredGenerator;
 
 class BuiltPipelineTest extends TestCase
 {
@@ -17,6 +18,7 @@ class BuiltPipelineTest extends TestCase
     {
         $this->factory = $this->prophesize(GeneratorFactory::class);
     }
+
     public function testItShouldProvideAGenerator()
     {
         $pipeline = new BuiltPipeline([], $this->factory->reveal());
@@ -24,8 +26,11 @@ class BuiltPipelineTest extends TestCase
             'stages' => [],
             'generator_factory' => $this->factory->reveal(),
         ])->will(function () {
-            yield 'hello';
-            yield 'goodbye';
+            return new ConfiguredGenerator((function () {
+                yield;
+                yield 'hello';
+                yield 'goodbye';
+            })(), []);
         });
 
         $results = [];

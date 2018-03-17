@@ -21,7 +21,6 @@ class SerialParameterTest extends CoreTestCase
         $generator->next();
         $generator->next();
         $generator->next();
-        $generator->next();
 
         $result = $generator->current();
 

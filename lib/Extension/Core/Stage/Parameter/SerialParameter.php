@@ -8,15 +8,15 @@ use PhpBench\Pipeline\Core\Schema;
 
 class SerialParameter implements Stage
 {
-    public function __invoke(array $config): Generator
+    public function __invoke(): Generator
     {
-        $data = yield $config;
+        list($config, $data) = yield;
         $values = $config['values'];
 
         while (true) {
             for ($i = 0; $i < count($values); ++$i) {
                 $data[$config['name']] = $values[$i];
-                $data = yield $data;
+                list($config, $data) = yield $data;
             }
         }
     }
