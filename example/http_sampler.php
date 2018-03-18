@@ -17,13 +17,14 @@ $builder->load([
         [ 'pipeline', [ 'stages' => [
             [ 'filter/keys', [ 'keys' => [ 'url', 'total_time', 'connect_time', 'concurrency']]],
             [ 'aggregator/collector', ['limit' => 2] ],
+            //[ 'aggregator/describe', [ 'group_by' => 'url', 'describe' => 'total_time' ] ],
             [ 'encoder/json', [ 'pretty' => true ] ],
-            [ 'console/redraw' ],
+            'console/redraw',
             [ 'output/stream' ],
         ]]],
         [ 'pipeline', [ 'stages' => [
             [ 'encoder/json' ],
-            [ 'output/stream', [ 'stream' => 'report.json' ]],
+            [ 'output/stream', [ 'stream' => 'report.json', 'mode' => 'a' ]],
         ]]]
     ]]],
 ]);

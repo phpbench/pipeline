@@ -14,15 +14,20 @@ class Fork implements Stage, RequiresGeneratorFactory
     {
         list($config, $data) = yield;
 
-        /**
-         * @var GeneratorFactory $generatorFactory */
+        /** @var GeneratorFactory $generatorFactory */
         $generatorFactory = $config['generator_factory'];
 
+        $configuredGenerators = [];
+        foreach ($config['stages'] as $stage) {
+            $configuredGenerators[] = $generatorFactory->generatorFor($stage);
+        }
+
         while (true) {
-            foreach ($config['stages'] as $stage) {
-                $generatorFactory->generatorFor($stage);
-                yield;
+            foreach ($configuredGenerators as $configuredGenerator) {
+                $configuredGenerator->generator()->send([$configuredGenerator->config(), $data]);
             }
+
+            list($config, $data) = yield $data;
         }
 
     }
@@ -33,6 +38,5 @@ class Fork implements Stage, RequiresGeneratorFactory
             'stages' => []
         ]);
         $schema->setRequired([ 'generator_factory' ]);
-
     }
 }
