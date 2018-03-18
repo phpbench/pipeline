@@ -12,26 +12,35 @@ class CurlSamplerTest extends CoreTestCase
     /**
      * @var Process
      */
-    private $process;
-    private $accessLogPath;
+    private static $process;
+
+    private static $accessLogPath;
+
+    public static function setupBeforeClass()
+    {
+        self::$accessLogPath = __DIR__.'/../../../../../Serve/access.log';
+
+        self::$process = new Process('php -S '.self::SAMPLE_URL);
+        self::$process->setWorkingDirectory(__DIR__.'/../../../../../Serve');
+        self::$process->start();
+
+        $status = false;
+        while ($status === false) {
+            $status = @file_get_contents('http://' . self::SAMPLE_URL);
+            usleep(50000);
+        }
+    }
 
     public function setUp()
     {
-        $this->accessLogPath = __DIR__.'/../../../../../Serve/access.log';
-
-        if (file_exists($this->accessLogPath)) {
-            unlink($this->accessLogPath);
+        if (file_exists(self::$accessLogPath)) {
+            unlink(self::$accessLogPath);
         }
-
-        $this->process = new Process('php -S '.self::SAMPLE_URL);
-        $this->process->setWorkingDirectory(__DIR__.'/../../../../../Serve');
-        $this->process->start();
-        usleep(250000);
     }
 
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        $this->process->stop();
+        self::$process->stop();
     }
 
     public function testSamplesAGet()
@@ -100,7 +109,7 @@ class CurlSamplerTest extends CoreTestCase
     private function requests(): array
     {
         $requests = [];
-        foreach (explode(PHP_EOL, file_get_contents($this->accessLogPath)) as $request) {
+        foreach (explode(PHP_EOL, file_get_contents(self::$accessLogPath)) as $request) {
             $requests[] = json_decode($request, true);
         }
 
