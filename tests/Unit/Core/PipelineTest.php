@@ -10,6 +10,8 @@ use PhpBench\Pipeline\Core\Exception\InvalidStage;
 use PhpBench\Pipeline\Core\Exception\InvalidArgumentException;
 use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
 use PhpBench\Pipeline\Core\ConfiguredGenerator;
+use Prophecy\Argument;
+use Generator;
 
 class PipelineTest extends TestCase
 {
@@ -31,6 +33,10 @@ class PipelineTest extends TestCase
 
     public function testPipesToCallableStage()
     {
+        $this->factory->generatorFor(Argument::type('callable'))->will(function (array $args) {
+            return new ConfiguredGenerator($args[0](), []);
+        });
+
         $data = $this->runPipeline([
             function () {
                 list($config, $data) = yield;
@@ -38,12 +44,13 @@ class PipelineTest extends TestCase
                 yield $data;
             },
         ], ['Hello']);
+
         $this->assertEquals(['Hello', 'Goodbye'], $data);
     }
 
     public function testPipesToAConfiguredStageWithNoConfig()
     {
-        $this->factory->generatorFor('test/foobar', [])->will(function () {
+        $this->factory->generatorFor(['test/foobar'])->will(function () {
             return new ConfiguredGenerator((function () {
                 list($config, $data) = yield;
                 $data[] = 'Goodbye';
@@ -58,17 +65,11 @@ class PipelineTest extends TestCase
 
     public function testPipesToAConfiguredStageWithConfig()
     {
-        $this->factory->generatorFor('test/foobar', [
-            'key' => 'value',
-        ])->will(function () {
-            return new ConfiguredGenerator((function () {
+        $this->setUpFactory(['test/foobar', [ 'key' => 'value' ]], (function () {
                 list($config, $data) = yield;
                 $data[] = 'Goodbye';
                 yield $data;
-            })(), [
-                'key' => 'value',
-            ]);
-        });
+        })(), [ 'key' => 'value' ]);
 
         $data = $this->runPipeline([
             ['test/foobar', ['key' => 'value']],
@@ -87,17 +88,10 @@ class PipelineTest extends TestCase
             $this->expectExceptionMessage($expectedMessage);
         }
 
-        $this->factory->generatorFor('test/foobar', [
-            'key' => $configValue,
-        ])->will(function () use ($configValue) {
-            return new ConfiguredGenerator((function () {
+        $this->setUpFactory(['test/foobar', [ 'key' => $configValue ]], (function () {
                 list($config, $data) = yield;
                 yield [$config['key']];
-
-            })(), [
-                'key' => $configValue,
-            ]);
-        });
+        })(), [ 'key' => $configValue ]);
 
         $data = $this->runPipeline([
             ['test/foobar', ['key' => $configValue]],
@@ -149,25 +143,6 @@ class PipelineTest extends TestCase
         ];
     }
 
-    public function testThrowsExceptionIfStageNotStageOrCallable()
-    {
-        $this->expectException(InvalidStage::class);
-        $this->expectExceptionMessage('Stage must either be a callable or a stage alias, got "stdClass"');
-        $this->runPipeline([
-            new stdClass(),
-        ]);
-    }
-
-    public function testInvalidStageArity()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Stage must be at least a 1 and at most a 2 element array ([ (string) stage-name, (array) stage-config ], got 3 elements');
-
-        $this->runPipeline([
-            ['foobar', ['barfoo' => 'asd'], 'googoo'],
-        ]);
-    }
-
     public function testThrowsAnExceptionIfStageDoesNotYieldAnArray()
     {
         $this->expectException(InvalidYieldedValue::class);
@@ -190,6 +165,10 @@ class PipelineTest extends TestCase
                 list($config, $data) = yield $data;
             }
         };
+
+        $this->factory->generatorFor(Argument::type('callable'))->will(function ($args) {
+            return new ConfiguredGenerator($args[0](), []);
+        });
 
         $result = $this->runPipeline([
             $stage,
@@ -221,5 +200,13 @@ class PipelineTest extends TestCase
         }
 
         return $return;
+    }
+
+    private function setUpFactory($stage, Generator $generator, array $resolvedConfig = [])
+    {
+        $this->factory->generatorFor($stage)
+            ->willReturn(
+                new ConfiguredGenerator($generator, $resolvedConfig)
+            );
     }
 }

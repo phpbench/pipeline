@@ -51,40 +51,6 @@ final class PipelineBuilder
     public function load(array $stages): self
     {
         foreach ($stages as $stage) {
-            if (is_callable($stage) || is_string($stage)) {
-                $this->stage($stage);
-                continue;
-            }
-
-            if (is_array($stage)) {
-                if (false === isset($stage[0])) {
-                    throw new InvalidStage(sprintf(
-                        'Stage config element must be a 1 to 2 element tuple (e.g. ["stage\/alias",{"config1":"value1"}]), got "%s"',
-                        json_encode($stage)
-                    ));
-                }
-
-                switch (count($stage)) {
-                    case 1:
-                        list($stage) = $stage;
-                        $this->stage($stage);
-                        continue 2;
-                    case 2:
-                        list($stage, $config) = $stage;
-                        $this->stage($stage, $config);
-                        continue 2;
-                    default:
-                        throw new InvalidStage(sprintf(
-                            'Stage config element cannot have more than 2 elements, got %s',
-                            count($stage)
-                        ));
-                }
-            }
-
-            throw new InvalidStage(sprintf(
-                'Stage must either be an array config element or a callable, got "%s"',
-                is_object($stage) ? get_class($stage) : gettype($stage)
-            ));
         }
 
         return $this;

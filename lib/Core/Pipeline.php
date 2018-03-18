@@ -61,39 +61,10 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
     {
         $generators = [];
         foreach ($config['stages'] as $stage) {
-            if (is_callable($stage)) {
-                $generators[] = new ConfiguredGenerator($stage(), $config);
-                continue;
-            }
-
-            if (is_array($stage)) {
-                $generators[] = $this->buildGeneratorFromArray($stage, $config);
-                continue;
-            }
-
-            throw new InvalidStage(sprintf(
-                'Stage must either be a callable or a stage alias, got "%s"',
-                is_object($stage) ? get_class($stage) : gettype($stage)
-            ));
+            $generators[] = $config['generator_factory']->generatorFor($stage);
         }
 
         return $generators;
-    }
-
-    private function buildGeneratorFromArray(array $stage, array $config): ConfiguredGenerator
-    {
-        if (count($stage) > 2) {
-            throw new InvalidArgumentException(sprintf(
-                'Stage must be at least a 1 and at most a 2 element array ([ (string) stage-name, (array) stage-config ], got %s elements',
-                count($stage)
-            ));
-        }
-
-        $stageName = $stage[0];
-        $stageConfig = isset($stage[1]) ? $stage[1] : [];
-        $generator = $config['generator_factory']->generatorFor($stageName, $stageConfig);
-
-        return $generator;
     }
 
     /**
