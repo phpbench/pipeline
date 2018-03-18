@@ -6,8 +6,9 @@ use Generator;
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
 use PhpBench\Pipeline\Core\Exception\InvalidArgumentException;
 use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
+use PhpBench\Pipeline\Core\RequiresGeneratorFactory;
 
-class Pipeline implements Stage, PipelineExtension
+class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
 {
     public function __invoke(): Generator
     {

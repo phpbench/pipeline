@@ -34,7 +34,6 @@ final class BuiltPipeline
     {
         $configuredGenerator = $this->factory->generatorFor('pipeline', [
             'stages' => $this->stages,
-            'generator_factory' => $this->factory,
         ]);
 
         $return = $data;

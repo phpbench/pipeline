@@ -12,11 +12,19 @@ $builder->load([
     ]]],
     [ 'valve/delay', [ 'time' => 10 ] ],
     [ 'sampler/curl', [ 'url' => '%url%', 'concurrency' => 10, 'async' => false ] ],
-    [ 'filter/keys', [ 'keys' => [ 'url', 'total_time', 'connect_time', 'concurrency']]],
-    [ 'aggregator/collector', ['limit' => 2] ],
-    [ 'encoder/json', [ 'pretty' => true ] ],
-    'console/redraw',
-    'output/stream',
     [ 'valve/timeout', [ 'time' => 10E6 ]],
+    [ 'distribution/fork', [ 'stages' => [
+        [ 'pipeline', [ 'stages' => [
+            [ 'filter/keys', [ 'keys' => [ 'url', 'total_time', 'connect_time', 'concurrency']]],
+            [ 'aggregator/collector', ['limit' => 2] ],
+            [ 'encoder/json', [ 'pretty' => true ] ],
+            [ 'console/redraw' ],
+            [ 'output/stream' ],
+        ]]],
+        [ 'pipeline', [ 'stages' => [
+            [ 'encoder/json' ],
+            [ 'output/stream', [ 'stream' => 'report.json' ]],
+        ]]]
+    ]]],
 ]);
 $builder->run();

@@ -24,7 +24,6 @@ class BuiltPipelineTest extends TestCase
         $pipeline = new BuiltPipeline([], $this->factory->reveal());
         $this->factory->generatorFor('pipeline', [
             'stages' => [],
-            'generator_factory' => $this->factory->reveal(),
         ])->will(function () {
             return new ConfiguredGenerator((function () {
                 yield;
