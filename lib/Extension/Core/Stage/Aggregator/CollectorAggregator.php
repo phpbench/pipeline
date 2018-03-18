@@ -14,11 +14,9 @@ class CollectorAggregator implements Stage
         list($config, $data) = yield;
 
         $rows = [];
-        $count = 0;
         while (true) {
-            if ($count++ > $config['limit']) {
-                $count = 0;
-                $rows = [];
+            if (count($rows) == $config['limit']) {
+                array_shift($rows);
             }
             $rows[] = $data;
 

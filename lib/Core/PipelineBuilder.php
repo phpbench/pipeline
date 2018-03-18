@@ -66,8 +66,6 @@ final class PipelineBuilder
 
                 switch (count($stage)) {
                     case 1:
-                        if (!isset($stage[0])) {
-                        }
                         list($stage) = $stage;
                         $this->stage($stage);
                         continue 2;
