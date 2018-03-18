@@ -16,6 +16,7 @@
         "symfony/options-resolver": "^4.0"
     },
     "require-dev": {
+        "infection/infection": "^0.8.1",
         "phpstan/phpstan": "^0.8.5",
         "phpunit/phpunit": "^6.0",
         "symfony/process": "^4.0"
