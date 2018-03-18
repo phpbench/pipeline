@@ -2,11 +2,11 @@
 
 namespace PhpBench\Pipeline\Tests\Unit\Extension\Core;
 
-use PHPUnit\Framework\TestCase;
 use PhpBench\Pipeline\Core\PipelineBuilder;
 use PhpBench\Pipeline\Extension\Core\CoreExtension;
+use PhpBench\Pipeline\Tests\Unit\PipelineTestCase;
 
-class CoreTestCase extends TestCase
+class CoreTestCase extends PipelineTestCase
 {
     protected function pipeline(): PipelineBuilder
     {
