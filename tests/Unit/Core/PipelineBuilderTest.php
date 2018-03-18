@@ -28,6 +28,7 @@ class PipelineBuilderTest extends TestCase
     {
         $this->extension1 = $this->prophesize(PipelineExtension::class);
         $this->stage1 = $this->prophesize(Stage::class);
+        $this->stage2 = $this->prophesize(Stage::class);
     }
 
     public function testBuildsAnEmptyPipeline()
@@ -83,16 +84,25 @@ class PipelineBuilderTest extends TestCase
             $this->expectExceptionMessage($message);
         }
 
-        $this->extension1->stageAliases()->willReturn(['test/foobar']);
-        $this->extension1->stage('test/foobar')->willReturn($this->stage1->reveal());
+        $this->extension1->stageAliases()->willReturn(['test/stage1', 'test/stage2']);
+        $this->extension1->stage('test/stage1')->willReturn($this->stage1->reveal());
+        $this->extension1->stage('test/stage2')->willReturn($this->stage2->reveal());
 
         $this->stage1->configure(Argument::type(Schema::class))->will(function ($args) {
             $schema = $args[0];
             $schema->setDefaults([ 'foo' => 'bar' ]);
         });
+        $this->stage2->configure(Argument::type(Schema::class))->will(function ($args) {
+            $schema = $args[0];
+            $schema->setDefaults([ 'foo' => 'bar' ]);
+        });
         $this->stage1->__invoke()->will(function () {
             yield;
-            yield ['Test'];
+            yield ['Value1'];
+        });
+        $this->stage2->__invoke()->will(function () {
+            yield;
+            yield ['Value2'];
         });
 
         $builder = PipelineBuilder::create();
@@ -110,9 +120,16 @@ class PipelineBuilderTest extends TestCase
     {
         yield 'with string alias' => [
             [ 
-                'test/foobar' 
+                'test/stage1' 
             ],
-            [ 'Test' ],
+            [ 'Value1' ],
+        ];
+        yield 'with 2 string aliases' => [
+            [ 
+                'test/stage1',
+                'test/stage2',
+            ],
+            [ 'Value2' ],
         ];
         yield 'with callable' => [
             [ 
@@ -126,19 +143,19 @@ class PipelineBuilderTest extends TestCase
         ];
         yield 'with alias in an array' => [
             [ 
-                [ 'test/foobar' ]
+                [ 'test/stage1' ]
             ],
-            [ 'Test' ],
+            [ 'Value1' ],
         ];
         yield 'with alias and config' => [
             [ 
-                [ 'test/foobar', ['foo' => 'bar'] ]
+                [ 'test/stage1', ['foo' => 'bar'] ]
             ],
-            [ 'Test' ],
+            [ 'Value1' ],
         ];
         yield 'but throws exception if stage has more than 2 elements ' => [
             [ 
-                [ 'test/foobar', [], [] ]
+                [ 'test/stage1', [], [] ]
             ],
             [],
             [
@@ -158,12 +175,12 @@ class PipelineBuilderTest extends TestCase
         ];
         yield 'but throws exception stage was a indexes are not numerical' => [
             [ 
-                [ 'test/foobar' => [] ]
+                [ 'test/stage1' => [] ]
             ],
             [],
             [
                 InvalidStage::class,
-                'Stage config element must be a 1 to 2 element tuple (e.g. ["stage\/alias",{"config1":"value1"}]), got "{"test\/foobar":[]}"'
+                'Stage config element must be a 1 to 2 element tuple (e.g. ["stage\/alias",{"config1":"value1"}]), got "{"test\/stage1":[]}"'
             ]
         ];
     }
