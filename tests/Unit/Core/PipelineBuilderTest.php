@@ -156,6 +156,16 @@ class PipelineBuilderTest extends TestCase
                 'Stage must either be an array config element or a callable, got "stdClass"'
             ]
         ];
+        yield 'but throws exception stage was a indexes are not numerical' => [
+            [ 
+                [ 'test/foobar' => [] ]
+            ],
+            [],
+            [
+                InvalidStage::class,
+                'Stage config element must be a 1 to 2 element tuple (e.g. ["stage\/alias",{"config1":"value1"}]), got "{"test\/foobar":[]}"'
+            ]
+        ];
     }
 
     public function testBuildsPipelineWithMultipleStages()

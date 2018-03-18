@@ -57,8 +57,17 @@ final class PipelineBuilder
             }
 
             if (is_array($stage)) {
+                if (false === isset($stage[0])) {
+                    throw new InvalidStage(sprintf(
+                        'Stage config element must be a 1 to 2 element tuple (e.g. ["stage\/alias",{"config1":"value1"}]), got "%s"',
+                        json_encode($stage)
+                    ));
+                }
+
                 switch (count($stage)) {
                     case 1:
+                        if (!isset($stage[0])) {
+                        }
                         list($stage) = $stage;
                         $this->stage($stage);
                         continue 2;
