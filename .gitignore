@@ -1,3 +1,5 @@
 /vendor
 /composer.lock
 tests/Serve/access.log
+infection-log.txt
+tests/Workspace

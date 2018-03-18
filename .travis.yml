@@ -17,3 +17,4 @@ before_install:
 script:
   - ./vendor/bin/phpstan analyze --level=7 lib/
   - ./vendor/bin/phpunit
+  - ./vendor/bin/infection
