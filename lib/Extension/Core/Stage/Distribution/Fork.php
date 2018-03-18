@@ -21,6 +21,7 @@ class Fork implements Stage, RequiresGeneratorFactory
         while (true) {
             foreach ($config['stages'] as $stage) {
                 $generatorFactory->generatorFor($stage);
+                yield;
             }
         }
 

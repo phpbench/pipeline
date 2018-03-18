@@ -38,41 +38,6 @@ class PipelineBuilderTest extends TestCase
         $this->assertInstanceOf(BuiltPipeline::class, $pipeline);
     }
 
-    public function testBuildsPipelineWithCallable()
-    {
-        $builder = PipelineBuilder::create();
-        $builder->stage(function () {
-            yield;
-            yield ['Hello'];
-        });
-        $pipeline = $builder->build();
-
-        $this->assertInstanceOf(BuiltPipeline::class, $pipeline);
-        $result = $pipeline->run();
-        $this->assertEquals(['Hello'], $result);
-    }
-
-    public function testBuildsPipelineWithStageAlias()
-    {
-        $this->extension1->stageAliases()->willReturn(['test/foobar']);
-        $this->extension1->stage('test/foobar')->willReturn($this->stage1->reveal());
-        $this->stage1->configure(Argument::type(Schema::class))->will(function () {});
-        $this->stage1->__invoke()->will(function () {
-            yield;
-            yield ['Test'];
-        });
-
-        $builder = PipelineBuilder::create();
-        $builder->addExtension($this->extension1->reveal());
-
-        $builder->stage('test/foobar');
-        $pipeline = $builder->build();
-
-        $this->assertInstanceOf(BuiltPipeline::class, $pipeline);
-        $result = $pipeline->run();
-        $this->assertEquals(['Test'], $result);
-    }
-
     /**
      * @dataProvider provideBuildsPipelinesFromStages
      */
@@ -152,36 +117,6 @@ class PipelineBuilderTest extends TestCase
                 [ 'test/stage1', ['foo' => 'bar'] ]
             ],
             [ 'Value1' ],
-        ];
-        yield 'but throws exception if stage has more than 2 elements ' => [
-            [ 
-                [ 'test/stage1', [], [] ]
-            ],
-            [],
-            [
-                InvalidStage::class,
-                'Stage config element cannot have more than 2 elements, got 3'
-            ]
-        ];
-        yield 'but throws exception if stage was neither an array or a callable ' => [
-            [ 
-                new stdClass,
-            ],
-            [],
-            [
-                InvalidStage::class,
-                'Stage must either be an array config element or a callable, got "stdClass"'
-            ]
-        ];
-        yield 'but throws exception stage was a indexes are not numerical' => [
-            [ 
-                [ 'test/stage1' => [] ]
-            ],
-            [],
-            [
-                InvalidStage::class,
-                'Stage config element must be a 1 to 2 element tuple (e.g. ["stage\/alias",{"config1":"value1"}]), got "{"test\/stage1":[]}"'
-            ]
         ];
     }
 

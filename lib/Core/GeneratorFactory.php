@@ -3,6 +3,8 @@
 namespace PhpBench\Pipeline\Core;
 
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
+use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
+use Generator;
 
 class GeneratorFactory
 {
@@ -22,7 +24,7 @@ class GeneratorFactory
             $generator = $stage();
 
             if (false === $generator instanceof Generator) {
-                throw new InvalidStage(sprintf(
+                throw new InvalidYieldedValue(sprintf(
                     'Callable stages must return Generators, got "%s"',
                     is_object($generator) ? get_class($generator) : gettype($generator)
                 ));
@@ -31,9 +33,13 @@ class GeneratorFactory
             return new ConfiguredGenerator($generator, []);
         }
 
+        if (is_string($stage)) {
+            $stage = (array) $stage;
+        }
+
         if (false === is_array($stage)) {
             throw new InvalidStage(sprintf(
-                'Stage must either be an stage config element or a callable, got "%s"',
+                'Stage must either be a stage config element or a callable, got "%s"',
                 is_object($stage) ? get_class($stage) : gettype($stage)
             ));
         }

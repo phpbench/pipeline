@@ -32,9 +32,9 @@ final class BuiltPipeline
 
     public function generator(array $data = []): Generator
     {
-        $configuredGenerator = $this->factory->generatorFor('pipeline', [
+        $configuredGenerator = $this->factory->generatorFor(['pipeline', [
             'stages' => $this->stages,
-        ]);
+        ]]);
 
         $return = $data;
         $generator = $configuredGenerator->generator();

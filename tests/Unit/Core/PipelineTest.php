@@ -145,6 +145,10 @@ class PipelineTest extends TestCase
 
     public function testThrowsAnExceptionIfStageDoesNotYieldAnArray()
     {
+        $this->factory->generatorFor(Argument::type('callable'))->will(function ($args) {
+            return new ConfiguredGenerator($args[0](), []);
+        });
+
         $this->expectException(InvalidYieldedValue::class);
 
         $this->runPipeline([

@@ -13,6 +13,7 @@ use Generator;
 use PhpBench\Pipeline\Core\ConfiguredGenerator;
 use PhpBench\Pipeline\Core\Exception\InvalidStage;
 use stdClass;
+use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
 
 class GeneratorFactoryTest extends TestCase
 {
@@ -79,7 +80,7 @@ class GeneratorFactoryTest extends TestCase
 
     public function testThrowsExceptionIfCallableDoesntReturnAGenerator()
     {
-        $this->expectException(InvalidStage::class);
+        $this->expectException(InvalidYieldedValue::class);
         $this->expectExceptionMessage('Callable stages must return Generators, got "stdClass"');
 
         $this->factory->generatorFor(function () {
@@ -90,7 +91,7 @@ class GeneratorFactoryTest extends TestCase
     public function testThrowsExceptionIfStageNotStageOrCallable()
     {
         $this->expectException(InvalidStage::class);
-        $this->expectExceptionMessage('Stage must either be an stage config element or a callable, got "stdClass"');
+        $this->expectExceptionMessage('Stage must either be a stage config element or a callable, got "stdClass"');
 
         $this->factory->generatorFor(new stdClass());
     }

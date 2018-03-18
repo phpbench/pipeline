@@ -51,6 +51,7 @@ final class PipelineBuilder
     public function load(array $stages): self
     {
         foreach ($stages as $stage) {
+            $this->stages[] = $stage;
         }
 
         return $this;
