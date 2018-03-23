@@ -159,32 +159,7 @@ class PipelineTest extends TestCase
         ]);
     }
 
-    public function testCanEnableFeedback()
-    {
-        $stage = function () {
-            list($config, $data) = yield;
-
-            for ($i = 0; $i < 2; ++$i) {
-                $data[] = 'Hello';
-                list($config, $data) = yield $data;
-            }
-        };
-
-        $this->factory->generatorFor(Argument::type('callable'))->will(function ($args) {
-            return new ConfiguredGenerator($args[0](), []);
-        });
-
-        $result = $this->runPipeline([
-            $stage,
-            $stage,
-        ], [], true);
-
-        $this->assertEquals([
-            'Hello', 'Hello', 'Hello', 'Hello',
-        ], $result);
-    }
-
-    private function runPipeline(array $stages, array $data = [], bool $feedback = false)
+    private function runPipeline(array $stages, array $data = [])
     {
         $generator = (new Pipeline())();
 
@@ -193,7 +168,6 @@ class PipelineTest extends TestCase
             $data = $generator->send([[
                 'stages' => $stages,
                 'generator_factory' => $this->factory->reveal(),
-                'feedback' => $feedback,
             ], $data]);
 
             if (null === $data) {

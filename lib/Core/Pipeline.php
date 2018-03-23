@@ -23,10 +23,6 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
         }
 
         while (true) {
-            if (false === $config['feedback']) {
-                $data = $initialData;
-            }
-
             foreach ($configuredGenerators as $configuredGenerator) {
                 $generatorConfig = $configuredGenerator->config();
                 $generatorConfig = $this->replaceTokens($generatorConfig, $data);
@@ -53,7 +49,7 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
                 $data = $response;
             }
 
-            yield $data;
+            list($config, $data) =yield $data;
         }
     }
 
@@ -79,12 +75,10 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
         $schema->setTypes([
             'generator_factory' => GeneratorFactory::class,
             'stages' => 'array',
-            'feedback' => 'boolean',
         ]);
 
         $schema->setDefaults([
             'stages' => [],
-            'feedback' => false,
         ]);
     }
 

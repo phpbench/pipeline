@@ -30,7 +30,6 @@ class CoreExtension implements PipelineExtension
         $this->stages = [
             'aggregator/collector' => new CollectorAggregator(),
             'aggregator/describe' => new DescribeAggregator(),
-            'distribution/fork' => new Fork(),
             'encoder/json' => new JsonEncoder(),
             'filter/keys' => new KeysFilter(),
             'output/stream' => new StreamOutput(),
