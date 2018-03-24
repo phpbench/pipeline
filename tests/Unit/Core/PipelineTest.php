@@ -163,21 +163,12 @@ class PipelineTest extends TestCase
     {
         $generator = (new Pipeline())();
 
-        $return = $data;
-        while ($generator->valid()) {
-            $data = $generator->send([[
-                'stages' => $stages,
-                'generator_factory' => $this->factory->reveal(),
-            ], $data]);
+        $data = $generator->send([[
+            'stages' => $stages,
+            'generator_factory' => $this->factory->reveal(),
+        ], $data]);
 
-            if (null === $data) {
-                break;
-            }
-
-            $return = $data;
-        }
-
-        return $return;
+        return $data;
     }
 
     private function setUpFactory($stage, Generator $generator, array $resolvedConfig = [])

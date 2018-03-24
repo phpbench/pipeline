@@ -26,6 +26,7 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
             foreach ($configuredGenerators as $configuredGenerator) {
                 $generatorConfig = $configuredGenerator->config();
                 $generatorConfig = $this->replaceTokens($generatorConfig, $data);
+
                 $response = $configuredGenerator->generator()->send([$generatorConfig, $data]);
 
                 if (false === $configuredGenerator->generator()->valid()) {
@@ -49,7 +50,7 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
                 $data = $response;
             }
 
-            list($config, $data) =yield $data;
+            list($config, $data) = yield $data;
         }
     }
 
