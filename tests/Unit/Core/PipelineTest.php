@@ -177,21 +177,26 @@ class PipelineTest extends TestCase
         $this->factory->generatorFor(Argument::type('callable'))->will(function ($args) {
             return new ConfiguredGenerator($args[0](), []);
         });
+
         $data = $this->runPipeline([
             'fork' => true,
             'stages' => [
-                function () {
+                function () use (&$stage1) {
                     list($config, $data) = yield;
+                    $stage1 = $data;
                     yield [ 'Two' ];
                 },
-                function () {
+                function () use (&$stage2) {
                     list($config, $data) = yield;
+                    $stage2 = $data;
                     yield [ 'Three' ];
                 },
             ],
         ], ['One']);
 
-        $this->assertEquals(['One'], $data);
+        $this->assertEquals(['One'], $data, 'Main pipeline returns initial data');
+        $this->assertEquals(['One'], $stage1, 'Data is copied to stage 1');
+        $this->assertEquals(['One'], $stage2, 'Data is copied to stage 2');
     }
 
     private function runPipeline(array $config, array $data = [])

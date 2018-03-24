@@ -47,7 +47,9 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
                     }
                 }
 
-                $data = $response;
+                if (false === $config['fork']) {
+                    $data = $response;
+                }
             }
 
             list($config, $data) = yield $data;
