@@ -76,10 +76,12 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
         $schema->setTypes([
             'generator_factory' => GeneratorFactory::class,
             'stages' => 'array',
+            'fork' => 'boolean',
         ]);
 
         $schema->setDefaults([
             'stages' => [],
+            'fork' => false,
         ]);
     }
 

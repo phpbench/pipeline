@@ -12,6 +12,7 @@ use PhpBench\Pipeline\Core\Exception\InvalidYieldedValue;
 use PhpBench\Pipeline\Core\ConfiguredGenerator;
 use Prophecy\Argument;
 use Generator;
+use PhpBench\Pipeline\Core\Schema;
 
 class PipelineTest extends TestCase
 {
@@ -27,7 +28,9 @@ class PipelineTest extends TestCase
 
     public function testRunsAnEmptyPipeline()
     {
-        $data = $this->runPipeline([]);
+        $data = $this->runPipeline([
+            'stages' => [],
+        ]);
         $this->assertEquals([], $data);
     }
 
@@ -38,11 +41,13 @@ class PipelineTest extends TestCase
         });
 
         $data = $this->runPipeline([
-            function () {
-                list($config, $data) = yield;
-                $data[] = 'Goodbye';
-                yield $data;
-            },
+            'stages' => [
+                function () {
+                    list($config, $data) = yield;
+                    $data[] = 'Goodbye';
+                    yield $data;
+                },
+            ],
         ], ['Hello']);
 
         $this->assertEquals(['Hello', 'Goodbye'], $data);
@@ -58,7 +63,9 @@ class PipelineTest extends TestCase
             })(), []);
         });
         $data = $this->runPipeline([
-            ['test/foobar'],
+            'stages' => [
+                ['test/foobar'],
+            ],
         ], ['Hello']);
         $this->assertEquals(['Hello', 'Goodbye'], $data);
     }
@@ -72,7 +79,9 @@ class PipelineTest extends TestCase
         })(), [ 'key' => 'value' ]);
 
         $data = $this->runPipeline([
-            ['test/foobar', ['key' => 'value']],
+            'stages' => [
+                ['test/foobar', ['key' => 'value']],
+            ],
         ], ['Hello']);
         $this->assertEquals(['Hello', 'Goodbye'], $data);
     }
@@ -94,7 +103,9 @@ class PipelineTest extends TestCase
         })(), [ 'key' => $configValue ]);
 
         $data = $this->runPipeline([
-            ['test/foobar', ['key' => $configValue]],
+            'stages' => [
+                ['test/foobar', ['key' => $configValue]],
+            ],
         ], $data);
 
         $this->assertEquals($expected, $data);
@@ -152,21 +163,48 @@ class PipelineTest extends TestCase
         $this->expectException(InvalidYieldedValue::class);
 
         $this->runPipeline([
-            function () {
-                yield;
-                yield 'string';
-            },
+            'stages' => [
+                function () {
+                    yield;
+                    yield 'string';
+                }
+            ],
         ]);
     }
 
-    private function runPipeline(array $stages, array $data = [])
+    public function testCopiesInputToStagesWhenForkIsEnabled()
     {
-        $generator = (new Pipeline())();
+        $this->factory->generatorFor(Argument::type('callable'))->will(function ($args) {
+            return new ConfiguredGenerator($args[0](), []);
+        });
+        $data = $this->runPipeline([
+            'fork' => true,
+            'stages' => [
+                function () {
+                    list($config, $data) = yield;
+                    yield [ 'Two' ];
+                },
+                function () {
+                    list($config, $data) = yield;
+                    yield [ 'Three' ];
+                },
+            ],
+        ], ['One']);
 
-        $data = $generator->send([[
-            'stages' => $stages,
-            'generator_factory' => $this->factory->reveal(),
-        ], $data]);
+        $this->assertEquals(['One'], $data);
+    }
+
+    private function runPipeline(array $config, array $data = [])
+    {
+        $config['generator_factory'] = $this->factory->reveal();
+
+        $pipeline = new Pipeline();
+        $schema = new Schema();
+        $pipeline->configure($schema);
+        $config = $schema->resolve($config);
+        $generator = $pipeline();
+
+        $data = $generator->send([ $config, $data ]);
 
         return $data;
     }

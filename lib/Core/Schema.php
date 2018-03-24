@@ -59,9 +59,17 @@ class Schema
 
         foreach ($config as $key => $value) {
             if (isset($this->types[$key])) {
-                $type = is_object($value) ? get_class($value) : gettype($value);
+                if (is_object($value)) {
+                    $type = get_class($value);
+                    $valid = $value instanceof $this->types[$key];
+                }
 
-                if ($this->types[$key] !== $type) {
+                if (false === is_object($value)) {
+                    $type = gettype($value);
+                    $valid = $this->types[$key] === gettype($value);
+                }
+
+                if (false === $valid) {
                     throw new InvalidConfig(sprintf(
                         'Type for "%s" expected to be "%s", got "%s"',
                         $key,
