@@ -36,7 +36,7 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
                 if (false === $response instanceof Signal && false === is_array($response)) {
                     throw new InvalidYieldedValue(sprintf(
                         'All yielded values must be arrays or Signals, got "%s"',
-                        gettype($data)
+                        gettype($response)
                     ));
                 }
 

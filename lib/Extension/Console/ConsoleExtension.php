@@ -5,6 +5,7 @@ namespace PhpBench\Pipeline\Extension\Console;
 use PhpBench\Pipeline\Core\PipelineExtension;
 use PhpBench\Pipeline\Core\Stage;
 use PhpBench\Pipeline\Extension\Console\Stage\Redraw;
+use PhpBench\Pipeline\Extension\Console\Stage\Table;
 
 class ConsoleExtension implements PipelineExtension
 {
@@ -17,6 +18,7 @@ class ConsoleExtension implements PipelineExtension
     {
         $this->stages = [
             'console/redraw' => new Redraw(),
+            'console/table' => new Table(),
         ];
     }
 
