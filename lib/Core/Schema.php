@@ -59,6 +59,9 @@ class Schema
 
         foreach ($config as $key => $value) {
             if (isset($this->types[$key])) {
+                $valid = true;
+                $type = null;
+
                 if (is_object($value)) {
                     $type = get_class($value);
                     $valid = $value instanceof $this->types[$key];
