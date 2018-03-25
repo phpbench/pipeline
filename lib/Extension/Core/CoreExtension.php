@@ -17,6 +17,7 @@ use PhpBench\Pipeline\Extension\Core\Stage\Valve\DelayValve;
 use PhpBench\Pipeline\Extension\Core\Stage\Valve\TimeoutValve;
 use PhpBench\Pipeline\Extension\Core\Stage\Aggregator\CollectorAggregator;
 use PhpBench\Pipeline\Extension\Core\Stage\Distribution\Fork;
+use PhpBench\Pipeline\Extension\Core\Stage\Transform\Flatten;
 
 class CoreExtension implements PipelineExtension
 {
@@ -37,6 +38,7 @@ class CoreExtension implements PipelineExtension
             'parameter/counter' => new CounterParameter(),
             'sampler/callable' => new CallableSampler(),
             'sampler/curl' => new CurlSampler(),
+            'transform/flatten' => new Flatten(),
             'valve/delay' => new DelayValve(),
             'valve/take' => new TakeValve(),
             'valve/timeout' => new TimeoutValve(),

@@ -20,16 +20,22 @@ class Redraw implements Stage
         $lineLength = 0;
 
         while (true) {
-            foreach ($data as &$line) {
-                if (null === $lastData) {
-                    $line = self::ANSI_SAVE_CURSOR_POS.$line;
+            $firstLine = true;
+
+            foreach ($data as &$text) {
+                if (false === is_string($text)) {
+                    $text = json_encode($text);
                 }
 
-                if ($lastData) {
-                    $line = self::ANSI_RESTORE_CURSOR_POS.$line;
-                    $lineLength = $this->maxLineLength($line, $lineLength);
-                    $line = $this->maximizeLines($line, $lineLength);
+                if (null === $lastData) {
+                    $text = self::ANSI_SAVE_CURSOR_POS.$text;
+                    break;
                 }
+
+                $text = self::ANSI_RESTORE_CURSOR_POS.$text;
+                $lineLength = $this->maxLineLength($text, $lineLength);
+                $text = $this->maximizeLines($text, $lineLength);
+                break;
             }
 
             list($config, $data) = yield $data;

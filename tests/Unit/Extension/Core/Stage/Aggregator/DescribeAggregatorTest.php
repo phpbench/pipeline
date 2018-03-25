@@ -25,6 +25,7 @@ class DescribeAggregatorTest extends CoreTestCase
         $this->assertCount(1, $result);
         $this->assertEquals([
             'one' => [
+                '_hash' => 'one',
                 'time' => [
                     'count' => 3,
                     'mean' => 20,

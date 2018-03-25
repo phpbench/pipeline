@@ -23,6 +23,7 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
         }
 
         while (true) {
+            $aggregatedResponses = [];
             foreach ($configuredGenerators as $configuredGenerator) {
                 $generatorConfig = $configuredGenerator->config();
                 $generatorConfig = $this->replaceTokens($generatorConfig, $data);
@@ -49,10 +50,22 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
 
                 if (false === $config['fork']) {
                     $data = $response;
+                    continue;
                 }
+
+                $aggregatedResponses = array_merge($aggregatedResponses, $response);
+            }
+
+            if ($config['fork']) {
+                $data = $aggregatedResponses;
+            }
+
+            if ($config['disconnect']) {
+                $data = $initialData;
             }
 
             list($config, $data) = yield $data;
+            $initialData = $data;
         }
     }
 
@@ -84,6 +97,7 @@ class Pipeline implements Stage, PipelineExtension, RequiresGeneratorFactory
         $schema->setDefaults([
             'stages' => [],
             'fork' => false,
+            'disconnect' => false,
         ]);
     }
 

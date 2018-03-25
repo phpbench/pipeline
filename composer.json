@@ -13,6 +13,8 @@
     },
     "require": {
         "php": "^7.1",
+        "ext-intl": "*",
+        "ext-curl": "*",
         "symfony/options-resolver": "^4.0"
     },
     "require-dev": {

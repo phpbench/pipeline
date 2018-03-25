@@ -194,7 +194,7 @@ class PipelineTest extends TestCase
             ],
         ], ['One']);
 
-        $this->assertEquals(['One'], $data, 'Main pipeline returns initial data');
+        $this->assertEquals(['Two', 'Three'], $data, 'Results are merged');
         $this->assertEquals(['One'], $stage1, 'Data is copied to stage 1');
         $this->assertEquals(['One'], $stage2, 'Data is copied to stage 2');
     }

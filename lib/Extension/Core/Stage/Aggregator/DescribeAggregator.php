@@ -71,6 +71,7 @@ class DescribeAggregator implements Stage
             foreach ($rows as $field => $values) {
                 $sum = array_sum($values);
                 $count = count($values);
+                $description[$hash]['_hash'] = $hash;
                 $description[$hash][$field] = [
                     'count' => $count,
                     'mean' => $sum / $count,
