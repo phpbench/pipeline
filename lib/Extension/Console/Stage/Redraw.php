@@ -32,10 +32,13 @@ class Redraw implements Stage
                     break;
                 }
 
-                $text = self::ANSI_RESTORE_CURSOR_POS.$text;
+                if ($firstLine) {
+                    $text = self::ANSI_RESTORE_CURSOR_POS.$text;
+                    $firstLine = false;
+                }
+
                 $lineLength = $this->maxLineLength($text, $lineLength);
                 $text = $this->maximizeLines($text, $lineLength);
-                break;
             }
 
             list($config, $data) = yield $data;

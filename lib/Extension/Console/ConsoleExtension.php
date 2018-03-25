@@ -7,6 +7,7 @@ use PhpBench\Pipeline\Core\Stage;
 use PhpBench\Pipeline\Extension\Console\Stage\Redraw;
 use PhpBench\Pipeline\Extension\Console\Stage\Table;
 use PhpBench\Pipeline\Extension\Console\Stage\BarChart;
+use PhpBench\Pipeline\Extension\Console\Stage\Title;
 
 class ConsoleExtension implements PipelineExtension
 {
@@ -20,6 +21,7 @@ class ConsoleExtension implements PipelineExtension
         $this->stages = [
             'console/redraw' => new Redraw(),
             'console/table' => new Table(),
+            'console/title' => new Title(),
             'console/bar-chart' => new BarChart(),
         ];
     }
